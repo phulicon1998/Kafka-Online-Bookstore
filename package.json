@@ -1,0 +1,40 @@
+{
+    "name": "KafkaBook",
+    "version": "1.0.0",
+    "description": "",
+    "engines": {
+        "node": "8.11.2",
+        "npm": "6.10.1"
+    },
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "start-dev": "concurrently \"nodemon index.js\" \"cd cli && npm run start-dev\"",
+        "heroku-postbuild": "cd cli && npm install && npm run build",
+        "test": "mocha test/**/*.test.js --timeout 10000",
+        "test-watch": "nodemon --exec npm test"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^3.0.6",
+        "body-parser": "^1.19.0",
+        "cloudinary": "^1.14.0",
+        "concurrently": "^4.1.2",
+        "cors": "^2.8.5",
+        "dotenv": "^8.1.0",
+        "express": "^4.17.1",
+        "googleapis": "^42.0.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.6.9",
+        "multer": "^1.4.2",
+        "node-emoji": "^1.10.0",
+        "nodemailer": "^6.3.0"
+    },
+    "devDependencies": {
+        "expect.js": "^0.3.1",
+        "mocha": "^6.2.0",
+        "node-mocks-http": "^1.7.6"
+    }
+}
