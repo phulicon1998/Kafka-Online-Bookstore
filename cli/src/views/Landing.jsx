@@ -1,7 +1,10 @@
 import React from "react";
+import Navbar from "components/Shop/Navbar/Navbar";
 
 function Landing() {
-    return <h1>This is the homepage</h1>
+    return (
+        <Navbar />        
+    )
 }
 
 export default Landing;

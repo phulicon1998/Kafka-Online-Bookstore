@@ -1,0 +1,13 @@
+.logo {
+  color: #e4e4e4;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+}
+.shop-navbar {
+  background-color: blue;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+/*# sourceMappingURL=index.css.map */
