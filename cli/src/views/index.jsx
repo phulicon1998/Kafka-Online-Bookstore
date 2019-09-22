@@ -2,11 +2,13 @@ import React, {Component} from "react";
 import {Switch, Route} from "react-router-dom";
 import Landing from "./Landing";
 import {connect} from "react-redux";
-import AppLayout from "containers/Layout/AppLayout";
 import AppLocale from "lngProvider";
 // import URLSearchParams from 'url-search-params'
 import {LocaleProvider} from "antd";
 import {IntlProvider} from "react-intl";
+
+import AppLayout from "containers/Layout/AppLayout";
+import AuthLayout from "containers/Layout/AuthLayout";
 
 import {onLayoutTypeChange, onNavStyleChange, setThemeType} from "appRedux/actions/setting";
 
@@ -53,23 +55,6 @@ class RootRoutes extends Component {
         }
     };
 
-    // componentDidMount() {
-    //     if (this.props.initURL === '') {
-    //         this.props.setInitUrl(this.props.history.location.pathname);
-    //     }
-    //     const params = new URLSearchParams(this.props.location.search);
-    //
-    //     if (params.has("theme")) {
-    //         this.props.setThemeType(params.get('theme'));
-    //     }
-    //     if (params.has("nav-style")) {
-    //         this.props.onNavStyleChange(params.get('nav-style'));
-    //     }
-    //     if (params.has("layout-type")) {
-    //         this.props.onLayoutTypeChange(params.get('layout-type'));
-    //     }
-    // }
-
     render() {
         const {layoutType, navStyle, locale} = this.props;
         this.setLayoutType(layoutType);
@@ -84,6 +69,7 @@ class RootRoutes extends Component {
                     <Switch>
                         <Route path="/app" component={AppLayout}/>
                         <Route exact path="/" component={Landing}/>
+                        <Route exact path="/auth" component={AuthLayout}/>
                     </Switch>
                 </IntlProvider>
             </LocaleProvider>

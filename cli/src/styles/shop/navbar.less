@@ -1,6 +1,197 @@
 .shop-navbar {
-    background-color: blue;
-    padding-top: 20px;
+    padding: 38px 51px 38px 51px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    background-color: #181818;
+
+    &.transparent {
+        background-color: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+
+        &#left {
+
+            > ul {
+                display: flex;
+                align-items: center;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                margin-left: 12px;
+
+                > li {
+                    font-family: @f-la, sans-serif;
+                    color: #dadada;
+                    border: none;
+                    outline: none;
+                    padding: 15px 16px;
+
+                    a {
+                        font-size: 16px;
+                        color: #dadada;
+                    }
+
+                    &:hover {
+                        border-radius: 5px;
+                        background-color: #4141414f;
+                        transition-duration: 0.5s;
+                    }
+                }
+            }
+
+            > div {
+                display: flex;
+                align-items: center;
+                padding-left: 5px;
+                width: 400px;
+                height: 41px;
+                border-radius: 20px;
+                border: 2px solid #bfbfbf;
+                margin-left: 20px;
+
+                > i {
+                    font-size: 16px;
+                    color: #9c9c9c;
+                    margin-left: 8px;
+                }
+
+                > input {
+                    height: 40px;
+                    width: 100%;
+                    padding-left: 10px;
+                    background-color: transparent;
+                    color: #9c9c9c;
+                    outline: none;
+                    border: none;
+                    font-family: @f-default, sans-serif;
+
+                    &::placeholder {
+                        font-family: @f-default, sans-serif;
+                        font-weight: lighter;
+                    }
+                }
+            }
+        }
+
+        &#right {
+            font-family: @f-default, sans-serif;
+            font-size: 14px;
+
+            > .phone {
+                display: flex;
+                align-items: center;
+                margin-right: 15px;
+
+                > i {
+                    padding-right: 10px;
+                    margin-right: 10px;
+                    font-size: 21px;
+                    color: #d1d1d1;
+                }
+
+                > div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    margin-left: 5px;
+
+                    > p {
+                        font-size: 13px;
+                        color: #d1d1d1;
+                        margin-bottom: 0px;
+                        letter-spacing: 3px;
+                    }
+
+                    > small {
+                        font-size: 14px;
+                        color: gray;
+                    }
+                }
+            }
+
+            > .acc {
+                margin-right: 15px;
+
+                > a {
+                    display: flex;
+                    align-items: center;
+                    color: #dadada;
+                    padding: 7px 15px 6px 15px;
+
+                    > i {
+                        padding-right: 10px;
+                        margin-right: 10px;
+                        font-size: 25px;
+                        border-right: 1px solid gray;
+                    }
+
+                    > div {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        font-family: @f-la, sans-serif;
+
+                        > p {
+                            font-size: 14px;
+                            color: #d1d1d1;
+                            margin-bottom: 0px;
+                        }
+
+                        > small {
+                            font-size: 14px;
+                            color: gray;
+                        }
+                    }
+
+                    &:hover {
+                        color: white;
+                    }
+                }
+            }
+
+            > .cart {
+
+                > a {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px;
+                    background-color: #366f724f;
+                    color: white;
+                    border-radius: 3px;
+                    font-family: @f-la, sans-serif;
+
+                    > i {
+                        margin-right: 5px;
+                        font-size: 22px;
+                        color: #e5e5e5;
+                    }
+
+                    > span {
+                        margin-left: 5px;
+
+                        &:nth-of-type(1) {
+                            margin-right: 5px;
+                            font-size: 16px;
+                            color: #e5e5e5;
+                        }
+
+                        &:nth-of-type(2) {
+                            margin-left: 5px;
+                            background-color: #4f7c7c;
+                            padding: 4px 7px;
+                            border-radius: 3px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -1,0 +1,199 @@
+.logo {
+  color: #e4e4e4;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.logo > i {
+  font-size: 40px;
+  color: white;
+}
+.logo > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin-left: 10px;
+  line-height: 20px;
+}
+.logo > div > span {
+  color: white;
+  line-height: 20px;
+}
+.logo > div > span:nth-of-type(1) {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 100;
+}
+.logo > div > span:nth-of-type(2) {
+  margin-top: 3px;
+  font-family: "Helvetica Neue", sans-serif !important;
+  font-size: 14px;
+  color: #808080;
+}
+.shop-navbar {
+  padding: 38px 51px 38px 51px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #181818;
+}
+.shop-navbar.transparent {
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.shop-navbar > div {
+  display: flex;
+  align-items: center;
+}
+.shop-navbar > div#left > ul {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-left: 12px;
+}
+.shop-navbar > div#left > ul > li {
+  font-family: "Lato", sans-serif;
+  color: #dadada;
+  border: none;
+  outline: none;
+  padding: 15px 16px;
+}
+.shop-navbar > div#left > ul > li a {
+  font-size: 16px;
+  color: #dadada;
+}
+.shop-navbar > div#left > ul > li:hover {
+  border-radius: 5px;
+  background-color: #4141414f;
+  transition-duration: 0.5s;
+}
+.shop-navbar > div#left > div {
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  width: 400px;
+  height: 41px;
+  border-radius: 20px;
+  border: 2px solid #bfbfbf;
+  margin-left: 20px;
+}
+.shop-navbar > div#left > div > i {
+  font-size: 16px;
+  color: #9c9c9c;
+  margin-left: 8px;
+}
+.shop-navbar > div#left > div > input {
+  height: 40px;
+  width: 100%;
+  padding-left: 10px;
+  background-color: transparent;
+  color: #9c9c9c;
+  outline: none;
+  border: none;
+  font-family: "Helvetica Neue", sans-serif;
+}
+.shop-navbar > div#left > div > input::placeholder {
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: lighter;
+}
+.shop-navbar > div#right {
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+.shop-navbar > div#right > .phone {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+.shop-navbar > div#right > .phone > i {
+  padding-right: 10px;
+  margin-right: 10px;
+  font-size: 21px;
+  color: #d1d1d1;
+}
+.shop-navbar > div#right > .phone > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 5px;
+}
+.shop-navbar > div#right > .phone > div > p {
+  font-size: 13px;
+  color: #d1d1d1;
+  margin-bottom: 0px;
+  letter-spacing: 3px;
+}
+.shop-navbar > div#right > .phone > div > small {
+  font-size: 14px;
+  color: gray;
+}
+.shop-navbar > div#right > .acc {
+  margin-right: 15px;
+}
+.shop-navbar > div#right > .acc > a {
+  display: flex;
+  align-items: center;
+  color: #dadada;
+  padding: 7px 15px 6px 15px;
+}
+.shop-navbar > div#right > .acc > a > i {
+  padding-right: 10px;
+  margin-right: 10px;
+  font-size: 25px;
+  border-right: 1px solid gray;
+}
+.shop-navbar > div#right > .acc > a > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-family: "Lato", sans-serif;
+}
+.shop-navbar > div#right > .acc > a > div > p {
+  font-size: 14px;
+  color: #d1d1d1;
+  margin-bottom: 0px;
+}
+.shop-navbar > div#right > .acc > a > div > small {
+  font-size: 14px;
+  color: gray;
+}
+.shop-navbar > div#right > .acc > a:hover {
+  color: white;
+}
+.shop-navbar > div#right > .cart > a {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #366f724f;
+  color: white;
+  border-radius: 3px;
+  font-family: "Lato", sans-serif;
+}
+.shop-navbar > div#right > .cart > a > i {
+  margin-right: 5px;
+  font-size: 22px;
+  color: #e5e5e5;
+}
+.shop-navbar > div#right > .cart > a > span {
+  margin-left: 5px;
+}
+.shop-navbar > div#right > .cart > a > span:nth-of-type(1) {
+  margin-right: 5px;
+  font-size: 16px;
+  color: #e5e5e5;
+}
+.shop-navbar > div#right > .cart > a > span:nth-of-type(2) {
+  margin-left: 5px;
+  background-color: #4f7c7c;
+  padding: 4px 7px;
+  border-radius: 3px;
+}

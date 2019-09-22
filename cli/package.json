@@ -51,7 +51,11 @@
         "victory": "^0.27.2"
     },
     "scripts": {
-        "start": "concurrently --kill-others \"less-watch-compiler --config less-compile.config.json\" \"react-app-rewired start\"",
+        "watch-shop": "less-watch-compiler src/styles/shop src/styles shop.less",
+        "watch-app": "less-watch-compiler src/styles/app src/styles app.less",
+        "watch-auth": "less-watch-compiler src/styles/auth src/styles auth.less",
+        "compile-less": "concurrently --kill-others \"yarn watch-shop\" \"yarn watch-app\" \"yarn watch-auth\"",
+        "start": "concurrently --kill-others \"yarn compile-less\" \"react-app-rewired start\"",
         "build": "react-app-rewired build",
         "test": "react-app-rewired --env=jsdom",
         "less": "lessc --js src/assets/wieldy/wieldy.less src/assets/wieldy.css"
