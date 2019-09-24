@@ -1,0 +1,45 @@
+.social-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 30px;
+    line-height: 2;
+    flex-basis: 10%;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 2px solid;
+
+    transition: flex-basis .1s linear .3s;
+
+    > i {
+        min-width: 16px;
+    }
+
+    > span {
+        visibility: hidden;
+    	opacity: 0;
+    	max-width: 0;
+        transition: opacity .3s linear,
+        max-width .3s linear .1s,
+        margin-left .3s linear .1s,
+        visibility 0s linear .4s;
+    }
+
+    &:hover, &:focus {
+        outline: none;
+	    flex-basis: 28%;
+	    transition: flex-basis .3s;
+        padding: 6px 19px 6px 15px;
+
+        > span {
+            visibility: visible;
+        	opacity: 1;
+        	max-width: 100px;
+        	margin-left: 7px;
+        	transition: all .3s;
+            height: auto;
+            width: auto;
+        }
+    }
+}
