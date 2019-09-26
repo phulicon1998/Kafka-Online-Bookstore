@@ -1,0 +1,56 @@
+// keyframe function for appear and disappear
+.appear-keyframes(@name, @ver, @coor) {
+
+    @keyframes @name {
+        0% {
+    		opacity: 0;
+    		transform: if(@ver, translateX(@coor), translateY(@coor));
+    	}
+    	100% {
+    		opacity: 1;
+    		transform: translate(0px);
+    	}
+    }
+}
+
+.disappear-keyframes(@name, @ver, @coor) {
+
+    @keyframes @name {
+        0% {
+            opacity: 1;
+            transform: translate(0px);
+        }
+        100% {
+    		opacity: 0;
+    		transform: if(@ver, translateX(@coor), translateY(@coor));
+    	}
+    }
+}
+
+// keyframe for appear signup input
+@keyframes signupAppear {
+    0% {
+        visibility: hidden;
+        height: 0px;
+        opacity: 0;
+        transform: translateX(30px);
+        margin-bottom: 0;
+    }
+    100% {
+        visibility: visible;
+        height: 100%;
+        opacity: 1;
+        transform: translateX(0px);
+        margin-bottom: 20px;
+    }
+}
+
+// intro content animation
+.appear-keyframes(introAppear, false, -100px);
+.appear-keyframes(brandAppear, false, -40px);
+.appear-keyframes(joinAppear, true, -40px);
+.appear-keyframes(socialAppear, false, 40px);
+
+// form content animation
+.appear-keyframes(formAppear, false, -100px);
+.appear-keyframes(fieldAppear, true, 30px);

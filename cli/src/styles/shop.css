@@ -99,6 +99,7 @@
   color: #9c9c9c;
   outline: none;
   border: none;
+  transition: none;
   font-family: "Helvetica Neue", sans-serif;
 }
 .shop-navbar > div#left > div > input::placeholder {

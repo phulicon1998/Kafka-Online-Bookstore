@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 const SocialBtn = ({name, icon, color}) => (
     <button
@@ -15,18 +15,36 @@ const SocialBtn = ({name, icon, color}) => (
 
 const AuthInput = ({icon, type, ...input}) => (
     <div className="auth-input">
-        <div className="form-group">
-            <div className="input-group">
-                <div className="input-group-addon">
-                    <i className={icon}/>
-                </div>
-                <input type={type ? type : "text"} {...input}/>
-            </div>
-        </div>
+        <i className={icon}/>
+        <input type={type ? type : "text"} {...input}/>
     </div>
 )
 
 function Auth() {
+    const [isMember, setIsMember] = useState(true);
+    const [escapeMode, setEscapeMode] = useState(false);
+    const [form, setForm] = useState({
+        email: "",
+        password: "",
+        cpassword: "",
+        username: ""
+    })
+
+    const changeMode = () => {
+        // setEscapeMode(prev => !prev);
+        // setTimeout(() => {
+            setIsMember(prev => !prev);
+        // }, 1000);
+    }
+
+    function hdChange(e) {
+        const {name, value} = e.target;
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
     return (
         <div className="container">
             <div className="auth-content">
@@ -34,7 +52,12 @@ function Auth() {
                     <h1><i className="fas fa-book"/> Kafka</h1>
                     <p>Book for everyone</p>
                     <p>Don't have account? Want to be a member?</p>
-                    <button>Join Us</button>
+                    <button
+                        className={`${isMember ? "join" : "access"} ${escapeMode ? "reverse-appear" : ""}`}
+                        onClick={changeMode}
+                    >
+                        {isMember ? "Join Us" : "Access Now"}
+                    </button>
                     <p>Or login via social account</p>
                     <div>
                         <SocialBtn
@@ -54,7 +77,7 @@ function Auth() {
                         />
                     </div>
                 </div>
-                <div id="form"> {/*content right appear*/}
+                <div id="form">
                     <div>
                         <h2>Login</h2>
                         <p>Enter your username and password to log on.</p>
@@ -64,20 +87,39 @@ function Auth() {
                                 icon="fas fa-envelope"
                                 placeholder="Email"
                                 name="email"
+                                value={form.email}
+                                onChange={hdChange}
                             />
                             <AuthInput
                                 type="password"
                                 icon="fas fa-key"
                                 placeholder="Password"
                                 name="password"
+                                value={form.password}
+                                onChange={hdChange}
                             />
-                            {/* <AuthInput
-                                type="password"
-                                icon="fas fa-key"
-                                placeholder="Password"
-                                name="confirmPassword"
-                            /> */}
-                            <button className="btn btn-primary btn-block button-signup btnSignup-appear">Sign in</button>
+                            {
+                                isMember || <AuthInput
+                                    type="password"
+                                    icon="fas fa-key"
+                                    placeholder="Confirm Password"
+                                    name="cpassword"
+                                    value={form.cpassword}
+                                    onChange={hdChange}
+                                />
+                            }
+                            {
+                                isMember || <AuthInput
+                                    icon="fas fa-user"
+                                    placeholder="Your username"
+                                    name="username"
+                                    value={form.username}
+                                    onChange={hdChange}
+                                />
+                            }
+                            <button className={`btn btn-primary ${isMember ? "signin" : "signup"}`}>
+                                {isMember ? "Sign in" : "Register"}
+                            </button>
                         </div>
                         <a href="/">Forgot your password?</a>
                     </div>
