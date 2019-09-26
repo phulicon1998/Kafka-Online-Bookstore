@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import withFadeAnimation from "hocs/Auth/withFadeAnimation";
 
 const SocialBtn = ({name, icon, color}) => (
     <button
@@ -20,9 +21,25 @@ const AuthInput = ({icon, type, ...input}) => (
     </div>
 )
 
+const ModeBtn = ({title, button, modeCss, swMode, changeMode}) => {
+    return (
+        <div className={swMode}>
+            <p>{title}</p>
+            <button
+                className={`${modeCss}`}
+                onClick={changeMode}
+            >
+                {button}
+            </button>
+        </div>
+    )
+}
+
+const BtnMode = withFadeAnimation(ModeBtn);
+
 function Auth() {
     const [isMember, setIsMember] = useState(true);
-    const [escapeMode, setEscapeMode] = useState(false);
+    const [switchMode, setSwitchMode] = useState(false);
     const [form, setForm] = useState({
         email: "",
         password: "",
@@ -31,10 +48,11 @@ function Auth() {
     })
 
     const changeMode = () => {
-        // setEscapeMode(prev => !prev);
-        // setTimeout(() => {
+        setSwitchMode(prev => !prev);
+        setTimeout(() => {
             setIsMember(prev => !prev);
-        // }, 1000);
+            setSwitchMode(prev => !prev);
+        }, 500);
     }
 
     function hdChange(e) {
@@ -51,13 +69,17 @@ function Auth() {
                 <div id="intro">
                     <h1><i className="fas fa-book"/> Kafka</h1>
                     <p>Book for everyone</p>
-                    <p>Don't have account? Want to be a member?</p>
-                    <button
-                        className={`${isMember ? "join" : "access"} ${escapeMode ? "reverse-appear" : ""}`}
-                        onClick={changeMode}
-                    >
-                        {isMember ? "Join Us" : "Access Now"}
-                    </button>
+                    <BtnMode
+                        title={
+                            isMember
+                            ? "Don't have account? Want to be a member?"
+                            : "Already have account? Login your account here:"
+                        }
+                        button={isMember ? "Join Us" : "Access Now"}
+                        modeCss={isMember ? "join" : "access"}
+                        swMode={switchMode}
+                        changeMode={changeMode}
+                    />
                     <p>Or login via social account</p>
                     <div>
                         <SocialBtn
@@ -79,8 +101,14 @@ function Auth() {
                 </div>
                 <div id="form">
                     <div>
-                        <h2>Login</h2>
-                        <p>Enter your username and password to log on.</p>
+                        <h2>{isMember ? "Login" : "Sign Up"}</h2>
+                        <p>
+                            {
+                                isMember
+                                ? "Enter your username and password to log on"
+                                : "Enter required information below to register"
+                            }
+                        </p>
                         <hr/>
                         <div>
                             <AuthInput

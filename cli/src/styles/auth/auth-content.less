@@ -31,6 +31,7 @@
                 letter-spacing: 10px;
                 text-transform: uppercase;
                 margin-bottom: 23px;
+
                 animation: brandAppear .5s .9s 1 backwards;
             }
 
@@ -45,16 +46,6 @@
                 }
 
                 &:nth-of-type(2) {
-                	margin-bottom: 33px;
-                	letter-spacing: 1px;
-                	font-weight: 700;
-                	color: #ccc;
-                	transition-duration: 0.5s;
-
-                    animation: joinAppear .5s 1.2s 1 backwards;
-                }
-
-                &:nth-of-type(3) {
                 	text-transform: uppercase;
                 	font-weight: lighter;
                 	letter-spacing: 1px;
@@ -66,49 +57,65 @@
                 }
             }
 
-            > button {
-                width: 187px;
-                background-color: transparent;
-                border-radius: 20px;
-                line-height: 2.5;
-                font-weight: 700;
-                text-transform: uppercase;
-                outline: none;
-                transition-duration: 0.5s;
-
-                animation: joinAppear .5s 1.2s 1 backwards;
-
-                &.join {
-                    color: #e46b09;
-                    border: 2px solid #e46b09;
-                }
-
-                &.access {
-                    color: #4cc5b0;
-	                border: 2px solid #4cc5b0;
-                }
-            }
-
             > div {
                 display: flex;
-	            flex-direction: row;
-	            justify-content: center;
 
-                > button {
-                    animation: socialAppear .5s 1.5s 1 backwards;
+                &:nth-of-type(1) {
+                    flex-direction: column;
+                    align-items: center;
 
-                    &:nth-of-type(1) {
-                        animation-delay: 1.7s;
+                    animation: joinAppear .5s 1.2s 1 backwards;
+
+                    > p {
+                        margin-bottom: 33px;
+                    	letter-spacing: 1px;
+                    	font-weight: 700;
+                    	color: #ccc;
+                    	transition-duration: 0.5s;
                     }
 
-                    &:nth-of-type(2) {
-                        animation-delay: 1.8s;
-                    }
+                    > button {
+                        width: 187px;
+                        background-color: transparent;
+                        border-radius: 20px;
+                        line-height: 2.5;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        outline: none;
 
-                    &:nth-of-type(3) {
-                        animation-delay: 1.9s;
+                        &.join {
+                            color: #e46b09;
+                            border: 2px solid #e46b09;
+                        }
+
+                        &.access {
+                            color: #4cc5b0;
+                            border: 2px solid #4cc5b0;
+                        }
                     }
                 }
+
+                &:nth-of-type(2) {
+                    flex-direction: row;
+                    justify-content: center;
+
+                    > button {
+                        animation: socialAppear .5s 1.5s 1 backwards;
+
+                        &:nth-of-type(1) {
+                            animation-delay: 1.7s;
+                        }
+
+                        &:nth-of-type(2) {
+                            animation-delay: 1.8s;
+                        }
+
+                        &:nth-of-type(3) {
+                            animation-delay: 1.9s;
+                        }
+                    }
+                }
+
             }
         }
 
@@ -136,6 +143,14 @@
                     margin-bottom: 10px;
 
                     animation: brandAppear .5s .9s 1 backwards;
+
+                    // &.fadeOut {
+                    //     animation: fadeOutMode .5s 1 forwards;
+                    // }
+                    //
+                    // &.fadeIn {
+                    //     animation: fadeInMode .5s 1 forwards;
+                    // }
                 }
 
                 > p {
@@ -146,6 +161,14 @@
                     color: gray;
 
                     animation: brandAppear .5s .6s 1 backwards;
+
+                    // &.fadeOut {
+                    //     animation: fadeOutMode .5s 1 forwards;
+                    // }
+                    //
+                    // &.fadeIn {
+                    //     animation: fadeInMode .5s 1 forwards;
+                    // }
                 }
 
                 > div {
@@ -209,6 +232,4 @@
             }
         }
     }
-
-
 }

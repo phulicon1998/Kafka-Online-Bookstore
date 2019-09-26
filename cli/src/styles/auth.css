@@ -3,7 +3,7 @@
     visibility: hidden;
     height: 0px;
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(-30px);
     margin-bottom: 0;
   }
   100% {
@@ -13,6 +13,28 @@
     transform: translateX(0px);
     margin-bottom: 20px;
   }
+}
+@keyframes fadeOutMode {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fadeInMode {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.authFadeOut {
+  animation: fadeOutMode 0.5s 1 forwards;
+}
+.authFadeIn {
+  animation: fadeInMode 0.5s 1 forwards;
 }
 @keyframes introAppear {
   0% {
@@ -123,14 +145,6 @@
   animation: brandAppear 0.5s 0.6s 1 backwards;
 }
 .auth-content > div#intro > p:nth-of-type(2) {
-  margin-bottom: 33px;
-  letter-spacing: 1px;
-  font-weight: 700;
-  color: #ccc;
-  transition-duration: 0.5s;
-  animation: joinAppear 0.5s 1.2s 1 backwards;
-}
-.auth-content > div#intro > p:nth-of-type(3) {
   text-transform: uppercase;
   font-weight: lighter;
   letter-spacing: 1px;
@@ -139,7 +153,22 @@
   margin-bottom: 33px;
   animation: socialAppear 0.5s 1.5s 1 backwards;
 }
-.auth-content > div#intro > button {
+.auth-content > div#intro > div {
+  display: flex;
+}
+.auth-content > div#intro > div:nth-of-type(1) {
+  flex-direction: column;
+  align-items: center;
+  animation: joinAppear 0.5s 1.2s 1 backwards;
+}
+.auth-content > div#intro > div:nth-of-type(1) > p {
+  margin-bottom: 33px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #ccc;
+  transition-duration: 0.5s;
+}
+.auth-content > div#intro > div:nth-of-type(1) > button {
   width: 187px;
   background-color: transparent;
   border-radius: 20px;
@@ -147,32 +176,29 @@
   font-weight: 700;
   text-transform: uppercase;
   outline: none;
-  transition-duration: 0.5s;
-  animation: joinAppear 0.5s 1.2s 1 backwards;
 }
-.auth-content > div#intro > button.join {
+.auth-content > div#intro > div:nth-of-type(1) > button.join {
   color: #e46b09;
   border: 2px solid #e46b09;
 }
-.auth-content > div#intro > button.access {
+.auth-content > div#intro > div:nth-of-type(1) > button.access {
   color: #4cc5b0;
   border: 2px solid #4cc5b0;
 }
-.auth-content > div#intro > div {
-  display: flex;
+.auth-content > div#intro > div:nth-of-type(2) {
   flex-direction: row;
   justify-content: center;
 }
-.auth-content > div#intro > div > button {
+.auth-content > div#intro > div:nth-of-type(2) > button {
   animation: socialAppear 0.5s 1.5s 1 backwards;
 }
-.auth-content > div#intro > div > button:nth-of-type(1) {
+.auth-content > div#intro > div:nth-of-type(2) > button:nth-of-type(1) {
   animation-delay: 1.7s;
 }
-.auth-content > div#intro > div > button:nth-of-type(2) {
+.auth-content > div#intro > div:nth-of-type(2) > button:nth-of-type(2) {
   animation-delay: 1.8s;
 }
-.auth-content > div#intro > div > button:nth-of-type(3) {
+.auth-content > div#intro > div:nth-of-type(2) > button:nth-of-type(3) {
   animation-delay: 1.9s;
 }
 .auth-content > div#form {

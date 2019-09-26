@@ -1,7 +1,6 @@
 // keyframe function for appear and disappear
-.appear-keyframes(@name, @ver, @coor) {
-
-    @keyframes @name {
+.appear-keyframes(@appear, @ver, @coor) {
+    @keyframes @appear {
         0% {
     		opacity: 0;
     		transform: if(@ver, translateX(@coor), translateY(@coor));
@@ -13,17 +12,23 @@
     }
 }
 
-.disappear-keyframes(@name, @ver, @coor) {
-
-    @keyframes @name {
+.fade-keyframes() {
+    @keyframes fadeOutMode {
         0% {
-            opacity: 1;
-            transform: translate(0px);
-        }
-        100% {
-    		opacity: 0;
-    		transform: if(@ver, translateX(@coor), translateY(@coor));
+    		opacity: 1;
     	}
+    	100% {
+    		opacity: 0;
+    	}
+    }
+
+    @keyframes fadeInMode {
+    	0% {
+    		opacity: 0;
+    	}
+        100% {
+            opacity: 1;
+        }
     }
 }
 
@@ -33,7 +38,7 @@
         visibility: hidden;
         height: 0px;
         opacity: 0;
-        transform: translateX(30px);
+        transform: translateX(-30px);
         margin-bottom: 0;
     }
     100% {
@@ -45,12 +50,23 @@
     }
 }
 
-// intro content animation
+// form and button mode fade animation
+.fade-keyframes();
+
+.authFadeOut {
+    animation: fadeOutMode .5s 1 forwards;
+}
+
+.authFadeIn {
+    animation: fadeInMode .5s 1 forwards;
+}
+
+// intro appear animation
 .appear-keyframes(introAppear, false, -100px);
 .appear-keyframes(brandAppear, false, -40px);
 .appear-keyframes(joinAppear, true, -40px);
 .appear-keyframes(socialAppear, false, 40px);
 
-// form content animation
+// form appear animation
 .appear-keyframes(formAppear, false, -100px);
 .appear-keyframes(fieldAppear, true, 30px);
