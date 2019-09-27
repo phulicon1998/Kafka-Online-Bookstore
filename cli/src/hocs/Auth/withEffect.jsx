@@ -15,6 +15,7 @@ export default function withEffect(WrapperComponent) {
             if(switchMode === effs.show && swMode) {
                 return setSwitchMode(effs.hide);
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [swMode]);
 
         return <WrapperComponent {...props} swMode={switchMode}/>

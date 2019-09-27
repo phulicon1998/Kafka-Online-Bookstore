@@ -12,6 +12,19 @@
     }
 }
 
+.disappear-keyframes(@appear, @ver, @coor) {
+    @keyframes @appear {
+        0% {
+            opacity: 1;
+            transform: translate(0px);
+        }
+        100% {
+    		opacity: 0;
+    		transform: if(@ver, translateX(@coor), translateY(@coor));
+    	}
+    }
+}
+
 .fade-keyframes() {
     @keyframes fadeOutMode {
         0% {
@@ -71,11 +84,12 @@
 .fade-keyframes();
 
 .authFadeOut {
-    animation: fadeOutMode .8s 1 forwards !important;
+    animation: fadeOutMode .8s forwards !important;
 }
 
 .authFadeIn {
-    animation: fadeInMode .8s 1 forwards !important;
+    opacity: 0;
+    animation: fadeInMode .8s .5s forwards !important;
 }
 
 // intro appear animation
@@ -87,3 +101,19 @@
 // form appear animation
 .appear-keyframes(formAppear, false, -100px);
 .appear-keyframes(fieldAppear, true, 30px);
+
+//switch mode animation for auth button
+.appear-keyframes(showButton, true, -30px);
+.disappear-keyframes(hideButton, true, -30px);
+
+.btnWentOut {
+    animation: hideButton .5s 1 forwards !important;
+
+    &.slowMove {
+        animation-delay: .25s !important;
+    }
+}
+
+.btnWentIn {
+    animation: showButton .5s .5s 1 backwards !important;
+}

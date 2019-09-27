@@ -8,6 +8,11 @@ const fadeEff = {
     hide: "authFadeOut"
 }
 
+const switchBtnEff = {
+    show: "btnWentIn",
+    hide: "btnWentOut"
+}
+
 function AuthIntro({isMember, switchMode, changeMode}) {
     return (
         <div id="auth-intro">
@@ -63,8 +68,18 @@ const Subtitle = ({isMember, swMode}) => (
     </p>
 );
 
+const Button = ({isMember, swMode}) => {
+    if(!isMember && swMode === "btnWentOut") swMode += " slowMove";
+    return (
+        <button className={`btn btn-primary ${isMember ? "signin" : "signup"} ${swMode}`}>
+            {isMember ? "Sign in" : "Register"}
+        </button>
+    )
+}
+
 const AnimateTitle = withEffect(Title);
 const AnimateSubtitle = withEffect(Subtitle);
+const AnimateButton = withEffect(Button);
 
 function AuthForm({isMember, form, hdChange, switchMode}) {
     return (
@@ -118,9 +133,11 @@ function AuthForm({isMember, form, hdChange, switchMode}) {
                             hide={switchMode ? " exit" : ""}
                         />
                     }
-                    <button className={`btn btn-primary ${isMember ? "signin" : "signup"}`}>
-                        {isMember ? "Sign in" : "Register"}
-                    </button>
+                    <AnimateButton
+                        isMember={isMember}
+                        swMode={switchMode}
+                        effs={switchBtnEff}
+                    />
                 </div>
                 <a href="/">Forgot your password?</a>
             </div>
@@ -140,10 +157,11 @@ function Auth() {
 
     const changeMode = () => {
         setSwitchMode(prev => !prev);
+        let time = isMember ? 800 : 1200;
         setTimeout(() => {
             setIsMember(prev => !prev);
             setSwitchMode(prev => !prev);
-        }, 800);
+        }, time);
     }
 
     function hdChange(e) {

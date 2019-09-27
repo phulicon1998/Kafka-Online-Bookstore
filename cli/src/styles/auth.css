@@ -47,10 +47,11 @@
   }
 }
 .authFadeOut {
-  animation: fadeOutMode 0.8s 1 forwards !important;
+  animation: fadeOutMode 0.8s forwards !important;
 }
 .authFadeIn {
-  animation: fadeInMode 0.8s 1 forwards !important;
+  opacity: 0;
+  animation: fadeInMode 0.8s 0.5s forwards !important;
 }
 @keyframes introAppear {
   0% {
@@ -111,6 +112,35 @@
     opacity: 1;
     transform: translate(0px);
   }
+}
+@keyframes showButton {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px);
+  }
+}
+@keyframes hideButton {
+  0% {
+    opacity: 1;
+    transform: translate(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+}
+.btnWentOut {
+  animation: hideButton 0.5s 1 forwards !important;
+}
+.btnWentOut.slowMove {
+  animation-delay: 0.25s !important;
+}
+.btnWentIn {
+  animation: showButton 0.5s 0.5s 1 backwards !important;
 }
 .auth-layout {
   min-height: 100vh;
@@ -261,13 +291,13 @@
   animation: signupAppear 0.5s 1 backwards;
 }
 .auth-content #auth-form > div > div > div:nth-of-type(3).exit {
-  animation: signupDisappear 0.5s 1 forwards;
+  animation: signupDisappear 0.5s 0.75s 1 forwards;
 }
 .auth-content #auth-form > div > div > div:nth-of-type(4) {
   animation: signupAppear 0.5s 0.25s 1 backwards;
 }
 .auth-content #auth-form > div > div > div:nth-of-type(4).exit {
-  animation: signupDisappear 0.5s 0.25s 1 forwards;
+  animation: signupDisappear 0.5s 0.5s 1 forwards;
 }
 .auth-content #auth-form > div > div > button.btn.btn-primary {
   width: 100%;
