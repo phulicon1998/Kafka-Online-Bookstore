@@ -50,15 +50,32 @@
     }
 }
 
+@keyframes signupDisappear {
+    0% {
+        visibility: visible;
+        height: 100%;
+        opacity: 1;
+        transform: translateX(0px);
+        margin-bottom: 20px;
+    }
+    100% {
+        visibility: hidden;
+        height: 0px;
+        opacity: 0;
+        transform: translateX(-30px);
+        margin-bottom: 0px;
+    }
+}
+
 // form and button mode fade animation
 .fade-keyframes();
 
 .authFadeOut {
-    animation: fadeOutMode .5s 1 forwards;
+    animation: fadeOutMode .8s 1 forwards !important;
 }
 
 .authFadeIn {
-    animation: fadeInMode .5s 1 forwards;
+    animation: fadeInMode .8s 1 forwards !important;
 }
 
 // intro appear animation
