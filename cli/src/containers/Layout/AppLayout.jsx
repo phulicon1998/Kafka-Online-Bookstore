@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import {Layout} from "antd";
 
+import AppLocale from "lngProvider";
+import {LocaleProvider} from "antd";
+import {IntlProvider} from "react-intl";
+
 import Sidebar from "../Sidebar/index";
 import HorizontalDefault from "../Topbar/HorizontalDefault/index";
 import HorizontalDark from "../Topbar/HorizontalDark/index";
@@ -24,9 +28,14 @@ import {
     NAV_STYLE_MINI_SIDEBAR,
     NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
     NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-    TAB_SIZE
+    TAB_SIZE,
+    LAYOUT_TYPE_BOXED,
+    LAYOUT_TYPE_FRAMED,
+    LAYOUT_TYPE_FULL
 } from "constants/ThemeSetting";
 import NoHeaderNotification from "../Topbar/NoHeaderNotification/index";
+
+import {onLayoutTypeChange, onNavStyleChange, setThemeType} from "appRedux/actions/setting";
 
 const {Content, Footer} = Layout;
 
@@ -95,28 +104,73 @@ export class AppLayout extends Component {
         }
     };
 
+    setLayoutType = (layoutType) => {
+        if (layoutType === LAYOUT_TYPE_FULL) {
+            document.body.classList.remove('boxed-layout');
+            document.body.classList.remove('framed-layout');
+            document.body.classList.add('full-layout');
+        } else if (layoutType === LAYOUT_TYPE_BOXED) {
+            document.body.classList.remove('full-layout');
+            document.body.classList.remove('framed-layout');
+            document.body.classList.add('boxed-layout');
+        } else if (layoutType === LAYOUT_TYPE_FRAMED) {
+            document.body.classList.remove('boxed-layout');
+            document.body.classList.remove('full-layout');
+            document.body.classList.add('framed-layout');
+        }
+    };
+
+    setNavStyle = (navStyle) => {
+        if (navStyle === NAV_STYLE_DEFAULT_HORIZONTAL ||
+            navStyle === NAV_STYLE_DARK_HORIZONTAL ||
+            navStyle === NAV_STYLE_INSIDE_HEADER_HORIZONTAL ||
+            navStyle === NAV_STYLE_ABOVE_HEADER ||
+            navStyle === NAV_STYLE_BELOW_HEADER) {
+            document.body.classList.add('full-scroll');
+            document.body.classList.add('horizontal-layout');
+        } else {
+            document.body.classList.remove('full-scroll');
+            document.body.classList.remove('horizontal-layout');
+        }
+    };
+
     render() {
-        const {match, width, navStyle} = this.props;
+        const {match, width, navStyle, layoutType, locale} = this.props;
+        this.setLayoutType(layoutType);
+        this.setNavStyle(navStyle);
+        const currentAppLocale = AppLocale[locale.locale];
         return (
-            <Layout className="gx-app-layout">
-                {this.getSidebar(navStyle, width)}
-                <Layout>
-                    {this.getNavStyles(navStyle)}
-                    <Content className={`gx-layout-content ${ this.getContainerClass(navStyle)} `}>
-                        <AppRoutes match={match}/>
-                        <Footer>
-                            <div className="gx-layout-footer-content">Copyright Company Name © 2019</div>
-                        </Footer>
-                    </Content>
-                </Layout>
-                <Customizer/>
-            </Layout>
+            <LocaleProvider locale={currentAppLocale.antd}>
+                <IntlProvider
+                    locale={currentAppLocale.locale}
+                    messages={currentAppLocale.messages}
+                >
+                    <Layout className="gx-app-layout">
+                        {this.getSidebar(navStyle, width)}
+                        <Layout>
+                            {this.getNavStyles(navStyle)}
+                            <Content className={`gx-layout-content ${ this.getContainerClass(navStyle)} `}>
+                                <AppRoutes match={match}/>
+                                <Footer>
+                                    <div className="gx-layout-footer-content">Copyright Company Name © 2019</div>
+                                </Footer>
+                            </Content>
+                        </Layout>
+                        <Customizer/>
+                    </Layout>
+                </IntlProvider>
+            </LocaleProvider>
         )
     }
 }
 
 const mapStateToProps = ({settings}) => {
-    const {width, navStyle} = settings;
-    return {width, navStyle}
+    const {locale, layoutType, width, navStyle} = settings;
+    return {width, navStyle, locale, layoutType,}
 };
-export default connect(mapStateToProps)(AppLayout);
+
+export default connect(mapStateToProps, {
+    setThemeType,
+    onNavStyleChange,
+    onLayoutTypeChange
+})(AppLayout);
