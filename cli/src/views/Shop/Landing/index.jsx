@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "components/Shop/Navbar/Navbar";
-
-import landingImg from "assets/imgs/landing.jpg";
-import {benefits} from "./data";
+import Book from "components/Shop/Product/Book";
+import landingBg from "assets/imgs/landing.jpg";
+import recommendBg from "assets/imgs/rec.jpg"
+import {benefits, genres, recommend, books} from "./data";
 
 const Benefit = ({icon, name, subname}) => (
     <div className="col-md-4">
@@ -14,11 +14,19 @@ const Benefit = ({icon, name, subname}) => (
     </div>
 )
 
+const Genre = ({bg, col}) => (
+    <div
+        className={`col-md-${col}`}
+        style={{"backgroundImage": `url(${bg})`}}
+    >
+        <h3>Thriller</h3>
+    </div>
+)
+
 function Landing() {
     return (
         <div>
-            <div className="landing-header" style={{"backgroundImage": `url(${landingImg})`}}>
-                <Navbar transparent/>
+            <div className="landing-header" style={{"backgroundImage": `url(${landingBg})`}}>
                 <div className="container">
                     <h2>Welcome to Kafka,</h2>
                     <p>New, cheap books with quality service.</p>
@@ -39,17 +47,45 @@ function Landing() {
                         <span><i className="fas fa-star"/>This Week</span>
                     </div>
                     <div>
-                        <div className="col-md-5" style={{"backgroundImage": `url(${landingImg})`}}>
-                            <h3>Thriller</h3>
+                        {genres.map((v, i) => (<Genre {...v} key={i}/>))}
+                    </div>
+                </div>
+            </div>
+            <div className="recommend-book" style={{"backgroundImage": `url(${recommendBg})`}}>
+                <div>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <h4>Recommended Book</h4>
+                                <h1>{recommend.name}</h1>
+                                <h4>{recommend.author}</h4>
+                                <p>{recommend.desc}</p>
+                                <button>Get one now</button>
+                            </div>
+                            <div className="col-md-4">
+                                <img src={recommend.front} alt=""/>
+                            </div>
+                            <div className="col-md-4">
+                                <img src={recommend.back} alt=""/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="recommend-book">
-                {/* content here */}
-            </div>
             <div className="feature-books">
-                {/* content here */}
+                <div className="container">
+                    <h2>Featured books</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>
+                    <div className="row">
+                        {
+                            books.map((v, i) => (
+                                <div className="col-md-3" key={i}>
+                                    <Book {...v}/>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
             </div>
             <div className="subcribe-email">
                 {/* content here */}

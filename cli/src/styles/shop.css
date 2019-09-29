@@ -1,3 +1,10 @@
+.imgAsBg,
+.trending-genres > .container > div:nth-of-type(2) > div,
+.recommend-book {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 body {
   overflow: auto;
 }
@@ -202,6 +209,31 @@ body {
   padding: 4px 7px;
   border-radius: 3px;
 }
+.book > div {
+  position: relative;
+}
+.book > div > img {
+  display: block;
+  height: 295px;
+  width: 205px !important;
+  margin: auto;
+}
+.book > div > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2f2f2f;
+  width: 205px;
+  margin: auto;
+  transition-duration: 0.5s;
+  opacity: 0;
+  transform: translateY(8px);
+}
 .landing-header {
   width: 100%;
   height: 650px;
@@ -299,4 +331,99 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.recommend-book {
+  background-attachment: fixed;
+}
+.recommend-book > div {
+  background-color: #00000085;
+}
+.recommend-book > div > .container {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(1) {
+  padding-top: 50px;
+  font-family: "Helvetica Neue", sans-serif;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(1) > h4:nth-of-type(1) {
+  font-family: "Lato", sans-serif;
+  color: #d2d2d275;
+  font-size: 18px;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(1) > h4:nth-of-type(2) {
+  color: #c5c5c5;
+  font-size: 17px;
+  font-style: italic;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(1) > h1 {
+  text-transform: capitalize;
+  color: #f0f0f0;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  font-size: 36px;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(1) > p {
+  font-family: "Lato", sans-serif;
+  font-size: 17px;
+  font-family: Lato;
+  font-weight: 300;
+  color: #c6c6c6f0;
+  line-height: 1.7;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(1) > button {
+  background-color: #555;
+  color: #b3b3b3;
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  line-height: 2;
+  text-transform: capitalize;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 10px;
+  border: 2px solid #555;
+  border-radius: 20px;
+  transition-duration: 0.2s;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(1) > button:hover {
+  background-color: transparent;
+  color: gray;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(2) {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.recommend-book > div > .container > .row > .col-md-4:nth-of-type(3) {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.recommend-book > div > .container > .row > .col-md-4 img {
+  width: 288px;
+  height: 432px;
+  margin: auto;
+  display: block;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.feature-books {
+  margin-bottom: 50px;
+}
+.feature-books > .container > h2 {
+  font-family: "Lato", sans-serif;
+  letter-spacing: 2px;
+  text-align: left;
+  margin-top: 40px;
+  color: #555;
+  margin-bottom: 12px;
+  font-size: 30px;
+}
+.feature-books > .container > p {
+  text-align: left;
+  color: gray;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dcdcdc;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+.feature-books > .container > .row {
+  margin-top: 35px;
 }
