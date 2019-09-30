@@ -6,6 +6,7 @@ import gC from "assets/imgs/gC.jpg";
 // import book image
 import bookFrt from "assets/imgs/frt.jpg"
 import bookBck from "assets/imgs/bck.png"
+import book from "assets/imgs/book.jpg"
 
 const benefits = [
     {
@@ -50,28 +51,28 @@ const recommend = {
 
 const books = [
     {
-        img: bookFrt,
+        img: book,
         name: "Go Set A Watchman",
         author: "Harper Lee",
         price: 105,
         discount: 20
     },
     {
-        img: bookFrt,
+        img: book,
         name: "Brave New World",
         author: "Aldous Huxley",
         price: 105,
         discount: 20
     },
     {
-        img: bookFrt,
+        img: book,
         name: "The Murder Of Roger Ackroyd",
         author: "Agatha Christie",
         price: 105,
         discount: 20
     },
     {
-        img: bookFrt,
+        img: book,
         name: "Wolf Hall",
         author: "Hilary Mantel",
         price: 105,

@@ -1,0 +1,95 @@
+.shop-footer {
+    background-color: #191919;
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+    > .container {
+        > .row {
+            > .col-md-4 {
+                &:nth-of-type(1) {
+                    > p {
+                        font-family: @f-default;
+                        color: dimgrey;
+                        margin-top: 10px;
+                        line-height: 2;
+                        font-size: 14px;
+                    }
+
+                    > div {
+                        &:nth-of-type(1) {
+                            > i {
+                                color: #e4e4e4;
+                                text-align: center;
+                                height: 30px;
+                                width: 30px;
+                                background-color: #52525273;
+                                border-radius: 60%;
+                                margin-right: 10px;
+                                font-size: 18px;
+                                padding: 6px 5px;
+                            }
+                        }
+
+                        > span {
+                            margin: 0;
+                            padding: 7px 15px;
+                            border-radius: 20px;
+                            color: #a1a1a1;
+                            background-color: transparent;
+                            font-size: 13px;
+                            font-family: @f-la;
+                            font-weight: bold;
+                            border: 2px solid black;
+                            margin-top: 15px;
+                        }
+
+                        &:nth-of-type(2) {
+                            margin-top: 30px;
+
+                            > span {
+                                border-color: #155859;
+                            }
+                        }
+
+                        &:nth-of-type(3) {
+                            margin-top: 30px;
+
+                            > span {
+                                border-color: #692a11;
+                            }
+                        }
+                    }
+                }
+            }
+
+            > .col-md-2 {
+                > h4 {
+                    margin: 0px;
+                    margin-bottom: 12px;
+                    color: #258081;
+                    font-weight: bold;
+                    font-family: @f-la;
+                }
+
+                > ul {
+                    list-style-type: none;
+                    padding-left: 0px;
+                    line-height: 2.2;
+
+                    a {
+                        color: gray;
+                        text-decoration: none;
+                        transition-duration: 0.5s;
+                        font-family: @f-la;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

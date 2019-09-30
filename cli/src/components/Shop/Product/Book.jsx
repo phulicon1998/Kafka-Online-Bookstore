@@ -16,7 +16,7 @@ const Book = ({img, name, author, price, discount}) => (
         </div>
         <a href="/">{name}</a>
         <p>{author}</p>
-        <p>{Math.floor(price*discount)}.000đ <span>{price}</span> <span>-{discount}%</span></p>
+        <p>{Math.floor(price*(100-discount)/100)}.000đ <span>{price}</span> <span>-{discount}%</span></p>
     </div>
 );
 

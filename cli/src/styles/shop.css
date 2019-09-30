@@ -28,22 +28,25 @@ body {
   margin-left: 10px;
   line-height: 20px;
 }
-.logo > div > span {
+.logo > div > h3 {
   color: white;
-  line-height: 20px;
-}
-.logo > div > span:nth-of-type(1) {
   font-family: "Montserrat", sans-serif;
-  color: white;
   text-transform: uppercase;
   font-size: 25px;
   font-weight: 100;
+  margin: 0;
 }
-.logo > div > span:nth-of-type(2) {
-  margin-top: 3px;
-  font-family: "Helvetica Neue", sans-serif !important;
-  font-size: 14px;
+.logo > div > p {
   color: #808080;
+  font-family: "Helvetica Neue", sans-serif !important;
+  margin: 0;
+  font-size: 14px;
+}
+.logo.bigger > i {
+  font-size: 45px;
+}
+.logo.bigger > div > h3 {
+  font-size: 35px;
 }
 .shop-navbar {
   padding: 38px 51px 38px 51px;
@@ -209,6 +212,10 @@ body {
   padding: 4px 7px;
   border-radius: 3px;
 }
+.book {
+  font-family: "Lato", sans-serif;
+  text-align: center;
+}
 .book > div {
   position: relative;
 }
@@ -233,6 +240,72 @@ body {
   transition-duration: 0.5s;
   opacity: 0;
   transform: translateY(8px);
+}
+.book > div > div > p {
+  color: white;
+  line-height: 2.8;
+  font-size: 14px;
+  padding-left: 5%;
+  flex-grow: 1;
+  text-align: left;
+  margin: 0;
+  font-family: "Helvetica Neue", sans-serif;
+}
+.book > div > div > p > i {
+  font-size: 16px;
+  color: yellow;
+}
+.book > div > div > button {
+  outline: none;
+  line-height: 2.8;
+  padding: 1px 15px;
+  flex-grow: 0;
+  border: none;
+}
+.book > div > div > button:nth-of-type(1) {
+  color: white;
+  background-color: #78d2c0;
+  border: 1px solid #78d2c0;
+}
+.book > div > div > button:nth-of-type(2) {
+  color: #e26b14;
+  background-color: transparent;
+}
+.book > div:hover > div {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.book > a {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #3c3c3c;
+  font-size: 18px;
+  margin-top: 16px;
+  font-weight: lighter;
+}
+.book > p {
+  font-size: 14px;
+  margin-top: 8px;
+}
+.book > p:nth-of-type(1) {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #a0a0a0;
+  font-weight: lighter;
+}
+.book > p:nth-of-type(2) {
+  color: black;
+}
+.book > p:nth-of-type(2) > span:nth-of-type(1) {
+  font-size: 12px;
+  color: gray;
+  text-decoration: line-through;
+}
+.book > p:nth-of-type(2) > span:nth-of-type(2) {
+  color: #e83935;
 }
 .landing-header {
   width: 100%;
@@ -426,4 +499,73 @@ body {
 }
 .feature-books > .container > .row {
   margin-top: 35px;
+}
+.shop-footer {
+  background-color: #191919;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.shop-footer > .container > .row > .col-md-4:nth-of-type(1) > p {
+  font-family: "Helvetica Neue", sans-serif;
+  color: dimgrey;
+  margin-top: 10px;
+  line-height: 2;
+  font-size: 14px;
+}
+.shop-footer > .container > .row > .col-md-4:nth-of-type(1) > div:nth-of-type(1) > i {
+  color: #e4e4e4;
+  text-align: center;
+  height: 30px;
+  width: 30px;
+  background-color: #52525273;
+  border-radius: 60%;
+  margin-right: 10px;
+  font-size: 18px;
+  padding: 6px 5px;
+}
+.shop-footer > .container > .row > .col-md-4:nth-of-type(1) > div > span {
+  margin: 0;
+  padding: 7px 15px;
+  border-radius: 20px;
+  color: #a1a1a1;
+  background-color: transparent;
+  font-size: 13px;
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+  border: 2px solid black;
+  margin-top: 15px;
+}
+.shop-footer > .container > .row > .col-md-4:nth-of-type(1) > div:nth-of-type(2) {
+  margin-top: 30px;
+}
+.shop-footer > .container > .row > .col-md-4:nth-of-type(1) > div:nth-of-type(2) > span {
+  border-color: #155859;
+}
+.shop-footer > .container > .row > .col-md-4:nth-of-type(1) > div:nth-of-type(3) {
+  margin-top: 30px;
+}
+.shop-footer > .container > .row > .col-md-4:nth-of-type(1) > div:nth-of-type(3) > span {
+  border-color: #692a11;
+}
+.shop-footer > .container > .row > .col-md-2 > h4 {
+  margin: 0px;
+  margin-bottom: 12px;
+  color: #258081;
+  font-weight: bold;
+  font-family: "Lato", sans-serif;
+}
+.shop-footer > .container > .row > .col-md-2 > ul {
+  list-style-type: none;
+  padding-left: 0px;
+  line-height: 2.2;
+}
+.shop-footer > .container > .row > .col-md-2 > ul a {
+  color: gray;
+  text-decoration: none;
+  transition-duration: 0.5s;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
+}
+.shop-footer > .container > .row > .col-md-2 > ul a:hover {
+  color: white;
 }

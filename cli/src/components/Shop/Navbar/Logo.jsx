@@ -1,11 +1,11 @@
 import React from "react";
 
-const Logo = () => (
-    <a className="logo" href="/">
+const Logo = ({bigger}) => (
+    <a className={`logo ${bigger ? "bigger" : ""}`} href="/">
         <i className="fas fa-book"></i>
         <div>
-            <span>Kafka</span>
-            <span>Book for everyone</span>
+            <h3>Kafka</h3>
+            <p>Book for everyone</p>
         </div>
     </a>
 )
