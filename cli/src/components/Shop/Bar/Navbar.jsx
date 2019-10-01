@@ -25,7 +25,7 @@ const Navbar = ({transparent}) => (
 				</div>
 			</div>
             <div className="acc">
-				<a href="/login">
+				<a href="/auth">
 					<i className="fas fa-user-circle"></i>
 					<div>
 						<p>Account</p>

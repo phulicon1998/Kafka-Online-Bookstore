@@ -1,7 +1,7 @@
 import React from "react";
 import ShopRoutes from "views/Shop";
-import Navbar from "components/Shop/Navbar/Navbar";
-import Logo from "components/Shop/Navbar/Logo";
+import Navbar from "components/Shop/Bar/Navbar";
+import Logo from "components/Shop/Bar/Logo";
 import FootBook from "components/Shop/Product/FootBook";
 
 import book from "assets/imgs/book.jpg"
@@ -31,7 +31,7 @@ export default function ShopLayout(props) {
     function transNavbar() {
         return props.location.pathname === "/";
     }
-
+    
     return (
         <div>
             <Navbar transparent={transNavbar()}/>
@@ -96,7 +96,7 @@ export default function ShopLayout(props) {
                     </div>
                 </div>
                 <div className="footer-bar">
-                    <div class="container">
+                    <div className="container">
                         <p>2019 All Rights Reserved By © Kafka Bookstore</p>
                     </div>
                 </div>
