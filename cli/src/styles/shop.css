@@ -503,6 +503,21 @@ body {
 .shop-footer {
   background-color: #191919;
   padding-top: 50px;
+}
+.shop-footer > .footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  background-color: #141414;
+  padding: 25px 0;
+  color: white;
+  font-family: "Helvetica Neue", sans-serif;
+}
+.shop-footer > .footer-bar p {
+  color: gray;
+  margin: 0;
+}
+.shop-footer > .container > .row {
   padding-bottom: 50px;
 }
 .shop-footer > .container > .row > .col-md-4:nth-of-type(1) > p {
@@ -547,6 +562,13 @@ body {
 .shop-footer > .container > .row > .col-md-4:nth-of-type(1) > div:nth-of-type(3) > span {
   border-color: #692a11;
 }
+.shop-footer > .container > .row > .col-md-4:nth-of-type(4) > h4 {
+  margin: 0px;
+  margin-bottom: 12px;
+  color: #258081;
+  font-weight: bold;
+  font-family: "Lato", sans-serif;
+}
 .shop-footer > .container > .row > .col-md-2 > h4 {
   margin: 0px;
   margin-bottom: 12px;
@@ -568,4 +590,38 @@ body {
 }
 .shop-footer > .container > .row > .col-md-2 > ul a:hover {
   color: white;
+}
+.foot-book {
+  margin-top: 20px;
+  display: flex;
+}
+.foot-book > img {
+  width: 70px;
+  height: 100px;
+  margin-right: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.foot-book > div {
+  display: flex;
+  flex-direction: column;
+}
+.foot-book > div > h4 {
+  color: #afafaf;
+  text-transform: capitalize;
+  font-size: 17px;
+  font-family: "Lato", sans-serif;
+}
+.foot-book > div > p:nth-of-type(1) {
+  font-family: "Helvetica Neue", sans-serif;
+  color: #4e4e4e;
+  margin-bottom: 10px;
+}
+.foot-book > div > p:nth-of-type(2) {
+  font-family: "Lato", sans-serif;
+  color: gray;
+  font-size: 14px;
+  text-align: left;
+}
+.foot-book > div > p:nth-of-type(2) > i {
+  color: #b6c519;
 }

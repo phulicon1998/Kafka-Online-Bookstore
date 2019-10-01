@@ -2,6 +2,29 @@ import React from "react";
 import ShopRoutes from "views/Shop";
 import Navbar from "components/Shop/Navbar/Navbar";
 import Logo from "components/Shop/Navbar/Logo";
+import FootBook from "components/Shop/Product/FootBook";
+
+import book from "assets/imgs/book.jpg"
+const bseller =  [
+    {
+        img: book,
+        name: "Meet at Baghad",
+        author: "Hilary Mantel",
+        rate: 4.5
+    },
+    {
+        img: book,
+        name: "Murder in Metasopomia",
+        author: "Hilary Mantel",
+        rate: 4.5
+    },
+    {
+        img: book,
+        name: "Wolf Hall",
+        author: "Hilary Mantel",
+        rate: 4.5
+    }
+]
 
 export default function ShopLayout(props) {
 
@@ -63,8 +86,18 @@ export default function ShopLayout(props) {
                             </ul>
                         </div>
                         <div className="col-md-4">
-
+                            <h4>Bestseller Books</h4>
+                            {
+                                bseller.map((v, i) => (
+                                    <FootBook key={i} {...v}/>
+                                ))
+                            }
                         </div>
+                    </div>
+                </div>
+                <div className="footer-bar">
+                    <div class="container">
+                        <p>2019 All Rights Reserved By © Kafka Bookstore</p>
                     </div>
                 </div>
             </div>
