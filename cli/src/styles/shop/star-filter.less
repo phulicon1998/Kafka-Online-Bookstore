@@ -1,0 +1,42 @@
+.star-filter {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+
+    > div {
+        margin: 10px 0px;
+        cursor: pointer;
+
+        > i {
+            margin-right: 5px;
+            color: #c1c1c1;
+
+            &.colorized {
+                color: #e4ea7b;
+            }
+        }
+
+        > span {
+            font-family: @f-la;
+            font-weight: lighter;
+            color: gray;
+        }
+
+        &:hover {
+            color: gray;
+
+            span {
+                font-weight: normal;
+            }
+
+            > i {
+
+                &.colorized {
+                    color: #afda47;
+                }
+            }
+        }
+
+    }
+
+}

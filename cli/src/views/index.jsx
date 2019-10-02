@@ -10,8 +10,8 @@ class RootRoutes extends Component {
         return (
             <Switch>
                 <Route path="/app" component={AppLayout}/>
-                <Route path="/" component={ShopLayout}/>
                 <Route path="/auth" component={AuthLayout}/>
+                <Route path="/" component={ShopLayout}/>
             </Switch>
         )
     }

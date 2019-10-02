@@ -1,0 +1,49 @@
+.event-banner {
+    margin-bottom: 38px;
+
+    .col-md-5, .col-md-7 {
+        padding-right: 0;
+
+        > div {
+            &:extend(.imgAsBg);
+
+            height: 150px;
+            color: white;
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 33px;
+
+            > h2 {
+                font-family: @f-la;
+                text-transform: capitalize;
+                margin-bottom: 0px;
+                font-weight: lighter;
+                margin-top: 0px;
+                font-size: 30px;
+                color: white;
+            }
+
+            > p {
+                font-family: @f-la;
+                line-height: 2;
+                padding: 10px 10px 10px 0px;
+                margin: 0;
+            }
+        }
+    }
+
+    .col-md-7 > div {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        p {
+            line-height: 1.7;
+            background-color: #00000094;
+            padding: 15px;
+        }
+    }
+}

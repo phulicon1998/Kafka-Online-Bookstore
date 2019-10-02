@@ -5,13 +5,13 @@ import CartTable from "components/Shop/Table/CartTable";
 import PricePanel from "components/Shop/Panel/PricePanel";
 import {carts} from "./data";
 
-const EmptyCart = ({back, msg}) => (
-    <div class="empty-cart">
-        <i class="fas fa-cart-arrow-down fa-6x"></i>
-        <p>{msg}</p>
-        {back && <a href="/store">Back to store</a>}
-    </div>
-);
+// const EmptyCart = ({back, msg}) => (
+//     <div class="empty-cart">
+//         <i class="fas fa-cart-arrow-down fa-6x"></i>
+//         <p>{msg}</p>
+//         {back && <a href="/store">Back to store</a>}
+//     </div>
+// );
 
 const EmptyWish = ({back, msg}) => (
     <div class="empty-wish">
