@@ -7,7 +7,7 @@ var genreSchema = new mongoose.Schema({
 })
 
 genreSchema.pre("remove", async function(){
-	await db.BookGenre.deleteMany({"genre": this._id});
+	// await db.BookGenre.deleteMany({"genre": this._id});
 })
 
 module.exports = mongoose.model("Genre", genreSchema);
