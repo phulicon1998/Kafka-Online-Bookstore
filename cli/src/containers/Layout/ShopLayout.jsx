@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ShopRoutes from "views/Shop";
 import Navbar from "components/Shop/Bar/Navbar";
 import Logo from "components/Shop/Bar/Logo";
@@ -31,7 +31,9 @@ export default function ShopLayout(props) {
     function transNavbar() {
         return props.location.pathname === "/";
     }
-    
+
+    useEffect(() =>  document.body.classList.add("kafka-layout"), []);
+
     return (
         <div>
             <Navbar transparent={transNavbar()}/>
