@@ -1,9 +1,12 @@
-var mongoose = require("mongoose"),
-	db = require("../models");
+const mongoose = require("mongoose");
+const db = require("../models");
 
 var genreSchema = new mongoose.Schema({
-	name: String,
-	description: String
+	name: {
+		type: String,
+		required: true
+	},
+	desc: String
 })
 
 genreSchema.pre("remove", async function(){

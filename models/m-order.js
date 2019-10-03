@@ -12,7 +12,6 @@ var orderSchema = new mongoose.Schema({
 	},
 	status: {
 		type: String,
-		get: getStatus,
 		default: "Working"
 	},
 	receiver: String,

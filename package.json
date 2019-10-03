@@ -8,7 +8,7 @@
     },
     "main": "index.js",
     "scripts": {
-        "start": "node index.js",
+        "start": "nodemon index",
         "start-dev": "concurrently \"nodemon index\" \"cd cli && yarn start\"",
         "heroku-postbuild": "cd cli && npm install && npm run build",
         "test": "mocha test/**/*.test.js --timeout 10000",

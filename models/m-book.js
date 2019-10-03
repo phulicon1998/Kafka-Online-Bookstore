@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const db = require("./index");
-const {upload, cloudinary} = require("../middleware/uploader");
+// const {upload, cloudinary} = require("../middleware/uploader");
 
 var bookSchema = new mongoose.Schema({
 	name: String,
