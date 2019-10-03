@@ -1,13 +1,13 @@
 var mongoose = require("mongoose");
 
 var modelbookSchema = new mongoose.Schema({
-	order: {
+	order_id: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Order"
 	},
-	book: {
+	edition_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "Book"
+		ref: "Edition"
 	},
 	discount: Number,
 	quantity: Number,

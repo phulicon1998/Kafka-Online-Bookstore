@@ -10,7 +10,6 @@ var bookImageSchema = new mongoose.Schema({
 	}
 });
 
-// improved function
 bookImageSchema.pre("remove", async function(){
 	// let book = await db.Book.find({moreImage: this._id});
 	// let newImages = book.moreImage.filter(val => val !== this._id);
