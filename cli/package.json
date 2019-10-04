@@ -50,6 +50,7 @@
         "url-search-params": "^1.1.0",
         "victory": "^0.27.2"
     },
+    "proxy": "http://localhost:8080",
     "scripts": {
         "watch-shop": "less-watch-compiler src/styles/shop src/styles shop.less",
         "watch-app": "less-watch-compiler src/styles/app src/styles app.less",
