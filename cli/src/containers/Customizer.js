@@ -64,8 +64,8 @@ class Customizer extends Component {
     link.rel = 'stylesheet';
     link.href = "/css/style.css";
     link.className = 'gx-style';
-    document.body.appendChild(link);
-  }
+    // document.body.appendChild(link);
+}
 
   handleColorChange = (filename) => {
     console.log("filename", filename);

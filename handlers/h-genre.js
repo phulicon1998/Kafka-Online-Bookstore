@@ -11,8 +11,27 @@ exports.create = async(req, res, next) => {
 
 exports.get = async(req, res, next) => {
     try {
-        let genre = await db.Genre.find();
-        return res.status(200).json(genre);
+        let genres = await db.Genre.find();
+        return res.status(200).json(genres);
+    } catch(err) {
+        return next(err);
+    }
+}
+
+exports.remove = async(req, res, next) => {
+    try {
+        let foundGenre = await db.Genre.findById(req.params.genre_id);
+        if(foundGenre) foundGenre.remove();
+        return res.status(200).json(foundGenre);
+    } catch(err) {
+        return next(err);
+    }
+}
+
+exports.edit = async(req, res, next) => {
+    try {
+        let updatedGenre = await db.Genre.findByIdAndUpdate(req.params.genre_id, req.body, {new: true});
+        return res.status(200).json(updatedGenre);
     } catch(err) {
         return next(err);
     }

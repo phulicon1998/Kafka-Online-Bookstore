@@ -75,4 +75,8 @@ const mapStateToProps = ({settings}) => {
   const {themeType, navStyle, navCollapsed, width, locale} = settings;
   return {themeType, navStyle, navCollapsed, width, locale}
 };
-export default connect(mapStateToProps, {toggleCollapsedSideNav, updateWindowWidth})(Sidebar);
+
+export default connect(mapStateToProps, {
+    toggleCollapsedSideNav,
+    updateWindowWidth
+})(Sidebar);
