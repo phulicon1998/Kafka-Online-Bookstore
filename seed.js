@@ -44,10 +44,10 @@ async function createRole(){
 async function createOwner() {
     try {
         let role = await db.Role.findOne({code: "000"});
-        let noOwner = (await db.UserRole.find({role: role._id})).length === 0;
+        let noOwner = (await db.UserRole.find({role_id: role._id})).length === 0;
         if(noOwner) {
             let user = await db.User.create(owner);
-            await db.UserRole.create({role: role._id, user: user._id});
+            await db.UserRole.create({role_id: role._id, user_id: user._id});
             return console.log("[ OWNER CREATED ]");
         }
         return console.log("[ OWNER LOADED ]");
