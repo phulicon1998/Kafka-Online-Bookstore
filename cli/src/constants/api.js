@@ -5,4 +5,11 @@ const genre = {
     edit: (genre_id) => `/api/genres/${genre_id}`
 }
 
-export default {genre};
+const author = {
+    get: () => "/api/authors",
+    create: () => "/api/authors",
+    remove: (author_id) => `/api/authors/${author_id}`,
+    edit: (author_id) => `/api/authors/${author_id}`
+}
+
+export default {genre, author};

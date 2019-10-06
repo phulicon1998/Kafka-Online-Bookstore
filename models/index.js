@@ -16,4 +16,6 @@ module.exports.OrderBook = require("./m-order-book");
 module.exports.Provider = require("./m-provider");
 module.exports.Publisher = require("./m-publisher");
 module.exports.Address = require("./m-shipment");
-// module.exports.User = require("./user");
+module.exports.User = require("./m-user");
+module.exports.UserRole = require("./m-user-role");
+module.exports.Role = require("./m-role");

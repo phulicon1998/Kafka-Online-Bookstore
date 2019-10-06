@@ -6,49 +6,51 @@ import withNoti from "hocs/App/withNoti";
 import PopConfirm from "components/Shop/Pop/PopConfirm";
 
 const FormItem = Form.Item;
+const {TextArea} = Input;
 
-const DEFAULT_GENRE = {
+const DEFAULT_AUTHOR = {
+    image: "",
     name: "",
-    desc: ""
+    desc: "",
+    follower: 0
 }
 
-function Genre({notify}) {
-    const [genres, setGenres] = useState([]);
-    const [genre, setGenre] = useState(DEFAULT_GENRE);
+function Author({notify, ...props}) {
+    const [authors, setAuthors] = useState([]);
+    const [author, setAuthor] = useState(DEFAULT_AUTHOR);
 
     async function load() {
         try {
-            let data = await apiCall("get", api.genre.get());
-            setGenres(data);
+            let data = await apiCall("get", api.author.get());
+            setAuthors(data);
         } catch(err) {
             notify("error", "Data is not loaded");
         }
     }
 
-
     function hdChange(e) {
         const {name, value} = e.target;
-        setGenre(prev => ({...prev, [name]: value}))
+        setAuthor(prev => ({...prev, [name]: value}))
     }
 
     async function submit() {
         try {
-            if(genre._id) {
-                let editedGenre = await apiCall("put", api.genre.edit(genre._id), genre);
-                let newGenres = genres.map(v => {
-                    if(v._id === editedGenre._id){
-                        return editedGenre;
+            if(author._id) {
+                let editedAuthor = await apiCall("put", api.author.edit(author._id), author);
+                let newAuthors = authors.map(v => {
+                    if(v._id === editedAuthor._id){
+                        return editedAuthor;
                     }
                     return v;
                 })
-                setGenres(newGenres);
-                notify("success", "Process is completed", "Genre's information is updated successfully.");
+                setAuthors(newAuthors);
+                notify("success", "Process is completed", "Author data is updated successfully");
             } else {
-                let createdGenre = await apiCall('post', api.genre.create(), genre);
-                setGenres(prev => [...prev, createdGenre]);
-                notify("success", "Process is completed", "Adding new genre successfully.");
+                let createdAuthor = await apiCall('post', api.author.create(), author);
+                setAuthors(prev => [...prev, createdAuthor]);
+                notify("success", "Process is completed", "Adding new author data successfully.");
             }
-            setGenre(DEFAULT_GENRE);
+            setAuthor(DEFAULT_AUTHOR);
         } catch(err) {
             return notify("error", "Data is not submitted");
         }
@@ -56,21 +58,21 @@ function Genre({notify}) {
 
     async function remove(genre_id) {
         try {
-            if(genre._id !== genre_id) {
-                await apiCall("delete", api.genre.remove(genre_id));
-                let newGenres = genres.filter(v => v._id !== genre_id);
-                setGenres(newGenres);
-                return notify("success", "Process is completed", "Genre is removed successfully.");
+            if(author._id !== genre_id) {
+                await apiCall("delete", api.author.remove(genre_id));
+                let newAuthors = authors.filter(v => v._id !== genre_id);
+                setAuthors(newAuthors);
+                return notify("success", "Process is completed", "Author is removed successfully.");
             }
-            setGenre(DEFAULT_GENRE);
+            setAuthor(DEFAULT_AUTHOR);
             return notify("error", "Data is not removed", "The data is in used in a different process.")
         } catch(err) {
             return notify("error", "Data is not removed");
         }
     }
 
-    function edit(genre) {
-        setGenre(genre);
+    function edit(author) {
+        setAuthor(author);
     }
 
     useEffect(() => {
@@ -80,29 +82,30 @@ function Genre({notify}) {
 
     return (
         <div>
-            <Card className="gx-card" title={!genre._id ? "Add New Genre" : "Edit Genre"}>
+            <Card className="gx-card" title={!author._id ? "Add New Author" : "Edit Author"}>
                 <Form layout="horizontal">
                     <FormItem
-                        label="Genre Name"
+                        label="Author Name"
                         labelCol={{xs: 24, sm: 6}}
                         wrapperCol={{xs: 24, sm: 10}}
                     >
                         <Input
                             placeholder="Enter the name here..."
                             name="name"
-                            value={genre.name}
+                            value={author.name}
                             onChange={hdChange}
                         />
                     </FormItem>
                     <FormItem
-                        label="Genre Description"
+                        label="Author Description"
                         labelCol={{xs: 24, sm: 6}}
                         wrapperCol={{xs: 24, sm: 10}}
                     >
-                        <Input
-                            placeholder="Enter the description here..."
+                        <TextArea
+                            rows={4}
                             name="desc"
-                            value={genre.desc}
+                            placeholder="Enter the author's description here..."
+                            value={author.desc}
                             onChange={hdChange}
                         />
                     </FormItem>
@@ -112,24 +115,28 @@ function Genre({notify}) {
                             sm: {span: 14, offset: 6}
                         }}
                     >
-                        <Button type="primary" onClick={submit}>{genre._id ? "Save changes" : "Submit"}</Button>
-                        {genre._id && <Button type="default" onClick={() => setGenre(DEFAULT_GENRE)}>Cancel</Button>}
+                        <Button type="primary" onClick={submit}>{author._id ? "Save changes" : "Submit"}</Button>
+                        {author._id && <Button type="default" onClick={() => setAuthor(DEFAULT_AUTHOR)}>Cancel</Button>}
                     </FormItem>
                 </Form>
             </Card>
             <Card title="Selection Table">
                 <Table
                     className="gx-table-responsive"
-                    dataSource={genres}
+                    dataSource={authors}
                     rowKey="_id"
                     columns={[
                         {
-                            title: "Genre name",
+                            title: "Author's Name",
                             dataIndex: 'name'
                         },
                         {
                             title: 'Description',
                             dataIndex: 'desc'
+                        },
+                        {
+                            title: 'Number of Follower',
+                            dataIndex: 'follower'
                         },
                         {
                             title: 'Action',
@@ -139,7 +146,7 @@ function Genre({notify}) {
                                     <span className="gx-link" onClick={edit.bind(this, record)}>Edit</span>
                                     <Divider type="vertical"/>
                                     <PopConfirm
-                                        title="Are you sure to delete this genre?"
+                                        title="Are you sure to delete this author?"
                                         task={remove.bind(this, record._id)}
                                         okText="Sure, remove it"
                                         cancelText="Not now"
@@ -156,4 +163,4 @@ function Genre({notify}) {
     )
 }
 
-export default withNoti(Genre);
+export default withNoti(Author);

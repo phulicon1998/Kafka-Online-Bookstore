@@ -13,12 +13,10 @@ import {
     NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
     THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
-import IntlMessages from "../../util/IntlMessages";
 import {connect} from "react-redux";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
-
 
 class SidebarContent extends Component {
 
@@ -52,55 +50,37 @@ class SidebarContent extends Component {
                             defaultOpenKeys={[defaultOpenKeys]}
                             selectedKeys={[selectedKeys]}
                             theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
-                            mode="inline">
-
-                            <MenuItemGroup key="main" className="gx-menu-group" title={<IntlMessages id="sidebar.main"/>}>
-                            <SubMenu key="dashboard" className={this.getNavStyleSubMenuClass(navStyle)}
-                                title={<span> <i className="icon icon-dasbhoard"/>
-                                <IntlMessages id="sidebar.dashboard"/></span>}>
-                                <Menu.Item key="main/dashboard/crypto">
-                                <Link to="/main/dashboard/crypto">
-                                <i className="icon icon-crypto"/>
-                                <IntlMessages id="sidebar.dashboard.crypto"/>
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="main/dashboard/crm">
-                        <Link to="/main/dashboard/crm">
-                        <i className="icon icon-crm"/>
-                        <IntlMessages id="sidebar.dashboard.crm"/>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="main/dashboard/listing">
-                <Link to="/main/dashboard/listing">
-                <i className="icon icon-listing-dbrd"/>
-                <IntlMessages id="sidebar.dashboard.listing"/>
-            </Link>
-        </Menu.Item>
-    </SubMenu>
-
-    <Menu.Item key="main/widgets">
-    <Link to="/main/widgets"><i className="icon icon-widgets"/>
-    <IntlMessages id="sidebar.widgets"/></Link>
-</Menu.Item>
-
-<Menu.Item key="main/metrics">
-<Link to="/main/metrics"><i className="icon icon-apps"/>
-<IntlMessages id="sidebar.metrics"/></Link>
-</Menu.Item>
-
-<Menu.Item key="main/layouts">
-<Link to="/main/layouts"><i className="icon icon-card"/>
-<IntlMessages id="sidebar.layouts"/></Link>
-</Menu.Item>
-
-</MenuItemGroup>
-
-</Menu>
-</CustomScrollbars>
-</div>
-</Auxiliary>
-);
-}
+                            mode="inline"
+                        >
+                            <MenuItemGroup
+                                key="main"
+                                className="gx-menu-group"
+                                title="Main"
+                            >
+                                <SubMenu
+                                    key="dashboard"
+                                    className={this.getNavStyleSubMenuClass(navStyle)}
+                                    title={
+                                        <span><i className="icon icon-dasbhoard"/>Dashboard</span>
+                                    }
+                                >
+                                    <Menu.Item key="main/dashboard/crypto">
+                                        <Link to="/main/dashboard/crypto"><i className="icon icon-crypto"/>Dashboard</Link>
+                                    </Menu.Item>
+                                </SubMenu>
+                                <Menu.Item key="app/genres">
+                                    <Link to="/app/genres"><i className="icon icon-tag"/> Manage genres</Link>
+                                </Menu.Item>
+                                <Menu.Item key="app/authors">
+                                    <Link to="/app/authors"><i className="icon icon-avatar"/> Manage authors</Link>
+                                </Menu.Item>
+                            </MenuItemGroup>
+                        </Menu>
+                    </CustomScrollbars>
+                </div>
+            </Auxiliary>
+        );
+    }
 }
 
 SidebarContent.propTypes = {};
