@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import {ModeButton, SocialButton} from "components/Auth/Button";
 import AuthInput from "components/Auth/Input/AuthInput";
 import withEffect from "hocs/Auth/withEffect";
+import {connect} from "react-redux";
+import {sendAuthData} from "appRedux/actions/user";
 
 const fadeEff = {
     show: "authFadeIn",
@@ -68,10 +70,13 @@ const Subtitle = ({isMember, swMode}) => (
     </p>
 );
 
-const Button = ({isMember, swMode}) => {
+const Button = ({isMember, swMode, hdClick}) => {
     if(!isMember && swMode === "btnWentOut") swMode += " slowMove";
     return (
-        <button className={`btn btn-primary ${isMember ? "signin" : "signup"} ${swMode}`}>
+        <button
+            className={`btn btn-primary ${isMember ? "signin" : "signup"} ${swMode}`}
+            onClick={hdClick}
+        >
             {isMember ? "Sign in" : "Register"}
         </button>
     )
@@ -81,7 +86,7 @@ const AnimateTitle = withEffect(Title);
 const AnimateSubtitle = withEffect(Subtitle);
 const AnimateButton = withEffect(Button);
 
-function AuthForm({isMember, form, hdChange, switchMode}) {
+function AuthForm({isMember, form, hdChange, switchMode, hdSubmit}) {
     return (
         <div id="auth-form">
             <div>
@@ -137,6 +142,7 @@ function AuthForm({isMember, form, hdChange, switchMode}) {
                         isMember={isMember}
                         swMode={switchMode}
                         effs={switchBtnEff}
+                        hdClick={hdSubmit}
                     />
                 </div>
                 <a href="/">Forgot your password?</a>
@@ -145,15 +151,17 @@ function AuthForm({isMember, form, hdChange, switchMode}) {
     )
 }
 
-function Auth() {
+const DEFAULT_FORM = {
+    email: "",
+    password: "",
+    cpassword: "",
+    username: ""
+}
+
+function Auth({sendAuthData, ...props}) {
     const [isMember, setIsMember] = useState(true);
     const [switchMode, setSwitchMode] = useState(false);
-    const [form, setForm] = useState({
-        email: "",
-        password: "",
-        cpassword: "",
-        username: ""
-    })
+    const [form, setForm] = useState(DEFAULT_FORM);
 
     const changeMode = () => {
         setSwitchMode(prev => !prev);
@@ -172,6 +180,18 @@ function Auth() {
         }))
     }
 
+    function submit() {
+        if(isMember) {
+            sendAuthData("/login", form);
+        } else {
+            if(form.username.length === 0 && form.password !== form.cpassword) {
+                return console.log("this is not valid");
+            }
+            sendAuthData("/signup", form);
+        }
+        setForm(DEFAULT_FORM);
+    }
+
     return (
         <div className="container">
             <div className="auth-content">
@@ -185,10 +205,11 @@ function Auth() {
                     hdChange={hdChange}
                     isMember={isMember}
                     switchMode={switchMode}
+                    hdSubmit={submit}
                 />
             </div>
         </div>
     )
 }
 
-export default Auth;
+export default connect(null, {sendAuthData})(Auth);

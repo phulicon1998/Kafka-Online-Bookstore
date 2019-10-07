@@ -28,11 +28,3 @@ export async function apiFdCall(method, url, data) {
         throw err.response.data.errorMsg;
     }
 }
-
-export async function apiAppCall(method, path, data){
-    try {
-        return (await axios[method](path, data)).data;
-    } catch(err) {
-        throw err.response.data.errorMsg;
-    }
-}

@@ -11,6 +11,7 @@
         "draftjs-to-html": "^0.8.4",
         "install": "^0.12.2",
         "instantsearch.css": "^7.1.0",
+        "jwt-decode": "^2.2.0",
         "less": "^3.10.3",
         "less-loader": "4.1.0",
         "less-vars-to-js": "^1.2.1",

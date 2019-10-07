@@ -14,6 +14,7 @@ app.use(cors());
 
 app.use("/api/genres", require("./routes/r-genre"));
 app.use("/api/authors", require("./routes/r-author"));
+app.use("/api/user", require("./routes/r-user"));
 
 app.use((req, res, next) => {
     let err = new Error("Route not found!");

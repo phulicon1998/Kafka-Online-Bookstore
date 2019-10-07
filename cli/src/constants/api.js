@@ -12,4 +12,10 @@ const author = {
     edit: (author_id) => `/api/authors/${author_id}`
 }
 
-export default {genre, author};
+const user = {
+    auth: type => `/api/user/${type}`,
+    getOne: user_id => `/api/user/${user_id}`,
+    activate: user_id => `/api/user/${user_id}`
+}
+
+export default {genre, author, user};
