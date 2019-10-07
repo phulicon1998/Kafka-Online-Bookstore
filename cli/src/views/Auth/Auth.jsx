@@ -188,6 +188,7 @@ function Auth({sendAuthData, ...props}) {
                 return console.log("this is not valid");
             }
             sendAuthData("/signup", form);
+            props.history.push("/activate");
         }
         setForm(DEFAULT_FORM);
     }

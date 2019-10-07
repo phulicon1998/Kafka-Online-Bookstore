@@ -3,20 +3,20 @@ import {connect} from "react-redux";
 import {apiCall} from "constants/apiCall";
 import api from "constants/api";
 
-function Activate() {
+// function Activate() {
+//
+//     useEffect(() => {
+//
+//     })
+//
+//     return (
+//         <div>
+//             <h1>Check your mail and activate</h1>
+//         </div>
+//     )
+// }
 
-    useEffect(() => {
-
-    })
-
-    return (
-        <div>
-            <h1>Check your mail and activate</h1>
-        </div>
-    )
-}
-
-function Activated(props) {
+function Activate(props) {
     const [time, setTime] = useState(4);
     const [isActivated, setIsActivated] = useState(false);
 
@@ -67,7 +67,7 @@ function mapState({user}) {
     }
 }
 
-const ActivateView = connect(mapState, null)(Activate);
-const ActivatedView = connect(null, null)(Activated);
+// const ActivateView = connect(mapState, null)(Activate);
+export default connect(null, null)(Activate);
 
-export { ActivateView, ActivatedView };
+// export { ActivateView, ActivatedView };
