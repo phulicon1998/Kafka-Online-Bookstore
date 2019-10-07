@@ -18,4 +18,8 @@ const user = {
     activate: user_id => `/api/user/${user_id}`
 }
 
-export default {genre, author, user};
+export default {
+    genre,
+    author,
+    user
+};

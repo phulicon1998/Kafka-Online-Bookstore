@@ -22,6 +22,12 @@ exports.logIn = async(req, res, next) => {
         let user = await db.User.findOne({email: req.body.email});
         let {_id, username, email, active, avatar} = user;
 
+        // check whether the account is active
+        if(!active) return next({
+            status: 400,
+            message: "The account is not activated and not ready to use."
+        });
+
         // compare password
         let match = await user.comparePassword(req.body.password);
         if(match){

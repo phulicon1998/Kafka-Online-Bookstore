@@ -2,8 +2,7 @@ import {takeLatest, call, put} from "redux-saga/effects";
 import {
     SEND_AUTH_DATA,
     CLEAR_AUTH_DATA,
-    ACTIVATED_USER,
-    ADD_USER
+    ACTIVATED_USER
 } from "constants/ActionTypes";
 import api from "constants/api";
 import {apiCall, setTokenHeader} from "constants/apiCall";

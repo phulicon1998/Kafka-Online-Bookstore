@@ -20,6 +20,6 @@ export function addUser(value={}) {
     return { type: ADD_USER, value }
 }
 
-export function activated() {
+export function activateUser() {
     return { type: ACTIVATED_USER }
 }

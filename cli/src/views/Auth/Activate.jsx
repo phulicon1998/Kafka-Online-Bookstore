@@ -2,21 +2,9 @@ import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {apiCall} from "constants/apiCall";
 import api from "constants/api";
+import {activateUser} from "appRedux/actions/user";
 
-// function Activate() {
-//
-//     useEffect(() => {
-//
-//     })
-//
-//     return (
-//         <div>
-//             <h1>Check your mail and activate</h1>
-//         </div>
-//     )
-// }
-
-function Activate(props) {
+function Activate({activateUser, ...props}) {
     const [time, setTime] = useState(4);
     const [isActivated, setIsActivated] = useState(false);
 
@@ -24,7 +12,7 @@ function Activate(props) {
         if(isActivated) {
             let id = setTimeout(() => {
                 if(time === 0) {
-
+                    activateUser();
                 }
                 setTime(prev => prev - 1);
             }, 1000);
@@ -45,7 +33,6 @@ function Activate(props) {
             if(!user.active) {
                 await apiCall("put", api.user.activate(user_id));
                 setIsActivated(true);
-                // await props.activateUser(newUser.user._id);
             } else {
                 return props.history.push("/");
             }
@@ -61,13 +48,4 @@ function Activate(props) {
     )
 }
 
-function mapState({user}) {
-    return {
-        active: user.data.active
-    }
-}
-
-// const ActivateView = connect(mapState, null)(Activate);
-export default connect(null, null)(Activate);
-
-// export { ActivateView, ActivatedView };
+export default connect(null, {activateUser})(Activate);
