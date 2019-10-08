@@ -16,7 +16,7 @@ export function clearAuthData() {
     return { type: CLEAR_AUTH_DATA }
 }
 
-export function addUser(value={}) {
+export function addUser(value = {}) {
     return { type: ADD_USER, value }
 }
 

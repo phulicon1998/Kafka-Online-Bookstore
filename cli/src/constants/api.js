@@ -15,7 +15,7 @@ const author = {
 const user = {
     auth: type => `/api/user/${type}`,
     getOne: user_id => `/api/user/${user_id}`,
-    activate: user_id => `/api/user/${user_id}`
+    activate: user_id => `/api/user/${user_id}/activate`
 }
 
 export default {

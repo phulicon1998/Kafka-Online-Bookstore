@@ -9,10 +9,11 @@ exports.getOne = async(req, res, next) => {
 
         // get role of user
         let userRole = await db.UserRole.findOne({user_id: _id}).populate("role_id").exec();
-        let role = userRole.role_id ? userRole.role_id : false;
+        let role = userRole ? userRole.role_id : false;
 
         return res.status(200).json({_id, username, email, active, role, avatar});
     } catch(err) {
+        console.log(err);
         return next(err);
     }
 }

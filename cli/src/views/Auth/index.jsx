@@ -6,8 +6,8 @@ import Activate from "./Activate";
 function AuthRoutes({match, location}) {
     return (
         <Switch>
-            <Route path={`${match.url}/`} component={Auth}/>
             <Route path={`${match.url}/activate/:user_id`} component={Activate}/>
+            <Route path={`${match.url}/`} component={Auth}/>
         </Switch>
     )
 }

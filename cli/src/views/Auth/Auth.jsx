@@ -4,6 +4,7 @@ import AuthInput from "components/Auth/Input/AuthInput";
 import withEffect from "hocs/Auth/withEffect";
 import {connect} from "react-redux";
 import {sendAuthData} from "appRedux/actions/user";
+import {addMessage} from "appRedux/actions/message";
 
 const fadeEff = {
     show: "authFadeIn",
@@ -86,7 +87,7 @@ const AnimateTitle = withEffect(Title);
 const AnimateSubtitle = withEffect(Subtitle);
 const AnimateButton = withEffect(Button);
 
-function AuthForm({isMember, form, hdChange, switchMode, hdSubmit}) {
+function AuthForm({isMember, form, hdChange, switchMode, hdSubmit, error}) {
     return (
         <div id="auth-form">
             <div>
@@ -101,6 +102,7 @@ function AuthForm({isMember, form, hdChange, switchMode, hdSubmit}) {
                     effs={fadeEff}
                 />
                 <hr/>
+                {error && error.content.length > 0 && <small>{error.content}</small>}
                 <div>
                     <AuthInput
                         icon="fas fa-envelope"
@@ -158,7 +160,7 @@ const DEFAULT_FORM = {
     username: ""
 }
 
-function Auth({sendAuthData, ...props}) {
+function Auth({sendAuthData, message, addMessage, ...props}) {
     const [isMember, setIsMember] = useState(true);
     const [switchMode, setSwitchMode] = useState(false);
     const [form, setForm] = useState(DEFAULT_FORM);
@@ -168,6 +170,7 @@ function Auth({sendAuthData, ...props}) {
         let time = isMember ? 800 : 1200;
         setTimeout(() => {
             setIsMember(prev => !prev);
+            addMessage();
             setSwitchMode(prev => !prev);
         }, time);
     }
@@ -184,11 +187,10 @@ function Auth({sendAuthData, ...props}) {
         if(isMember) {
             sendAuthData("/login", form);
         } else {
-            if(form.username.length === 0 && form.password !== form.cpassword) {
-                return console.log("this is not valid");
+            if(form.username.length === 0 || form.password !== form.cpassword) {
+                return addMessage("Please correctly enter all required information to complete.");
             }
             sendAuthData("/signup", form);
-            props.history.push("/activate");
         }
         setForm(DEFAULT_FORM);
     }
@@ -207,10 +209,15 @@ function Auth({sendAuthData, ...props}) {
                     isMember={isMember}
                     switchMode={switchMode}
                     hdSubmit={submit}
+                    error={message}
                 />
             </div>
         </div>
     )
 }
 
-export default connect(null, {sendAuthData})(Auth);
+function mapState({message}) {
+    return {message};
+}
+
+export default connect(mapState, {sendAuthData, addMessage})(Auth);

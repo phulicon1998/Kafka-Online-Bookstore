@@ -7,6 +7,7 @@ import {
 import api from "constants/api";
 import {apiCall, setTokenHeader} from "constants/apiCall";
 import {addUser} from "appRedux/actions/user";
+import {addMessage} from "appRedux/actions/message";
 
 function* hdAuthData({value}) {
     try {
@@ -24,7 +25,7 @@ function* hdAuthData({value}) {
 
         yield put(addUser(user));
     } catch(err) {
-        console.log(err);
+        yield put(addMessage(err));
     }
 }
 

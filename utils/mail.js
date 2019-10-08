@@ -39,7 +39,7 @@ async function activate(to, viewname, id, host) {
 Good day ${viewname}, this mail comes from Kafka,
 
 Please click to the link below for completing the activation of your account:
-https://${host}/activate/${id}
+https://${host}/auth/activate/${id}
 
 And that's all, thank you for your time. Have a good day and see you later.
 

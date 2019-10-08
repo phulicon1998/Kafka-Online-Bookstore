@@ -46,3 +46,6 @@ export const SEND_AUTH_DATA = 'SEND_AUTH_DATA';
 export const CLEAR_AUTH_DATA = 'CLEAR_AUTH_DATA';
 export const ACTIVATED_USER = 'ACTIVATED_USER';
 export const ADD_USER = 'ADD_USER';
+
+// Error
+export const ADD_MESSAGE = 'ADD_MESSAGE';

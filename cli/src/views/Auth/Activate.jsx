@@ -5,18 +5,22 @@ import api from "constants/api";
 import {activateUser} from "appRedux/actions/user";
 
 function Activate({activateUser, ...props}) {
-    const [time, setTime] = useState(4);
+    const [time, setTime] = useState(5);
     const [isActivated, setIsActivated] = useState(false);
 
     useEffect(() => {
         if(isActivated) {
-            let id = setTimeout(() => {
-                if(time === 0) {
+            let timeLeft = 4;
+            let id = setInterval(() => {
+                if(timeLeft === 0) {
                     activateUser();
+                    clearInterval(id);
+                    props.history.push("/");
+                } else {
+                    setTime(timeLeft);
+                    timeLeft--;
                 }
-                setTime(prev => prev - 1);
             }, 1000);
-            return () => clearTimeout(id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActivated]);
@@ -43,7 +47,7 @@ function Activate({activateUser, ...props}) {
 
     return (
         <div>
-            <h1>Your account has been activated. Return to homepage in {time+1} seconds...</h1>
+            <h1>Your account has been activated. Return to homepage in {time} seconds...</h1>
         </div>
     )
 }
