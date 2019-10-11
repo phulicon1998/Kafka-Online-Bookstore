@@ -13,6 +13,7 @@ import "styles/app.css";
 import "styles/auth.css";
 
 import configureStore from "appRedux";
+
 const store = configureStore();
 extractStorage(store);
 

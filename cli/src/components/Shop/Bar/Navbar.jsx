@@ -1,20 +1,22 @@
 import React from "react";
 import Logo from "./Logo";
+import {connect} from "react-redux";
+import {clearAuthData} from "appRedux/actions/user";
 
-const Navbar = ({transparent}) => (
+const Navbar = ({transparent, hideNavs, user, clearAuthData}) => (
     <div className={`shop-navbar ${transparent ? "transparent" : ""}`}>
         <div id="left">
             <Logo/>
-            <ul>
+            {hideNavs || <ul>
 				<li><a href="/store">Store</a></li>
 				<li><a href="/">Author</a></li>
 				<li><a href="/">Blogs</a></li>
 				<li><a href="/">About Us</a></li>
-			</ul>
-            <div>
+			</ul>}
+            {hideNavs || <div>
                 <i className="fas fa-search"></i>
                 <input type="text" placeholder="Enter book or author for searching..."/>
-            </div>
+            </div>}
         </div>
         <div id="right">
             <div className="phone">
@@ -24,24 +26,49 @@ const Navbar = ({transparent}) => (
 					<small>Call for ordering</small>
 				</div>
 			</div>
-            <div className="acc">
-				<a href="/auth">
-					<i className="fas fa-user-circle"></i>
-					<div>
-						<p>Account</p>
-						<small>Login</small>
-					</div>
-				</a>
-			</div>
-            <div className="cart">
-				<a href="/cart">
-                    <i className="fas fa-shopping-basket"></i>
-                    <span>Cart</span>
-                    <span>0</span>
-				</a>
-			</div>
+            {
+                !hideNavs && !user.isAuthenticated && <div className="acc">
+    				<a href="/auth">
+    					<i className="fas fa-user-circle"></i>
+    					<div>
+    						<p>Account</p>
+    						<small>Login</small>
+    					</div>
+    				</a>
+    			</div>
+            }
+            {
+                !hideNavs && user.isAuthenticated && <div className="logged-acc">
+                    <div>
+                        <i className="fas fa-user-circle"/>
+                        <div>
+                            <p>{user.data.username}</p>
+                            <small>Profile</small>
+                        </div>
+                        <i className="fas fa-angle-down"/>
+                    </div>
+                    <ul>
+                        <li>My order</li>
+                        <li>Notifications</li>
+                        <li onClick={clearAuthData}>Logout</li>
+                    </ul>
+                </div>
+            }
+            {
+                !hideNavs && <div className="cart">
+        			<a href="/cart">
+                        <i className="fas fa-shopping-basket"></i>
+                        <span>Cart</span>
+                        <span>0</span>
+        			</a>
+        		</div>
+            }
         </div>
     </div>
 )
 
-export default Navbar;
+function mapState({user}) {
+    return {user}
+}
+
+export default connect(mapState, {clearAuthData})(Navbar);

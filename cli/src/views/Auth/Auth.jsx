@@ -101,8 +101,9 @@ function AuthForm({isMember, form, hdChange, switchMode, hdSubmit, error}) {
                     isMember={isMember}
                     effs={fadeEff}
                 />
-                <hr/>
-                {error && error.content.length > 0 && <small>{error.content}</small>}
+                {
+                    error && error.content.length > 0 && <small className={error.isNegative ? "error" : "success"}>{error.content}</small>
+                }
                 <div>
                     <AuthInput
                         icon="fas fa-envelope"

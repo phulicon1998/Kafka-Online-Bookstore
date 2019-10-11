@@ -188,6 +188,71 @@ body.kafka-layout {
 .shop-navbar > div#right > .acc > a:hover {
   color: white;
 }
+.shop-navbar > div#right > .logged-acc {
+  position: relative;
+}
+.shop-navbar > div#right > .logged-acc:hover > ul {
+  display: block;
+  padding-left: 0;
+}
+.shop-navbar > div#right > .logged-acc > div {
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
+  margin-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 9px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.shop-navbar > div#right > .logged-acc > div > div {
+  display: flex;
+  flex-direction: column;
+}
+.shop-navbar > div#right > .logged-acc > div > div > p {
+  font-size: 13px;
+  color: #d1d1d1;
+  margin-bottom: 3px;
+}
+.shop-navbar > div#right > .logged-acc > div > div > small {
+  color: gray;
+}
+.shop-navbar > div#right > .logged-acc > div > i:nth-of-type(1) {
+  padding-right: 10px;
+  margin-right: 10px;
+  font-size: 25px;
+  border-right: 1px solid gray;
+  color: #6cbc8b;
+}
+.shop-navbar > div#right > .logged-acc > div > i:nth-of-type(2) {
+  border: none;
+  margin-right: 0px;
+  padding-right: 0px;
+  padding-left: 10px;
+  color: gray;
+  font-size: 18px;
+  margin-left: 5px;
+}
+.shop-navbar > div#right > .logged-acc > ul {
+  display: none;
+  position: absolute;
+  background-color: #0d0d0da3;
+  width: 90%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+.shop-navbar > div#right > .logged-acc > ul > li {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-family: Lato;
+  transition-duration: 0.2s;
+}
+.shop-navbar > div#right > .logged-acc > ul > li:hover {
+  background-color: #202020;
+  cursor: pointer;
+}
 .shop-navbar > div#right > .cart > a {
   display: flex;
   align-items: center;

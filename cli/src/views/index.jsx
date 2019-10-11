@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Switch, Route} from "react-router-dom";
+import RouteControl from "containers/Route/RouteControl";
 
 import ShopLayout from "containers/Layout/ShopLayout";
 import AppLayout from "containers/Layout/AppLayout";
@@ -9,7 +10,16 @@ class RootRoutes extends Component {
     render() {
         return (
             <Switch>
-                <Route path="/app" component={AppLayout}/>
+                <RouteControl
+                    path="/app"
+                    redirectPath="/"
+                    component={AppLayout}
+                    access={[
+                        "ADMIN_PERMISSION",
+                        "MANAGER_PERMISSION",
+                        "SALESTAFF_PERMISSION"
+                    ]}
+                />
                 <Route path="/auth" component={AuthLayout}/>
                 <Route path="/" component={ShopLayout}/>
             </Switch>

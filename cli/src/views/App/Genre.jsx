@@ -18,13 +18,12 @@ function Genre({notify}) {
 
     async function load() {
         try {
-            let data = await apiCall("get", api.genre.get());
+            let data = await apiCall(...api.genre.get());
             setGenres(data);
         } catch(err) {
             notify("error", "Data is not loaded");
         }
     }
-
 
     function hdChange(e) {
         const {name, value} = e.target;
@@ -34,7 +33,7 @@ function Genre({notify}) {
     async function submit() {
         try {
             if(genre._id) {
-                let editedGenre = await apiCall("put", api.genre.edit(genre._id), genre);
+                let editedGenre = await apiCall(...api.genre.edit(genre._id), genre);
                 let newGenres = genres.map(v => {
                     if(v._id === editedGenre._id){
                         return editedGenre;
@@ -44,7 +43,7 @@ function Genre({notify}) {
                 setGenres(newGenres);
                 notify("success", "Process is completed", "Genre's information is updated successfully.");
             } else {
-                let createdGenre = await apiCall('post', api.genre.create(), genre);
+                let createdGenre = await apiCall(...api.genre.create(), genre);
                 setGenres(prev => [...prev, createdGenre]);
                 notify("success", "Process is completed", "Adding new genre successfully.");
             }
@@ -57,7 +56,7 @@ function Genre({notify}) {
     async function remove(genre_id) {
         try {
             if(genre._id !== genre_id) {
-                await apiCall("delete", api.genre.remove(genre_id));
+                await apiCall(...api.genre.remove(genre_id));
                 let newGenres = genres.filter(v => v._id !== genre_id);
                 setGenres(newGenres);
                 return notify("success", "Process is completed", "Genre is removed successfully.");

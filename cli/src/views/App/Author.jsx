@@ -21,7 +21,7 @@ function Author({notify, ...props}) {
 
     async function load() {
         try {
-            let data = await apiCall("get", api.author.get());
+            let data = await apiCall(...api.author.get());
             setAuthors(data);
         } catch(err) {
             notify("error", "Data is not loaded");
@@ -36,7 +36,7 @@ function Author({notify, ...props}) {
     async function submit() {
         try {
             if(author._id) {
-                let editedAuthor = await apiCall("put", api.author.edit(author._id), author);
+                let editedAuthor = await apiCall( ...api.author.edit(author._id), author);
                 let newAuthors = authors.map(v => {
                     if(v._id === editedAuthor._id){
                         return editedAuthor;
@@ -46,7 +46,7 @@ function Author({notify, ...props}) {
                 setAuthors(newAuthors);
                 notify("success", "Process is completed", "Author data is updated successfully");
             } else {
-                let createdAuthor = await apiCall('post', api.author.create(), author);
+                let createdAuthor = await apiCall(...api.author.create(), author);
                 setAuthors(prev => [...prev, createdAuthor]);
                 notify("success", "Process is completed", "Adding new author data successfully.");
             }
@@ -59,7 +59,7 @@ function Author({notify, ...props}) {
     async function remove(genre_id) {
         try {
             if(author._id !== genre_id) {
-                await apiCall("delete", api.author.remove(genre_id));
+                await apiCall(...api.author.remove(genre_id));
                 let newAuthors = authors.filter(v => v._id !== genre_id);
                 setAuthors(newAuthors);
                 return notify("success", "Process is completed", "Author is removed successfully.");

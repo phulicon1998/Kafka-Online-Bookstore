@@ -33,9 +33,9 @@ function Activate({activateUser, ...props}) {
     async function verify() {
         const {user_id} = props.match.params;
         try {
-            let user = await apiCall("get", api.user.getOne(user_id));
+            let user = await apiCall(...api.user.getOne(user_id));
             if(!user.active) {
-                await apiCall("put", api.user.activate(user_id));
+                await apiCall(...api.user.activate(user_id));
                 setIsActivated(true);
             } else {
                 return props.history.push("/");
@@ -46,8 +46,14 @@ function Activate({activateUser, ...props}) {
     }
 
     return (
-        <div>
-            <h1>Your account has been activated. Return to homepage in {time} seconds...</h1>
+        <div className="activate">
+            <div className="container">
+                <i className="fas fa-users"></i>
+                <h1>Your account has been activated</h1>
+                <hr/>
+                <h3>You are now a part of Kafka community, no more actions required. We wish you to have a good time using our system.</h3>
+                <span>Redirect to homepage in {time} seconds...</span>
+            </div>
         </div>
     )
 }

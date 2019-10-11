@@ -11,7 +11,7 @@ import {addMessage} from "appRedux/actions/message";
 
 function* hdAuthData({value}) {
     try {
-        let auth = yield call(apiCall, "post", api.user.auth(value.route), value.authData);
+        let auth = yield call(apiCall, ...api.user.auth(value.route), value.authData);
         const {token, ...user} = auth;
 
         // add token to req headers for user data validation in server
@@ -24,6 +24,11 @@ function* hdAuthData({value}) {
         sessionStorage.setItem("auth", JSON.stringify(user));
 
         yield put(addUser(user));
+
+        // inform user to check mail after success registration
+        if(value.route === "/signup") {
+            yield put(addMessage("A verification link from us has been sent to your mail.", false));
+        }
     } catch(err) {
         yield put(addMessage(err));
     }
