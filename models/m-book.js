@@ -1,14 +1,23 @@
 const mongoose = require("mongoose");
 const db = require("./index");
-// const {upload, cloudinary} = require("../middleware/uploader");
+const {cloudinary} = require("../utils/uploader");
 
 var bookSchema = new mongoose.Schema({
 	name: String,
 	isbn: String,
-	desc: String,
 	bookcare: {
 		type: Boolean,
 		default: false
+	},
+	image: {
+		url: {
+			type: String,
+			required: true
+		},
+		cloud_id: {
+			type: String,
+			required: true
+		}
 	},
 	publish: {
 		at: {
@@ -27,9 +36,7 @@ var bookSchema = new mongoose.Schema({
 }, {timestamp: true});
 
 bookSchema.pre("remove", async function() {
-	// await db.BookImage.deleteMany({"_id" : {$in : this.image_id}})
-	// await db.Comment.deleteMany({"_id" : {$in : this.comment_id}});
-	// await db.BookGenre.deleteMany({"book": this._id});
+	cloudinary.v2.uploader.destroy(this.image.cloud_id);
 });
 
 module.exports = mongoose.model("Book", bookSchema);

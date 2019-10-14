@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 
 var publisherSchema = new mongoose.Schema({
 	name: String,
-	description: String
+	desc: String
 });
 
 module.exports = mongoose.model("Publisher", publisherSchema);

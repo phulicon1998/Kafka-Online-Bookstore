@@ -13,6 +13,5 @@ cloudinary.config({
 });
 
 module.exports = {
-	upload: multer({storage: storage}),
-	cloudinary: cloudinary
+	cloudinary, upload: multer({storage})
 }

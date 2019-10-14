@@ -19,9 +19,7 @@ export async function apiCall(method, path, data){
 export async function apiFdCall(method, url, data) {
     try {
         return (await axios({
-            method : method,
-            url: url,
-            data: data,
+            method, url, data,
             headers: {"content-type": "multipart/form-data"}
         })).data;
     } catch(err) {

@@ -74,6 +74,12 @@ class SidebarContent extends Component {
                                 <Menu.Item key="app/authors">
                                     <Link to="/app/authors"><i className="icon icon-avatar"/> Manage authors</Link>
                                 </Menu.Item>
+                                <Menu.Item key="app/books">
+                                    <Link to="/app/books"><i className="icon icon-product-list"/> Manage books</Link>
+                                </Menu.Item>
+                                <Menu.Item key="app/publishers">
+                                    <Link to="/app/publishers"><i className="icon icon-product-list"/> Manage publishers</Link>
+                                </Menu.Item>
                             </MenuItemGroup>
                         </Menu>
                     </CustomScrollbars>
