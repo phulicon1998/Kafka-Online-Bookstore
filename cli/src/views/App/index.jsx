@@ -5,7 +5,7 @@ import {Switch, Redirect, Route, withRouter} from "react-router-dom";
 import Dashboard from "./CRM/index";
 import Genre from "./Genre";
 import Author from "./Author";
-import Book from "./Book";
+import Book from "./Book/Book";
 import Publisher from "./Publisher";
 
 function AppRoutes(props) {

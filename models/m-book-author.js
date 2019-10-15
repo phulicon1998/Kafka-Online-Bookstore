@@ -1,13 +1,9 @@
 var mongoose = require("mongoose");
 
-var bookMoreSchema = new mongoose.Schema({
+var bookAuthorSchema = new mongoose.Schema({
 	book_id: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Book"
-	},
-	genre_id: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Genre"
 	},
 	author_id: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -15,4 +11,4 @@ var bookMoreSchema = new mongoose.Schema({
 	}
 })
 
-module.exports = mongoose.model("BookMore", bookMoreSchema);
+module.exports = mongoose.model("BookAuthor", bookAuthorSchema);

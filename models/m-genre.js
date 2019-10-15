@@ -6,7 +6,10 @@ var genreSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	desc: String
+	desc: {
+		type: String,
+		set: v => v.length > 0 ? v : "None"
+	}
 })
 
 genreSchema.pre("remove", async function(){

@@ -35,8 +35,15 @@ var bookSchema = new mongoose.Schema({
 	}
 }, {timestamp: true});
 
-bookSchema.pre("remove", async function() {
-	cloudinary.v2.uploader.destroy(this.image.cloud_id);
+bookSchema.pre("remove", async function(next) {
+	try {
+		cloudinary.v2.uploader.destroy(this.image.cloud_id);
+		await db.BookGenre.deleteMany({book_id: this._id});
+		await db.BookAuthor.deleteMany({book_id: this._id});
+		return next();
+	} catch(err) {
+		return next(err);
+	}
 });
 
 module.exports = mongoose.model("Book", bookSchema);
