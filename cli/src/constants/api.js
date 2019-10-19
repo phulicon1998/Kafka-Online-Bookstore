@@ -32,10 +32,23 @@ const book = {
     edit: book_id => ["put", `/api/books/${book_id}`]
 }
 
+const provider = {
+    create: user_id => ["post", `/api/user/${user_id}/providers`],
+    get: () => ["get", `/api/providers`],
+    remove: provider_id => ["delete", `/api/providers/${provider_id}`]
+}
+
+const edition = {
+    get: () => ["get", "/api/editions"],
+    create: () => ["post", `/api/editions`]
+}
+
 export default {
     genre,
     author,
     user,
     publisher,
-    book
+    book,
+    provider,
+    edition
 };

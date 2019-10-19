@@ -4,6 +4,9 @@ export const SALESTAFF_PERMISSION = "002";
 export const MANAGER_PERMISSION = "003";
 export const GUEST_PERMISSION = "004";
 
+// Secondary permission
+export const PROVIDER_PERMISSION = "005";
+
 export function isPermit({role = GUEST_PERMISSION} = {}){
     let uCode = role;
     return function(vCode) {

@@ -8,12 +8,12 @@ exports.getOne = async(req, res, next) => {
         let {_id, username, email, active, avatar} = foundUser;
 
         // get role of user
-        let userRole = await db.UserRole.findOne({user_id: _id}).populate("role_id").exec();
-        let role = userRole ? userRole.role_id : false;
+        let userRole = await db.UserRole.find({user_id: _id}).populate("role_id").exec();
+        let uRole = userRole.map(v => v.role_id);
+        let role = uRole.length > 0 ? uRole : false;
 
         return res.status(200).json({_id, username, email, active, role, avatar});
     } catch(err) {
-        console.log(err);
         return next(err);
     }
 }
@@ -34,8 +34,9 @@ exports.logIn = async(req, res, next) => {
         if(match){
 
             // get role of user
-            let userRole = await db.UserRole.findOne({user_id: _id}).populate("role_id").exec();
-            let role = userRole.role_id ? userRole.role_id : false;
+            let userRole = await db.UserRole.find({user_id: _id}).populate("role_id").exec();
+            let uRole = userRole.map(v => v.role_id);
+            let role = uRole.length > 0 ? uRole : false;
 
             // gen token to store on client
             let token = genToken(_id, role);

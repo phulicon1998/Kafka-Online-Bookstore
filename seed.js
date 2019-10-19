@@ -16,6 +16,10 @@ const roles = [
     {
         type: "MANAGER PERMISSION",
         code: "003"
+    },
+    {
+        type: "PROVIDER PERMISSION",
+        code: "005"
     }
 ];
 

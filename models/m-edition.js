@@ -20,4 +20,4 @@ const editionSchema = mongoose.Schema({
     desc: String
 })
 
-mongoose.exports = mongoose.model("Edition", editionSchema);
+module.exports = mongoose.model("Edition", editionSchema);

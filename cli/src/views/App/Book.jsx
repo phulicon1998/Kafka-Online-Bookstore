@@ -10,6 +10,7 @@ import {
     Icon,
     Select,
     Spin,
+    Checkbox,
     Upload
 } from "antd";
 import api from "constants/api";
@@ -27,16 +28,16 @@ const DEFAULT_BOOK = {
     isbn: "",
     bookcare: false,
     image: {
-        file: "",
-        preview: ""
+        file: undefined,
+        url: ""
     },
     publish: {
         at: moment(),
         by: undefined
     },
     language: "English",
-    genre_id: [],
-    author_id: []
+    genre_ids: [],
+    author_ids: []
 }
 
 function Book({notify}) {
@@ -92,16 +93,16 @@ function Book({notify}) {
         }))
     }
 
-    const selectGenre = genre_id => setBook(prev => ({ ...prev, genre_id }))
+    const selectGenre = genre_ids => setBook(prev => ({ ...prev, genre_ids }))
 
-    const selectAuthor = author_id => setBook(prev => ({ ...prev, author_id }))
+    const selectAuthor = author_ids => setBook(prev => ({ ...prev, author_ids }))
 
     function hdChangeImage(info) {
         getBase64(info.file, imageUrl => setBook(prev => ({
                 ...prev,
                 image: {
                     ...prev.image,
-                    preview: imageUrl
+                    url: imageUrl
                 }
             }))
         );
@@ -118,19 +119,42 @@ function Book({notify}) {
         return false;
     }
 
+    const useBookcare = () => setBook(prev => ({...prev, bookcare: !prev.bookcare}));
+
+    function hdEdit(book) {
+        // convert the those genre and author object to only id
+        let genresForEdit = book.genres.map(v => v._id);
+        let authorsForEdit = book.authors.map(v => v._id);
+
+        setBook(prev => ({
+            ...prev, ...book,
+            image: {
+                ...prev.image,
+                ...book.image
+            },
+            publish: {
+                at: moment(book.publish.at),
+                by: book.publish.by._id
+            },
+            genre_ids: genresForEdit,
+            author_ids: authorsForEdit
+        }));
+    }
+
     async function submit() {
+        setLoading(true);
         try {
-            setLoading(true);
             // create form data and fill data into form data
             let fd = new FormData();
-            fd.append("image", book.image.file);
+            if(book.image.file) fd.append("image", book.image.file);
             fd.append("name", book.name);
             fd.append("isbn", book.isbn);
             fd.append("publish.at", book.publish.at);
             fd.append("publish.by", book.publish.by);
             fd.append("language", book.language);
-            fd.append("genreId", JSON.stringify(book.genre_id));
-            fd.append("authorId", JSON.stringify(book.author_id));
+            fd.append("bookcare", book.bookcare);
+            fd.append("genreIds", JSON.stringify(book.genre_ids));
+            fd.append("authorIds", JSON.stringify(book.author_ids));
 
             if(!book._id) {
                 // if book id not exists then submit takes up creating data
@@ -139,7 +163,7 @@ function Book({notify}) {
                 notify("success", "Process is completed", "Adding new book successfully.");
             } else {
                 // vice versa for editting data
-                let editedBook = await apiCall(...api.book.edit(book._id), book);
+                let editedBook = await apiFdCall(...api.book.edit(book._id), fd);
                 let newBooks = books.map(v => {
                     if(v._id === editedBook._id){
                         return editedBook;
@@ -149,11 +173,11 @@ function Book({notify}) {
                 setBooks(newBooks);
                 notify("success", "Process is completed", "Book's information is updated successfully.");
             }
-            setBook(DEFAULT_BOOK);
-            setLoading(false);
         } catch(err) {
-            return notify("error", "Data is not submitted");
+            notify("error", "Data is not submitted");
         }
+        setBook(DEFAULT_BOOK);
+        setLoading(false);
     }
 
     async function remove(book_id) {
@@ -168,15 +192,6 @@ function Book({notify}) {
         } catch(err) {
             return notify("error", "Data is not removed");
         }
-    }
-
-    function hdEdit(book) {
-        console.log(book);
-
-        setBook(prev => ({...prev, image: {
-            ...prev.image,
-            preview: book.url
-        }}) );
     }
 
     return (
@@ -197,8 +212,8 @@ function Book({notify}) {
                                 onChange={hdChangeImage}
                             >
                                 {
-                                    book.image.preview.length > 0
-                                    ? <img src={book.image.preview} alt=""/>
+                                    book.image.url.length > 0
+                                    ? <img src={book.image.url} alt=""/>
                                     : <div>
                                         <Icon type={book.image.loading ? 'loading' : 'plus'}/>
                                         <div className="ant-upload-text">Upload</div>
@@ -275,7 +290,7 @@ function Book({notify}) {
                                 style={{width: '100%'}}
                                 placeholder="Genre"
                                 onChange={selectGenre}
-                                value={book.genre_id}
+                                value={book.genre_ids}
                             >
                                 { genres.map((v, i) => <Option value={v._id} key={i}>{v.name}</Option>) }
                             </Select>
@@ -290,10 +305,20 @@ function Book({notify}) {
                                 style={{width: '100%'}}
                                 placeholder="Author"
                                 onChange={selectAuthor}
-                                value={book.author_id}
+                                value={book.author_ids}
                             >
                                 { authors.map((v, i) => <Option value={v._id} key={i}>{v.name}</Option>) }
                             </Select>
+                        </FormItem>
+                        <FormItem
+                            wrapperCol={{xs: 24, sm: 10}}
+                        >
+                            <Checkbox
+                                checked={book.bookcare}
+                                onChange={useBookcare}
+                            >
+                                Bookcare can be applied for this book
+                            </Checkbox>
                         </FormItem>
                         <FormItem
                             wrapperCol={{

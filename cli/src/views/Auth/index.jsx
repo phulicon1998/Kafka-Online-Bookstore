@@ -9,7 +9,6 @@ function AuthRoutes(props) {
     return (
         <Switch>
             <Route path={`${url}/activate/:user_id`} component={Activate}/>
-
             <RouteControl
                 path={`${url}/`}
                 redirectPath="/"

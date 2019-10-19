@@ -6,19 +6,23 @@ import {GUEST_PERMISSION} from "constants/credentialControl";
 // User Access Control
 import * as permissions from "constants/credentialControl";
 
-function RouteControl({access, path, component, redirectPath, role, ...props}) {
+function RouteControl({access, inaccess=[], path, component, redirectPath, role, ...props}) {
     // convert access list to access code list
-    let passport = access.map(v => permissions[v]);
-    let canAccess = passport.indexOf(role) !== -1;
-    if(canAccess) {
-        return <Route path={path} component={component}/>;
+    let allowedPassport = access.map(v => permissions[v]);
+    let unallowedPassport = inaccess.map(v => permissions[v]);
+    let containAccessPass = (role.filter(r => allowedPassport.indexOf(r.code) !== -1)).length > 0;
+    let containInaccessPass = (role.filter(r => unallowedPassport.indexOf(r.code) !== -1)).length > 0;
+    if(containAccessPass && !containInaccessPass) {
+        return <Route path={path} component={component}/>
     } else {
         return <Redirect to={redirectPath}/>
     }
 }
 
 function mapState({user}){
-    return {role: user.data.role ? user.data.role.code : GUEST_PERMISSION};
+    return {
+        role: user.data.role ? user.data.role : [{code: GUEST_PERMISSION}]
+    };
 }
 
 export default connect(mapState, null)(RouteControl);

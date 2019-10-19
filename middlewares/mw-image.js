@@ -15,3 +15,22 @@ exports.getOne = async(req, res, next) => {
         return next(err);
     }
 }
+
+exports.get = async(req, res, next) => {
+    try {
+        if(req.files) {
+            let uploadImgs = []
+            for(let file of req.files) {
+                let img = await cloudinary.v2.uploader.upload(file);
+                uploadImgs.push({
+                    url: img.secure_url,
+                    cloud_id: img.public_id
+                });
+            }
+            req.body.uploadImgs = uploadImgs;
+        }
+        return next();
+    } catch (e) {
+        return next(err);
+    }
+}

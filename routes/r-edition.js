@@ -5,11 +5,7 @@ const mw = require("../middlewares");
 const {upload} = require("../utils/uploader");
 
 router.route("/")
-.get(hdl.Book.get)
-.post(upload.single("image"), mw.Image.getOne, hdl.Book.create);
-
-router.route("/:book_id")
-.delete(hdl.Book.remove)
-.put(upload.single("image"), mw.Image.getOne, hdl.Book.edit);
+.get(hdl.Edition.get)
+.post(upload.any("images"), mw.Image.get, hdl.Edition.create);
 
 module.exports = router;
