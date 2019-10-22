@@ -17,7 +17,8 @@ class RootRoutes extends Component {
                     access={[
                         "ADMIN_PERMISSION",
                         "MANAGER_PERMISSION",
-                        "SALESTAFF_PERMISSION"
+                        "SALESTAFF_PERMISSION",
+                        "PROVIDER_PERMISSION"
                     ]}
                 />
                 <Route path="/auth" component={AuthLayout}/>

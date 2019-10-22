@@ -1,5 +1,6 @@
 import React from "react";
 import {Switch, Redirect, Route, withRouter} from "react-router-dom";
+import RouteControl from "containers/Route/RouteControl";
 
 // Views
 import Dashboard from "./CRM/index";
@@ -17,13 +18,63 @@ function AppRoutes(props) {
         <div className="gx-main-content-wrapper">
             <Switch>
                 <Route path={`${url}/dashboard`} component={Dashboard}/>
-                <Route path={`${url}/genres`} component={Genre}/>
-                <Route path={`${url}/authors`} component={Author}/>
-                <Route path={`${url}/books`} component={Book}/>
-                <Route path={`${url}/publishers`} component={Publisher}/>
-                <Route path={`${url}/providers`} component={Provider}/>
-                <Route path={`${url}/editions/add`} component={CreateEdition}/>
-                <Route path={`${url}/editions`} component={Edition}/>
+                <RouteControl
+                    path={`${url}/genres`}
+                    redirectPath="/app/dashboard"
+                    component={Genre}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/authors`}
+                    redirectPath="/app/dashboard"
+                    component={Author}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/books`}
+                    redirectPath="/app/dashboard"
+                    component={Book}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/publishers`}
+                    redirectPath="/app/dashboard"
+                    component={Publisher}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/providers`}
+                    redirectPath="/app/dashboard"
+                    component={Provider}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+
+                <RouteControl
+                    path={`${url}/editions/add`}
+                    redirectPath="/app/dashboard"
+                    component={CreateEdition}
+                    access={[
+                        "PROVIDER_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/editions`}
+                    redirectPath="/app/dashboard"
+                    component={Edition}
+                    access={[
+                        "PROVIDER_PERMISSION",
+                    ]}
+                />
                 <Redirect from={props.location.pathname} to={`${url}/dashboard`}/>
             </Switch>
         </div>

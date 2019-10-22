@@ -18,10 +18,10 @@ exports.getOne = async(req, res, next) => {
 
 exports.get = async(req, res, next) => {
     try {
-        if(req.files) {
+        if(req.files.images) {
             let uploadImgs = []
-            for(let file of req.files) {
-                let img = await cloudinary.v2.uploader.upload(file);
+            for(let file of req.files.images) {
+                let img = await cloudinary.v2.uploader.upload(file.path);
                 uploadImgs.push({
                     url: img.secure_url,
                     cloud_id: img.public_id
@@ -31,6 +31,6 @@ exports.get = async(req, res, next) => {
         }
         return next();
     } catch (e) {
-        return next(err);
+        return next(e);
     }
 }

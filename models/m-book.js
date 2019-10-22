@@ -32,6 +32,16 @@ var bookSchema = new mongoose.Schema({
 	language: {
 		type: String,
 		default: "English"
+	},
+	edition_id: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Edition"
+		}
+	],
+	reviewed: {
+		type: Boolean,
+		default: false
 	}
 }, {timestamp: true});
 

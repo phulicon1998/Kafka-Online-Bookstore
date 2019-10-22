@@ -40,7 +40,8 @@ const provider = {
 
 const edition = {
     get: () => ["get", "/api/editions"],
-    create: () => ["post", `/api/editions`]
+    create: () => ["post", `/api/editions`],
+    remove: edition_id => ["delete", `/api/editions/${edition_id}`]
 }
 
 export default {

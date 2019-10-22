@@ -6,6 +6,8 @@ const {upload} = require("../utils/uploader");
 
 router.route("/")
 .get(hdl.Edition.get)
-.post(upload.any("images"), mw.Image.get, hdl.Edition.create);
+.post(upload.fields([{name: "images"}]), mw.Image.get, mw.Provider.getId, hdl.Edition.create);
+
+router.route("/:edition_id").delete(hdl.Edition.remove);
 
 module.exports = router;

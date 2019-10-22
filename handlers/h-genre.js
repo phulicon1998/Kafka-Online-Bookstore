@@ -21,7 +21,7 @@ exports.get = async(req, res, next) => {
 exports.remove = async(req, res, next) => {
     try {
         let foundGenre = await db.Genre.findById(req.params.genre_id);
-        if(foundGenre) foundGenre.remove();
+        if(foundGenre) await foundGenre.remove();
         return res.status(200).json(foundGenre);
     } catch(err) {
         return next(err);

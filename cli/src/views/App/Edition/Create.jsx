@@ -1,5 +1,16 @@
 import React, {useState, useEffect, useCallback} from "react";
-import {Col, Row, Card, Form, Input} from "antd";
+import {
+    Col,
+    Row,
+    Card,
+    Form,
+    Input,
+    Upload,
+    Modal,
+    Icon,
+    Spin,
+    Button
+} from "antd";
 import SearchBar from "components/Shop/Bar/SearchBar";
 import withNoti from "hocs/App/withNoti";
 import api from "constants/api";
@@ -10,10 +21,11 @@ const FormItem = Form.Item;
 const {TextArea} = Input;
 
 const DEFAULT_EDITION = {
-    bookimage_id: [],
-    provider_id: "",
+    images: [],
     book_id: "",
-    desc: ""
+    desc: "",
+    price: 0,
+    discount: 0
 }
 
 const SelectedBook = ({image, name, isbn, authors, deselect}) => (
@@ -97,6 +109,11 @@ function CreateEdition({notify, ...props}) {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState({});
     const [edition, setEdition] = useState(DEFAULT_EDITION);
+    const [preview, setPreview] = useState({
+        url: "",
+        visible: false
+    })
+    const [loading, setLoading] = useState(false);
 
     const load = useCallback(async() => {
         try {
@@ -114,11 +131,59 @@ function CreateEdition({notify, ...props}) {
 
     function hdSelect(book) {
         setSelectedBook(book);
+        setEdition(prev => ({
+            ...prev,
+            book_id: book._id
+        }))
     }
 
     function hdChange(e) {
         const {name, value} = e.target;
         setEdition(prev => ({...prev, [name]: value}))
+    }
+
+    function hdChangeImg({fileList}) {
+        setEdition(prev => ({
+            ...prev,
+            images: fileList
+        }))
+    }
+
+    function hdPreview(file) {
+        setPreview({url: file.thumbUrl, visible: true});
+    }
+
+    function hdCancelPreview() {
+        setPreview(prev => ({...prev, visible: false}))
+    }
+
+    async function submit() {
+        setLoading(true);
+        try {
+            // Validation for uploading images
+            if(edition.images.length < 3) {
+                setLoading(false);
+                return notify("error", "Data is not submitted", "You have to upload at least 3 images.");
+            }
+
+            // Create new form data for submitting
+            let fd = new FormData();
+            edition.images.forEach(img => fd.append("images", img.originFileObj));
+            fd.append("book_id", edition.book_id);
+            fd.append("desc", edition.desc);
+            fd.append("price", edition.price);
+            fd.append("discount", edition.discount);
+
+            await apiFdCall(...api.edition.create(), fd);
+
+            setEdition(DEFAULT_EDITION);
+            setSelectedBook({});
+            notify("success", "Data is submitted successfully!", "New edition's information has been saved.");
+
+        } catch (e) {
+            notify("error", "Data is not submitted");
+        }
+        setLoading(false);
     }
 
     return (
@@ -139,17 +204,62 @@ function CreateEdition({notify, ...props}) {
                     </Col>
                     <Col xl={14} lg={24} md={24} sm={24} xs={24}>
                         <Card className="gx-card" title="Edition's Information">
-                            <Form layout="vertical">
-                                <FormItem label="Edition Description">
-                                    <TextArea
-                                        rows={4}
-                                        name="desc"
-                                        placeholder="Enter the edition's description here..."
-                                        value={edition.desc}
-                                        onChange={hdChange}
+                            <Spin spinning={loading}>
+                                <p>Upload Your Images For This Book</p>
+                                <Upload
+                                    listType="picture-card"
+                                    fileList={edition.images}
+                                    onPreview={hdPreview}
+                                    onChange={hdChangeImg}
+                                    beforeUpload={() => false}
+                                >
+                                    <div>
+                                        <Icon type="plus"/>
+                                        <div className="ant-upload-text">Upload</div>
+                                    </div>
+                                </Upload>
+                                <Modal
+                                    visible={preview.visible}
+                                    footer={null}
+                                    onCancel={hdCancelPreview}
+                                >
+                                    <img
+                                        alt="example"
+                                        style={{width: '100%'}}
+                                        src={preview.url}
                                     />
-                                </FormItem>
-                            </Form>
+                                </Modal>
+                                <Form layout="vertical">
+                                    <FormItem label="Edition's Price">
+                                        <Input
+                                            type="Number"
+                                            placeholder="Enter the price here..."
+                                            name="price"
+                                            value={edition.price}
+                                            onChange={hdChange}
+                                        />
+                                    </FormItem>
+                                    <FormItem label="Price's Discount">
+                                        <Input
+                                            type="Number"
+                                            placeholder="Enter the discount here (Optional)"
+                                            name="discount"
+                                            value={edition.discount}
+                                            onChange={hdChange}
+                                        />
+                                    </FormItem>
+                                    <FormItem label="Edition's Description">
+                                        <TextArea
+                                            rows={4}
+                                            name="desc"
+                                            placeholder="Enter the edition's description here..."
+                                            value={edition.desc}
+                                            onChange={hdChange}
+                                        />
+                                    </FormItem>
+                                </Form>
+                                <Button type="primary" onClick={submit}>Submit</Button>
+                            </Spin>
                         </Card>
                     </Col>
                 </Row>
