@@ -43,7 +43,11 @@ const editionSchema = mongoose.Schema({
     },
     quality: {
         type: Number,
-        required: true    
+        required: true
+    },
+    fastDelivery: {
+        type: Boolean,
+        default: false
     },
     desc: String
 })
@@ -51,7 +55,7 @@ const editionSchema = mongoose.Schema({
 editionSchema.pre("remove", async function(next) {
 	try {
         for(let img of this.images) {
-            await cloudinary.v2.uploader.destroy(img.cloud_id);
+            cloudinary.v2.uploader.destroy(img.cloud_id);
         }
         await spliceId("Book", this.book_id, "edition_id", this._id);
 		return next();

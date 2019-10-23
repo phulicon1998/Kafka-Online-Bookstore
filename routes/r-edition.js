@@ -8,6 +8,8 @@ router.route("/")
 .get(hdl.Edition.get)
 .post(upload.fields([{name: "images"}]), mw.Image.get, mw.Provider.getId, hdl.Edition.create);
 
+router.route("/cart").post(hdl.Edition.getInCart);
+
 router.route("/:edition_id").delete(hdl.Edition.remove);
 
 module.exports = router;

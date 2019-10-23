@@ -1,5 +1,5 @@
 import React from "react";
-import Book from "components/Shop/Product/Book";
+import Book from "containers/Product/Book";
 import landingBg from "assets/imgs/landing.jpg";
 import recommendBg from "assets/imgs/rec.jpg"
 import {benefits, genres, recommend, books} from "./data";

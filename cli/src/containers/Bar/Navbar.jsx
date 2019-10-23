@@ -1,9 +1,9 @@
 import React from "react";
-import Logo from "./Logo";
+import Logo from "components/Shop/Bar/Logo";
 import {connect} from "react-redux";
 import {clearAuthData} from "appRedux/actions/user";
 
-const Navbar = ({transparent, hideNavs, user, clearAuthData}) => (
+const Navbar = ({transparent, hideNavs, user, clearAuthData, cart}) => (
     <div className={`shop-navbar ${transparent ? "transparent" : ""}`}>
         <div id="left">
             <Logo/>
@@ -59,7 +59,7 @@ const Navbar = ({transparent, hideNavs, user, clearAuthData}) => (
         			<a href="/cart">
                         <i className="fas fa-shopping-basket"></i>
                         <span>Cart</span>
-                        <span>0</span>
+                        <span>{cart.list.length}</span>
         			</a>
         		</div>
             }
@@ -67,8 +67,8 @@ const Navbar = ({transparent, hideNavs, user, clearAuthData}) => (
     </div>
 )
 
-function mapState({user}) {
-    return {user}
+function mapState({user, cart}) {
+    return {user, cart}
 }
 
 export default connect(mapState, {clearAuthData})(Navbar);

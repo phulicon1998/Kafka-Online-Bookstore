@@ -9,6 +9,7 @@ import {
     Modal,
     Icon,
     Spin,
+    Select,
     Button
 } from "antd";
 import SearchBar from "components/Shop/Bar/SearchBar";
@@ -16,14 +17,18 @@ import withNoti from "hocs/App/withNoti";
 import api from "constants/api";
 import {apiCall, apiFdCall} from "constants/apiCall";
 import Widget from "components/Widget/index";
+import {quality} from "constants/qualityControl";
 
 const FormItem = Form.Item;
 const {TextArea} = Input;
+const {Option} = Select;
+const {BRAND_NEW, LIKE_NEW, GOOD, ACCEPTABLE} = quality;
 
 const DEFAULT_EDITION = {
     images: [],
     book_id: "",
     desc: "",
+    quality: BRAND_NEW,
     price: 0,
     discount: 0
 }
@@ -157,6 +162,10 @@ function CreateEdition({notify, ...props}) {
         setPreview(prev => ({...prev, visible: false}))
     }
 
+    function hdChangeQuality(quality) {
+        setEdition(prev => ({...prev, quality}))
+    }
+
     async function submit() {
         setLoading(true);
         try {
@@ -173,6 +182,7 @@ function CreateEdition({notify, ...props}) {
             fd.append("desc", edition.desc);
             fd.append("price", edition.price);
             fd.append("discount", edition.discount);
+            fd.append("quality", edition.quality);
 
             await apiFdCall(...api.edition.create(), fd);
 
@@ -247,6 +257,18 @@ function CreateEdition({notify, ...props}) {
                                             value={edition.discount}
                                             onChange={hdChange}
                                         />
+                                    </FormItem>
+                                    <FormItem label="Price's Discount">
+                                        <Select
+                                            className="gx-mr-3 gx-mb-3"
+                                            value={edition.quality}
+                                            onChange={hdChangeQuality}
+                                        >
+                                            <Option value={BRAND_NEW}>Brand New</Option>
+                                            <Option value={LIKE_NEW}>Like New</Option>
+                                            <Option value={GOOD}>Good</Option>
+                                            <Option value={ACCEPTABLE}>Acceptable</Option>
+                                        </Select>
                                     </FormItem>
                                     <FormItem label="Edition's Description">
                                         <TextArea

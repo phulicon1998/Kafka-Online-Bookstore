@@ -8,6 +8,9 @@ router.route("/")
 .get(hdl.Book.get)
 .post(upload.single("image"), mw.Image.getOne, hdl.Book.create);
 
+router.route("/store")
+.get(hdl.Book.getForStore);
+
 router.route("/:book_id")
 .delete(hdl.Book.remove)
 .put(upload.single("image"), mw.Image.getOne, hdl.Book.edit);

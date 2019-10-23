@@ -1,6 +1,6 @@
 import React from "react";
 import AuthRoutes from "views/Auth";
-import Navbar from "components/Shop/Bar/Navbar";
+import Navbar from "containers/Bar/Navbar";
 import bg from "assets/imgs/auth.jpg";
 
 function AuthLayout(props) {

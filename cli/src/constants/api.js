@@ -29,7 +29,8 @@ const book = {
     get: () => ["get", "/api/books"],
     create: () => ["post", "/api/books"],
     remove: book_id => ["delete", `/api/books/${book_id}`],
-    edit: book_id => ["put", `/api/books/${book_id}`]
+    edit: book_id => ["put", `/api/books/${book_id}`],
+    getForStore: () => ["get", `/api/books/store`]
 }
 
 const provider = {
@@ -40,6 +41,7 @@ const provider = {
 
 const edition = {
     get: () => ["get", "/api/editions"],
+    getInCart: () => ["post", "/api/editions/cart"],
     create: () => ["post", `/api/editions`],
     remove: edition_id => ["delete", `/api/editions/${edition_id}`]
 }

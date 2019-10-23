@@ -49,3 +49,11 @@ export const ADD_USER = 'ADD_USER';
 
 // Error
 export const ADD_MESSAGE = 'ADD_MESSAGE';
+
+// Cart
+export const RELOAD_CART = 'RELOAD_CART';
+export const EMPTY_CART = 'EMPTY_CART';
+export const SEND_ADD_CART = 'SEND_ADD_CART';
+export const SEND_EMPTY_CART = 'SEND_EMPTY_CART';
+export const SEND_CHANGE_CART = 'SEND_CHANGE_CART';
+export const SEND_REMOVE_CART = 'SEND_REMOVE_CART';

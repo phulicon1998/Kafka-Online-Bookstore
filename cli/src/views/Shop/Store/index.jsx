@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import TitleBar from "components/Shop/Bar/TitleBar";
-import Book from "components/Shop/Product/Book";
-import {genres, discounts, storeBooks} from "./data";
+import Book from "containers/Product/Book";
+import {genres, discounts} from "./data";
+import api from "constants/api";
+import {apiCall} from "constants/apiCall";
 
 import evA from "assets/imgs/gA.jpg"
 import evB from "assets/imgs/ev-a.jpg";
@@ -37,10 +39,19 @@ const StarFilter = () => {
     )
 }
 
-
 function Store() {
+    const [books, setBooks] = useState([]);
     const [filterFast, setFilterFast] = useState(false);
     const fastDeliBook = () => setFilterFast(prev => !prev);
+
+    const load = useCallback(async() => {
+        let bookData = await apiCall(...api.book.getForStore());
+        setBooks(bookData);
+    }, [])
+
+    useEffect(() => {
+        load();
+    })
 
     return (
         <div>
@@ -95,9 +106,16 @@ function Store() {
                         <div className="book-list">
                             <div className="row">
                                 {
-                                    storeBooks.map((v, i) => (
+                                    books.map((v, i) => (
                                         <div className="col-md-4" key={i}>
-                                            <Book {...v}/>
+                                            <Book
+                                                img={v.image.url}
+                                                name={v.name}
+                                                author={v.authors.map(v => v.name).toString()}
+                                                price={v.bestDeal.price}
+                                                discount={v.bestDeal.discount}
+                                                editionId={v.bestDeal._id}
+                                            />
                                         </div>
                                     ))
                                 }

@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import ShopRoutes from "views/Shop";
-import Navbar from "components/Shop/Bar/Navbar";
+import Navbar from "containers/Bar/Navbar";
 import Logo from "components/Shop/Bar/Logo";
 import FootBook from "components/Shop/Product/FootBook";
 

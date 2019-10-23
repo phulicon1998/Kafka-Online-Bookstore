@@ -4,6 +4,7 @@ import withNoti from "hocs/App/withNoti";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
 import PopConfirm from "components/Shop/Pop/PopConfirm";
+import {qualityToString} from "constants/qualityControl";
 
 function Edition({notify, ...props}) {
     const [editions, setEditions] = useState([]);
@@ -51,6 +52,11 @@ function Edition({notify, ...props}) {
                             title: "Book's Name",
                             dataIndex: 'book_id',
                             render: text => <span>{text.name}</span>
+                        },
+                        {
+                            title: "Book's Quality",
+                            dataIndex: 'quality',
+                            render: text => <span>{qualityToString(text)}</span>
                         },
                         {
                             title: "Book's Price",

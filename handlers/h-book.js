@@ -1,5 +1,6 @@
 const db = require("../models");
 const {cloudinary} = require("../utils/uploader");
+const {gatherDataById} = require("../manipulate");
 
 async function getReturnBookData(id, genres, authors) {
     // get the returned data to update on client
@@ -8,10 +9,6 @@ async function getReturnBookData(id, genres, authors) {
     book.authors = gatherDataById(id, "author_id", authors);
 
     return book;
-}
-
-function gatherDataById(id, dataType, gatherData) {
-    return gatherData.filter(v => v.book_id.equals(id)).map(v => v[dataType]);
 }
 
 async function updateDataList(book_id, newData_ids, dataModel, dataType, currentData){
@@ -87,6 +84,30 @@ exports.get = async(req, res, next) => {
         return res.status(200).json(books);
     } catch(err) {
         return next(err);
+    }
+}
+
+exports.getForStore = async(req, res, next) => {
+    try {
+        // retrieves all the authors
+        let authors = await db.BookAuthor.find().populate("author_id").exec();
+
+        let books = await db.Book.find().populate("edition_id").lean().exec();
+
+        books.forEach(b => {
+            // Retrieve the best deal of each book
+            let bestDeal = b.edition_id.reduce((acc, next) => {
+                let accMoney = acc.price * (100 - acc.discount) / 100;
+                let nextMoney = next.price * (100 - next.discount) / 100;
+                return accMoney <= nextMoney ? acc : next;
+            })
+            b.bestDeal = bestDeal;
+            b.authors = gatherDataById(b._id, "author_id", authors);
+        })
+        return res.status(200).json(books);
+    } catch (e) {
+        console.log(e);
+        return next(e);
     }
 }
 

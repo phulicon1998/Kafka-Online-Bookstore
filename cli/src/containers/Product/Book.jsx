@@ -1,12 +1,14 @@
 import React from "react";
+import {connect} from "react-redux";
+import {sendAddCart} from "appRedux/actions/cart";
 
-const Book = ({img, name, author, price, discount}) => (
+const Book = ({editionId, img, name, author, price, discount, sendAddCart}) => (
     <div className="book">
         <div>
             <img src={img} className="img-responsive" alt="img"/>
             <div>
                 <p><i className="fas fa-star"/> 4.5/5</p>
-                <button>
+                <button onClick={() => sendAddCart(editionId)}>
                     <i className="fas fa-shopping-cart"/>
                 </button>
                 <button>
@@ -16,8 +18,8 @@ const Book = ({img, name, author, price, discount}) => (
         </div>
         <a href="/">{name}</a>
         <p>{author}</p>
-        <p>{Math.floor(price*(100-discount)/100)}.000đ <span>{price}</span> <span>-{discount}%</span></p>
+        <p>${Math.floor(price*(100-discount)/100).toFixed(2)} <span>{price.toFixed(2)}</span> <span>-{discount}%</span></p>
     </div>
 );
 
-export default Book;
+export default connect(null, {sendAddCart})(Book);
