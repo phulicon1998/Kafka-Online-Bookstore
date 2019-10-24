@@ -1,0 +1,62 @@
+.address-form {
+    margin-bottom: 12px;
+
+    .row {
+        margin-top: 20px;
+    }
+
+    .col-md-6 {
+        max-height: 500px;
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0px);
+        transition: max-height 1s, opacity 0.5s 0.3s, transform 0.5s 0.2s;
+
+        label {
+            font-family: Lato;
+            color: #535353;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 0px;
+            padding: 6px 12px;
+            font-size: 14px;
+            color: #555555;
+
+            &:focus {
+                outline: none;
+                box-shadow: none;
+                border-color: #50a3a3;
+            }
+
+            &::placeholder {
+                color: gray;
+                font-size: 14px;
+            }
+        }
+    }
+
+    > button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        font-family: @f-la;
+        color: white;
+
+        max-height: 500px;
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0px);
+        transition: max-height 1s, opacity 0.5s 0.5s, transform 0.5s 0.5s;
+
+        &:nth-of-type(1) {
+            background-color: #69b099;
+        }
+
+        &:nth-of-type(2) {
+            background-color: #a4a4a4;
+            margin-left: 5px;
+        }
+    }
+}

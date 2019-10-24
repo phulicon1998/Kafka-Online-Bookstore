@@ -1,12 +1,15 @@
 import React, {useState, useEffect, useCallback} from "react";
-import Breadcrumb from "components/Shop/Bar/Breadcrumb";
-import TitleBar from "components/Shop/Bar/TitleBar";
-import CartBook from "containers/Product/CartBook";
-import PricePanel from "components/Shop/Panel/PricePanel";
 import {connect} from "react-redux";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
 import {sendEmptyCart} from "appRedux/actions/cart";
+
+// comps
+import Breadcrumb from "components/Shop/Bar/Breadcrumb";
+import TitleBar from "components/Shop/Bar/TitleBar";
+import CartBook from "containers/Product/CartBook";
+import PricePanel from "components/Shop/Panel/PricePanel";
+import SubmitCart from "./SubmitCart";
 
 const EmptyCart = ({back, msg}) => (
     <div className="empty-cart">
@@ -22,12 +25,60 @@ const EmptyWish = ({back, msg}) => (
     </div>
 );
 
-function Cart({cart, sendEmptyCart}) {
+const CartList = ({empty, carts}) => (
+    <div>
+        <TitleBar title="Your cart" icon="fas fa-list-ul"/>
+        {
+            !empty
+            ? (
+                <div className="cart-table">
+                    <div className="row">
+                        <div className="col-md-6">Books</div>
+                        <div className="col-md-3">Price</div>
+                        <div className="col-md-3">Amount</div>
+                    </div>
+                    <div className="list">
+                        {
+                            carts.map((v, i) => (
+                                <CartBook
+                                    {...v}
+                                    img={v.book_id.image.url}
+                                    name={v.book_id.name}
+                                    author={v.authors.map(v => v.name).toString()}
+                                    quantity={v.quantity}
+                                    key={i}
+                                />
+                            ))
+                        }
+                    </div>
+                </div>
+            )
+            : <EmptyCart msg="You don't have any books inside cart yet" back/>
+        }
+    </div>
+)
+
+const DEFAULT_ORDER = {
+    money: 0,
+    fastDelivery: false,
+    receiver: "",
+	address: "",
+	city: "",
+	country: "",
+	phone: "",
+}
+
+function Cart({cart, sendEmptyCart, user}) {
     const [carts, setCarts] = useState([]);
+    const [subMoney, setSubMoney] = useState({
+        shipping: 10,
+        cover: 0
+    })
+    const [order, setOrder] = useState(DEFAULT_ORDER);
+    const [submitStep, toSubmitStep] = useState(false);
 
     const load = useCallback(async() => {
         let cartData = await apiCall(...api.edition.getInCart(), cart);
-
         if(cartData.length === 0) {
             /* if there is no data retrieved by those edition id,
             that means it's fake/unavailable */
@@ -41,7 +92,6 @@ function Cart({cart, sendEmptyCart}) {
                 e.quantity = cart.list[position].quantity;
             })
         }
-        
         setCarts(cartData);
 
     }, [cart, sendEmptyCart]);
@@ -49,6 +99,27 @@ function Cart({cart, sendEmptyCart}) {
     useEffect(() => {
         load();
     }, [cart, load])
+
+    const calcTotalPrice = useCallback(() => {
+        let {cover, shipping} = subMoney;
+        let price = carts.reduce((acc, next) => acc + eachPrice(next), 0);
+        setOrder(prev => ({...prev, money: price + cover + shipping}));
+    }, [carts, subMoney]);
+
+    useEffect(() => {
+        calcTotalPrice();
+    }, [calcTotalPrice])
+
+    function eachPrice({price, quantity, discount}) {
+        return price * quantity * (100 - discount) / 100;
+    }
+
+    function submitOrder() {
+        // Remove the shipment_id (used for identifying selected address)
+        const submitOrder = {...order};
+        delete submitOrder.shipment_id;
+
+    }
 
     const cartIsEmpty = carts.length === 0;
     return (
@@ -62,55 +133,55 @@ function Cart({cart, sendEmptyCart}) {
             <div className="container">
                 <div className="row">
                     <div className={cartIsEmpty ? "col-md-12" : "col-md-8"}>
-                        <TitleBar title="Your cart" icon="fas fa-list-ul"/>
+                        { submitStep || <CartList empty={cartIsEmpty} carts={carts}/> }
                         {
-                            !cartIsEmpty
-                            ? (
-                                <div className="cart-table">
-                                    <div className="row">
-                        				<div className="col-md-6">Books</div>
-                        				<div className="col-md-3">Price</div>
-                        				<div className="col-md-3">Amount</div>
-                                    </div>
-                                    <div className="list">
-                                        {
-                                            carts.map((v, i) => (
-                                                <CartBook
-                                                    {...v}
-                                                    img={v.book_id.image.url}
-                                                    name={v.book_id.name}
-                                                    author={v.authors.map(v => v.name).toString()}
-                                                    quantity={v.quantity}
-                                                    key={i}
-                                                />
-                                            ))
-                                        }
-                                    </div>
-                                </div>
-                            )
-                            : <EmptyCart msg="You don't have any books inside cart yet" back/>
+                            submitStep && <SubmitCart
+                                carts={carts}
+                                user={user}
+                                order={order}
+                                setOrder={setOrder}
+                            />
                         }
                     </div>
-                    {cartIsEmpty || <div className="col-md-4">
-                        <TitleBar title="Order detail" icon="fas fa-list-ul"/>
-                        <PricePanel/>
-                        <div className="cart-button">
-                            <button><i className="fas fa-shopping-cart"/> Create order</button>
-                            <button>Remove</button>
+                    {
+                        cartIsEmpty || <div className="col-md-4">
+                            <TitleBar title="Order detail" icon="fas fa-list-ul"/>
+                            <PricePanel
+                                {...subMoney}
+                                total={order.money}
+                            />
+                            {
+                                submitStep || <div className="cart-button">
+                                    <button onClick={() => toSubmitStep(prev => !prev)}><i className="fas fa-shopping-cart"/> Create order</button>
+                                    <button>Remove</button>
+                                </div>
+                            }
+                            {
+                                submitStep && <div className="submit-cart-button">
+                                    <button onClick={submitOrder}>
+                                        <i className="fas fa-file"/> Submit Order
+                                    </button>
+                                    <button onClick={() => toSubmitStep(prev => !prev)}>
+                                        Back to cart
+                                    </button>
+                                </div>
+                            }
                         </div>
-                    </div>}
-                    <div className="col-md-12">
-                        <TitleBar title="Wishlist" icon="fas fa-list-ul"/>
-                        <EmptyWish msg="You don't have any favourite books yet"/>
-                    </div>
+                    }
+                    {
+                        submitStep|| <div className="col-md-12">
+                            <TitleBar title="Wishlist" icon="fas fa-list-ul"/>
+                            <EmptyWish msg="You don't have any favourite books yet"/>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     )
 }
 
-function mapState({cart}) {
-    return {cart}
+function mapState({cart, user}) {
+    return {cart, user: user.data}
 }
 
 export default connect(mapState, {sendEmptyCart})(Cart);

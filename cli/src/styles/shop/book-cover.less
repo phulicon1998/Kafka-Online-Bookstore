@@ -1,0 +1,65 @@
+.book-cover-row {
+    margin-top: 23px;
+    margin-bottom: 10px;
+
+    > .row > .col-md-2 {
+        margin-right: 10px;
+
+        .book-cover {
+            position: relative;
+            overflow: hidden;
+            margin: auto;
+            width: 120px;
+            height: 180px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
+            > p {
+                position: absolute;
+                font-family: @f-la;
+                font-weight: bold;
+                padding: 5px;
+                margin-bottom: 0px;
+
+                &:nth-of-type(1) {
+                    background-color: #2f2f2f;
+                    color: whitesmoke;
+                    bottom: 0;
+                    right: 0;
+                    font-size: 12px;
+                    cursor: pointer;
+                    width: 100%;
+                    max-width: 85px;
+                    border-top-left-radius: 10px;
+
+                    transition: max-width .2s linear, transform 0.3s linear;
+
+                    > i {
+                        color: gray;
+                        margin-right: 4px;
+                        margin-left: 2px;
+                        color: #ffff3a;
+                    }
+                }
+
+                &:nth-of-type(2) {
+                    left: 0px;
+                    top: 0px;
+                    background-color: #69b099;
+                    color: white;
+                    text-align: center;
+                    font-size: 11px;
+                    margin-left: 10px;
+                    width: 50px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+
+                    transition: transform 0.2s linear;
+                    transform: translateY(-30px);
+                }
+            }
+        }
+    }
+
+}

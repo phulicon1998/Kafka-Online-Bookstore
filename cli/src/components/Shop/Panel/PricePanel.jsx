@@ -1,6 +1,7 @@
 import React from "react";
 
-function PricePanel() {
+function PricePanel({total, cover, shipping}) {
+
     return (
         <div className="price-panel">
             <div>
@@ -10,23 +11,23 @@ function PricePanel() {
             <div>
                 <div>
                     <p>Notional Price</p>
-                    <p>$0.00</p>
+                    <p>$ {(total - cover - shipping).toFixed(2)}</p>
                 </div>
                 <div>
                     <p>Shipping price</p>
-                    <p>$0.00</p>
+                    <p>$ {shipping.toFixed(2)}</p>
                 </div>
                 <div>
                     <p>Cover price</p>
-                    <p>$0.00</p>
+                    <p>$ {cover.toFixed(2)}</p>
                 </div>
             </div>
             <div>
                 <p>Total Price</p>
-                <p>$0.00</p>
+                <p>${total.toFixed(2)}</p>
             </div>
         </div>
-        )
-    }
+    )
+}
 
-    export default PricePanel;
+export default PricePanel;

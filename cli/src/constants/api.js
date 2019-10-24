@@ -46,6 +46,12 @@ const edition = {
     remove: edition_id => ["delete", `/api/editions/${edition_id}`]
 }
 
+const shipment = {
+    create: user_id => ["post", `/api/user/${user_id}/shipments`],
+    get: user_id => ["get", `/api/user/${user_id}/shipments`],
+    remove: (user_id, shipment_id) => ["delete", `/api/user/${user_id}/shipments/${shipment_id}`]
+}
+
 export default {
     genre,
     author,
@@ -53,5 +59,6 @@ export default {
     publisher,
     book,
     provider,
+    shipment,
     edition
 };

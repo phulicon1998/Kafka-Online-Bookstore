@@ -1,0 +1,61 @@
+.address-box {
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-family: @f-la;
+    border: 1px dashed lightgrey;
+
+    &.selected {
+        border: 1px solid lightgray;
+    }
+
+    > h5 {
+        color: #b0b0b0;
+        margin-bottom: 0px;
+        font-size: 13px;
+        margin-top: 0;
+        font-style: italic;
+    }
+
+    > h3 {
+        margin-top: 11px;
+        font-size: 17px;
+        font-family: Lato;
+        font-weight: bold;
+        color: #515151;
+    }
+
+    > div > button {
+        &:nth-of-type(1) {
+            padding: 7px 15px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 5px;
+            color: white;
+            background-color: #a3a3a3;
+
+            &.selected {
+                padding: 7px 15px;
+                border: none;
+                border-radius: 5px;
+                margin-right: 5px;
+                color: white;
+                background-color: #69b099;
+
+                > i {
+                    margin-right: 5px;
+                }
+            }
+        }
+
+        &:nth-of-type(2) {
+            padding: 6px 15px;
+            border: 1px solid #b0b0b0;
+            border-radius: 5px;
+            margin-right: 5px;
+            color: gray;
+            background-color: transparent;
+            font-weight: bold;
+        }
+    }
+}

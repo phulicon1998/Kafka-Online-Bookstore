@@ -6,7 +6,7 @@ var orderSchema = new mongoose.Schema({
 		ref: "User"
 	},
 	money: Number,
-	deliFast: {
+	fastDelivery: {
 		type: Boolean,
 		default: false
 	},

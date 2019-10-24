@@ -6,3 +6,4 @@ module.exports.User = require("./h-user");
 module.exports.Book = require("./h-book");
 module.exports.Provider = require("./h-provider");
 module.exports.Edition = require("./h-edition");
+module.exports.Shipment = require("./h-shipment");

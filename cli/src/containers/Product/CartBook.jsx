@@ -26,7 +26,7 @@ const CartBook = ({_id, img, name, author, fastDelivery, price, discount, quanti
                 </div>
             </div>
             <div className="col-md-3">
-                <h4>${(price*(100 - discount) / 100).toFixed(2)}</h4>
+                <h4>${(price*quantity*(100 - discount) / 100).toFixed(2)}</h4>
                 <p>${price.toFixed(2)}</p>
                 <p>-{discount}%</p>
             </div>

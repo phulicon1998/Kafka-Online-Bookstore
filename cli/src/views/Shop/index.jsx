@@ -1,10 +1,11 @@
 import React from "react";
 import {Switch, Route, withRouter} from "react-router-dom";
+import RouteControl from "containers/Route/RouteControl";
+
 import Landing from "./Landing";
 import Cart from "./Cart";
 import Store from "./Store";
 import Become from "./Become";
-import RouteControl from "containers/Route/RouteControl";
 
 function ShopRoutes({match, location}) {
     return (
