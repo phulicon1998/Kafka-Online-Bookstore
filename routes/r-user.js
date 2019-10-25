@@ -9,6 +9,7 @@ router.route("/:user_id").get(hdl.User.getOne);
 router.route("/:user_id/activate").put(hdl.User.activate);
 
 router.use("/:user_id/providers", require("./r-provider"));
+router.use("/:user_id/orders", require("./r-order"));
 router.use("/:user_id/shipments", require("./r-shipment"));
 
 module.exports = router;

@@ -1043,7 +1043,6 @@ body.kafka-layout {
   color: gray;
   margin-right: 4px;
   margin-left: 2px;
-  color: #ffff3a;
 }
 .book-cover-row > .row > .col-md-2 .book-cover > p:nth-of-type(2) {
   left: 0px;
@@ -1058,6 +1057,22 @@ body.kafka-layout {
   border-bottom-right-radius: 10px;
   transition: transform 0.2s linear;
   transform: translateY(-30px);
+}
+.book-cover-row > .row > .col-md-2 .book-cover.care {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transform: scale(1.05);
+  transition: transform 0.5s;
+}
+.book-cover-row > .row > .col-md-2 .book-cover.care > p:nth-of-type(1) {
+  max-width: 120px;
+  border-radius: 0px;
+}
+.book-cover-row > .row > .col-md-2 .book-cover.care > p:nth-of-type(1) > i {
+  color: #ffff3a;
+}
+.book-cover-row > .row > .col-md-2 .book-cover.care > p:nth-of-type(2) {
+  transform: translateY(0px);
+  transition: transform 0.3s linear;
 }
 .delivery-methods {
   margin-top: 20px;

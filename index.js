@@ -19,6 +19,7 @@ app.use("/api/providers", require("./routes/r-provider"));
 app.use("/api/user", require("./routes/r-user"));
 app.use("/api/books", require("./routes/r-book"));
 app.use("/api/editions", require("./routes/r-edition"));
+app.use("/api/orders", require("./routes/r-order"));
 
 app.use((req, res, next) => {
     let err = new Error("Route not found!");

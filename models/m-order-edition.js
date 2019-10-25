@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var modelbookSchema = new mongoose.Schema({
+var orderEditionSchema = new mongoose.Schema({
 	order_id: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Order"
@@ -18,4 +18,4 @@ var modelbookSchema = new mongoose.Schema({
 	}
 })
 
-module.exports = mongoose.model("OrderBook", modelbookSchema);
+module.exports = mongoose.model("OrderEdition", orderEditionSchema);

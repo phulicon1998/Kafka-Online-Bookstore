@@ -68,7 +68,7 @@ const DEFAULT_ORDER = {
 	phone: "",
 }
 
-function Cart({cart, sendEmptyCart, user}) {
+function Cart({cart, sendEmptyCart, user, ...props}) {
     const [carts, setCarts] = useState([]);
     const [subMoney, setSubMoney] = useState({
         shipping: 10,
@@ -90,6 +90,7 @@ function Cart({cart, sendEmptyCart, user}) {
                 // get the quantity of book by its client storage's position - (using id to determine)
                 const position = idList.indexOf(e._id);
                 e.quantity = cart.list[position].quantity;
+                e.cover = false;
             })
         }
         setCarts(cartData);
@@ -114,11 +115,51 @@ function Cart({cart, sendEmptyCart, user}) {
         return price * quantity * (100 - discount) / 100;
     }
 
-    function submitOrder() {
-        // Remove the shipment_id (used for identifying selected address)
-        const submitOrder = {...order};
-        delete submitOrder.shipment_id;
+    function hdChangeCover(cartItem_id) {
+        let newCarts = carts.map(v => {
+            if(v._id === cartItem_id) {
+                return {
+                    ...v,
+                    cover: !v.cover
+                }
+            }
+            return v;
+        })
+        setCarts(newCarts);
 
+        // Calculate the price of cover after select using cover
+        let coverPrice = newCarts.filter(v => v.cover).reduce((a, n) => {
+            return a += n.quantity * 2;
+        }, 0);
+        setSubMoney(prev => ({...prev, cover: coverPrice}));
+    }
+
+    function hdChangeDelivery(fastDelivery, shipping) {
+        setSubMoney(prev =>({...prev, shipping}));
+        setOrder(prev => ({...prev, fastDelivery}));
+    }
+
+    async function submitOrder() {
+        try {
+            // Remove the shipment_id (used for identifying selected address)
+            const submitOrder = {...order};
+            delete submitOrder.shipment_id;
+
+            // Get list of OrderItem
+            let orderEditions = carts.map(v => {
+                const {discount, price, quantity, cover} = v;
+                return {
+                    discount, price, quantity, cover,
+                    edition_id: v._id,
+                }
+            })
+
+            let createdOrder = await apiCall(...api.order.create(user._id), {order: submitOrder, orderEditions});
+            sendEmptyCart();
+            return props.history.push(`/orders/${createdOrder._id}`);
+        } catch (e) {
+            console.log("There are some errors.");
+        }
     }
 
     const cartIsEmpty = carts.length === 0;
@@ -140,6 +181,8 @@ function Cart({cart, sendEmptyCart, user}) {
                                 user={user}
                                 order={order}
                                 setOrder={setOrder}
+                                changeCover={hdChangeCover}
+                                changeDelivery={hdChangeDelivery}
                             />
                         }
                     </div>
@@ -153,7 +196,7 @@ function Cart({cart, sendEmptyCart, user}) {
                             {
                                 submitStep || <div className="cart-button">
                                     <button onClick={() => toSubmitStep(prev => !prev)}><i className="fas fa-shopping-cart"/> Create order</button>
-                                    <button>Remove</button>
+                                    <button onClick={sendEmptyCart}>Remove</button>
                                 </div>
                             }
                             {

@@ -14,15 +14,24 @@ const TextBox = ({type = "text", label, ...props}) => (
     </div>
 )
 
-const BookCover = ({image}) => (
-    <div className="book-cover" style={{"backgroundImage": `url(${image})`}}>
-        <p><i className="far fa-bookmark"/> Try cover?</p>
-        <p><i className="fas fa-dollar-sign"/> 5</p>
+const BookCover = ({image, care, doCover, quantity}) => (
+    <div
+        onClick={doCover}
+        className={`book-cover${care ? " care" : ""}`}
+        style={{"backgroundImage": `url(${image})`}}
+    >
+        <p>
+            <i className={care ? "fas fa-bookmark" : "far fa-bookmark"}/>
+            {care ? "Covered!" : "Try cover?"}
+        </p>
+        <p>
+            <i className="fas fa-dollar-sign"/> {`${2 * quantity} ${quantity > 1 ? `( ${quantity} )` : ""}`}
+        </p>
     </div>
 )
 
-const DeliveryMethod = ({icon, text}) => (
-    <p><i className={icon}/> Normal delivery (Get books in 2- 3 days)</p>
+const DeliveryMethod = ({select, text, change}) => (
+    <p onClick={change}><i className={select ? "fas fa-check-square" : "fas fa-square"}/> {text}</p>
 )
 
 const DEFAULT_SHIPMENT = {
@@ -33,37 +42,43 @@ const DEFAULT_SHIPMENT = {
 	phone: "",
 }
 
-function SubmitCart({carts, user, order, setOrder}) {
+const deliveryMethods = [
+    {
+        text: "Normal delivery (Get books in 2- 3 days)",
+        price: 10,
+        value: false
+    },
+    {
+        text: "Fast delivery (Get books in 2 hours)",
+        price: 15,
+        value: true
+    }
+];
+
+function SubmitCart({carts, user, order, setOrder, changeCover, changeDelivery}) {
     const [shipments, setShipments] = useState([]);
     const [shipment, setShipment] = useState(DEFAULT_SHIPMENT);
     const [openForm, setOpenForm] = useState(false);
+
     const toggleForm = () => setOpenForm(prev => !prev);
 
     let hasAddress = useMemo(() => shipments.length > 0, [shipments.length]);
 
-    function hdSelectShipment(address) {
-        const {shipment_id, shipment} = getSelectShipment(address);
-        setOrder(prev => ({...prev, ...shipment, shipment_id}));
-    };
-
-    function getSelectShipment(shipment) {
+    const hdSelectShipment = useCallback((data) => {
+        let shipment = {...data};
         let shipment_id = shipment._id;
         delete shipment._id;
         delete shipment.user_id;
         delete shipment.__v;
-        return {shipment_id, shipment}
-    }
+        setOrder(prev => ({...prev, ...shipment, shipment_id}));
+    }, [setOrder]);
 
     const load = useCallback(async() => {
-        console.log("run");
         let shipmentData = await apiCall(...api.shipment.get(user._id));
         setShipments(shipmentData);
 
-        if(shipmentData.length > 0) {
-            let {shipment_id, shipment} = getSelectShipment({...shipmentData[0]});
-            setOrder(prev => ({...prev, ...shipment, shipment_id}));
-        }
-    }, [setOrder, user._id]);
+        if(shipmentData.length > 0) hdSelectShipment(shipmentData[0]);
+    }, [hdSelectShipment, user._id]);
 
     useEffect(() => {
         load();
@@ -109,7 +124,7 @@ function SubmitCart({carts, user, order, setOrder}) {
                                     <AddressBox
                                         {...v}
                                         defAddress={i === 0}
-                                        selected={order.shipment_id === v._id}
+                                        selected={v._id === order.shipment_id}
                                         rm={removeShipment.bind(this, v._id)}
                                         select={hdSelectShipment.bind(this, v)}
                                     />
@@ -181,7 +196,12 @@ function SubmitCart({carts, user, order, setOrder}) {
                     {
                         carts.map((v, i) => (
                             <div className="col-md-2" key={i}>
-                                <BookCover image={v.book_id.image.url}/>
+                                <BookCover
+                                    image={v.book_id.image.url}
+                                    doCover={changeCover.bind(this, v._id)}
+                                    care={v.cover}
+                                    quantity={v.quantity}
+                                />
                             </div>
                         ))
                     }
@@ -190,18 +210,17 @@ function SubmitCart({carts, user, order, setOrder}) {
             <SubTitleBar msg="Delivery Methods"/>
             <div className="delivery-methods">
                 <div className="row">
-                    <div className="col-md-6">
-                        <DeliveryMethod
-                            icon="fas fa-check-square"
-                            text="Normal delivery (Get books in 2- 3 days)"
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <DeliveryMethod
-                            icon="fas fa-square"
-                            text="Fast delivery (Get books in 2 hours)"
-                        />
-                    </div>
+                    {
+                        deliveryMethods.map((v, i) => (
+                            <div className="col-md-6" key={i}>
+                                <DeliveryMethod
+                                    {...v}
+                                    select={order.fastDelivery === v.value}
+                                    change={changeDelivery.bind(this, v.value, v.price)}
+                                />
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         </div>

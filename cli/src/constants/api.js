@@ -52,13 +52,13 @@ const shipment = {
     remove: (user_id, shipment_id) => ["delete", `/api/user/${user_id}/shipments/${shipment_id}`]
 }
 
+const order = {
+    create: user_id => ["post", `/api/user/${user_id}/orders`],
+    get: order_id => ["get", `/api/orders/${order_id}`]
+}
+
 export default {
-    genre,
-    author,
-    user,
-    publisher,
-    book,
-    provider,
-    shipment,
-    edition
+    genre, author, user,
+    publisher, book, provider,
+    shipment, order, edition
 };
