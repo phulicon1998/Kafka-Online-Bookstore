@@ -1,10 +1,5 @@
 var mongoose = require("mongoose");
 
-// WORKING_STATUS = 0
-// TRANSPORTING_STATUS = 1
-// COMPLETED_STATUS = 2
-// CANCELLED_STATUS = 3
-
 var orderSchema = new mongoose.Schema({
 	user_id: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -24,6 +19,6 @@ var orderSchema = new mongoose.Schema({
 	city: String,
 	country: String,
 	phone: String
-}, {timestamp: true});
+}, {timestamps: true});
 
 module.exports = mongoose.model("Order", orderSchema);

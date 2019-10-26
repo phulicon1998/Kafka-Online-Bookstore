@@ -22,6 +22,16 @@ exports.create = async(req, res, next) => {
     }
 }
 
+exports.get = async(req, res, next) => {
+    try {
+        const {user_id} = req.params;
+        let foundOrder = await db.Order.find({user_id});
+        return res.status(200).json(foundOrder);
+    } catch (e) {
+        return next(e);
+    }
+}
+
 exports.getOne = async(req, res, next) => {
     try {
         let foundOrder = await db.Order.findById(req.params.order_id);

@@ -43,7 +43,7 @@ var bookSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	}
-}, {timestamp: true});
+}, {timestamps: true});
 
 bookSchema.pre("remove", async function(next) {
 	try {

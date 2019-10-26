@@ -54,7 +54,8 @@ const shipment = {
 
 const order = {
     create: user_id => ["post", `/api/user/${user_id}/orders`],
-    get: order_id => ["get", `/api/orders/${order_id}`]
+    get: user_id => ["get", `/api/user/${user_id}/orders`],
+    getOne: order_id => ["get", `/api/orders/${order_id}`]
 }
 
 export default {

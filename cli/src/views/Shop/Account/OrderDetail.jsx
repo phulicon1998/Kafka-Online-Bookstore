@@ -9,7 +9,7 @@ function OrderDetail({...props}) {
 
     const load = useCallback(async() => {
         const {order_id} = props.match.params;
-        let orderData = await apiCall(...api.order.get(order_id));
+        let orderData = await apiCall(...api.order.getOne(order_id));
         setOrder(orderData);
     }, [props.match.params]);
 

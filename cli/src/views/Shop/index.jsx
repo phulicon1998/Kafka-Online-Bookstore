@@ -6,7 +6,7 @@ import Landing from "./Landing";
 import Cart from "./Cart";
 import Store from "./Store";
 import Become from "./Become";
-import OrderDetail from "./OrderDetail";
+import AccountLayout from "./Account";
 
 function ShopRoutes({match, location}) {
     return (
@@ -25,9 +25,9 @@ function ShopRoutes({match, location}) {
                 ]}
             />
             <RouteControl
-                path={`${match.url}orders/:order_id`}
+                path={`${match.url}account`}
                 redirectPath="/"
-                component={OrderDetail}
+                component={AccountLayout}
                 access={[
                     "CUSTOMER_PERMISSION",
                 ]}

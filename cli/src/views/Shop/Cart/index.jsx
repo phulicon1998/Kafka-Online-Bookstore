@@ -156,7 +156,7 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
 
             let createdOrder = await apiCall(...api.order.create(user._id), {order: submitOrder, orderEditions});
             sendEmptyCart();
-            return props.history.push(`/orders/${createdOrder._id}`);
+            return props.history.push(`/account/orders/${createdOrder._id}`);
         } catch (e) {
             console.log("There are some errors.");
         }
