@@ -10,6 +10,7 @@ import Book from "./Book";
 import Publisher from "./Publisher";
 import Provider from "./Provider";
 import Edition from "./Edition";
+import Order from "./ManageOrder";
 import CreateEdition from "./Edition/Create";
 
 function AppRoutes(props) {
@@ -58,7 +59,6 @@ function AppRoutes(props) {
                         "ADMIN_PERMISSION",
                     ]}
                 />
-
                 <RouteControl
                     path={`${url}/editions/add`}
                     redirectPath="/app/dashboard"
@@ -73,6 +73,14 @@ function AppRoutes(props) {
                     component={Edition}
                     access={[
                         "PROVIDER_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/orders`}
+                    redirectPath="/app/dashboard"
+                    component={Order}
+                    access={[
+                        "ADMIN_PERMISSION",
                     ]}
                 />
                 <Redirect from={props.location.pathname} to={`${url}/dashboard`}/>

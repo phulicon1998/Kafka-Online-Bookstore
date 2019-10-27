@@ -30,7 +30,7 @@ function Order({user}) {
     const [orders, setOrders] = useState([]);
 
     const load = useCallback(async() => {
-        let orderData = await apiCall(...api.order.get(user._id));
+        let orderData = await apiCall(...api.order.getByUser(user._id));
         setOrders(orderData);
     }, [user._id]);
 

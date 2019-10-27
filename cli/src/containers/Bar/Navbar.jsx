@@ -48,7 +48,7 @@ const Navbar = ({transparent, hideNavs, user, clearAuthData, cart}) => (
                         <i className="fas fa-angle-down"/>
                     </div>
                     <ul>
-                        <li>My order</li>
+                        <a href="/account/orders"><li>Orders</li></a>
                         <li>Notifications</li>
                         <li onClick={clearAuthData}>Logout</li>
                     </ul>

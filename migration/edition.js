@@ -1,7 +1,9 @@
 const db = require("../models");
+const {docsToData, docToData} = require("./helpers");
 
 async function migrateEdition() {
     try {
+        console.log("- MIGRATING EDITION...");
         // get all the data of the old model under the POJO form
         let editions = await db.Edition.find().lean().exec();
 
@@ -18,30 +20,34 @@ async function migrateEdition() {
             }
         }
 
-        // remove some unneccessary properties
-        let editionData = editions.map(e => ({...e}));
-        editionData.forEach(v => {
-            delete v["_id"];
-            delete v["__v"];
-        });
+        for(let edition of editions) {
+            // Get all the edition data inside each order and convert to POJO
+            let orderEditions = await db.OrderEdition.find({edition_id: edition._id}).lean().exec();
+            let orderEditionData = docsToData(orderEditions);
 
-        // Remove all the old edtion
-        let listId = editions.map(v => v._id);
-        await db.Edition.deleteMany({_id: {$in: listId}});
+            // Remove all old order's editions data
+            const orderEditionIds = orderEditions.map(v => v._id);
+            await db.OrderEdition.deleteMany({"_id": { $in: orderEditionIds }});
 
-        // Re-create old data with new Edition model
-        let createdList = await db.Edition.insertMany(editionData);
+            // Convert edition doc to POJO and recreate edition data
+            let editionData = docToData(edition);
+            let newEdition = await db.Edition.create(editionData);
 
-        // Store new edition id inside book document
-        for(let e of createdList) {
-            let foundBook = await db.Book.findById(e.book_id);
+            // Recreate order edition data
+            orderEditionData.forEach(v => v.edition_id = newEdition._id);
+            await db.OrderEdition.insertMany(orderEditionData);
+
+            // Store new edition id inside Book doc
+            let foundBook = await db.Book.findById(newEdition.book_id);
             if(foundBook){
-                foundBook.edition_id.push(e._id);
+                foundBook.edition_id.push(newEdition._id);
                 await foundBook.save();
             }
         }
 
-        console.log("[ EDITION MIGRATION COMPLETED ]");
+        // Remove all the old edtion
+        let listId = editions.map(v => v._id);
+        await db.Edition.deleteMany({_id: {$in: listId}});
     } catch (e) {
         console.log(e);
     }

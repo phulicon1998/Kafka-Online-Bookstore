@@ -3,10 +3,10 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// require('./seed')();
-
-// import handlers
 const hdl = require("./handlers");
+
+// require('./seed')();
+const migrate = require('./migration');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -29,4 +29,7 @@ app.use((req, res, next) => {
 
 app.use(hdl.Error.handle);
 
-app.listen(process.env.PORT, () => console.log(`[ SERVER IS RUNNING ON PORT ${process.env.PORT} ]`));
+app.listen(process.env.PORT, async() => {
+    await migrate(false);
+    console.log(`[ SERVER IS RUNNING ON PORT ${process.env.PORT} ]`)
+});

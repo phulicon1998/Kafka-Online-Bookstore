@@ -6,6 +6,8 @@ router.route("/")
 .get(hdl.Order.get)
 .post(hdl.Order.create);
 
-router.route("/:order_id").get(hdl.Order.getOne);
+router.route("/:order_id")
+.get(hdl.Order.getOne)
+.put(hdl.Order.edit);
 
 module.exports = router;

@@ -10,7 +10,6 @@
     "scripts": {
         "start": "nodemon index",
         "start-dev": "concurrently \"nodemon index\" \"cd cli && yarn start\"",
-        "migrate": "node index && node migration.js",
         "heroku-postbuild": "cd cli && npm install && npm run build",
         "test": "mocha test/**/*.test.js --timeout 10000",
         "test-watch": "nodemon --exec npm test"

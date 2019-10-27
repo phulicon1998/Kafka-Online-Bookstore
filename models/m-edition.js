@@ -50,6 +50,8 @@ const editionSchema = mongoose.Schema({
         default: false
     },
     desc: String
+}, {
+    timestamps: true
 })
 
 editionSchema.pre("remove", async function(next) {

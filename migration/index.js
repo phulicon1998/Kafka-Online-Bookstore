@@ -1,5 +1,15 @@
 const migrateEdition = require("./edition");
+const migrateOrder = require("./order");
 
-module.exports = async() => {
-    await migrateEdition();
+async function migrate(run) {
+    if(run) {
+        console.log("\n");
+
+        await migrateOrder();
+        await migrateEdition();
+
+        console.log("-> DONE MIGRATION\n");
+    }
 }
+
+module.exports = migrate;
