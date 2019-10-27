@@ -41,6 +41,7 @@ const provider = {
 
 const edition = {
     get: () => ["get", "/api/editions"],
+    getOne: edition_id => ["get", `/api/editions/${edition_id}`],
     getInCart: () => ["post", "/api/editions/cart"],
     create: () => ["post", `/api/editions`],
     remove: edition_id => ["delete", `/api/editions/${edition_id}`]

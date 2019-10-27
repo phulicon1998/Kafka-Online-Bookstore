@@ -45,6 +45,10 @@ const editionSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    amount: {
+        type: Number,
+        default: 10
+    },
     fastDelivery: {
         type: Boolean,
         default: false

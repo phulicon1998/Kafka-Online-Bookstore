@@ -1,0 +1,122 @@
+.store-detail {
+    >.row {
+        > div {
+            font-family: @f-ver;
+            line-height: 2;
+
+            &.col-md-5 {
+                > img {
+                    width: 320px;
+                    margin: auto;
+                    margin-top: 10px;
+                }
+
+                > div {
+                    display: flex;
+                    margin-left: 10px;
+                    justify-content: center;
+
+                    > img {
+                        padding: 6px;
+                        border: 1px solid #e5e3e3;
+                        width: 70px;
+                        height: 90px;
+                        margin: 10px 10px 10px 0px;
+
+                        &.active {
+                            border: 1px solid #b3b8bc;
+                        }
+                    }
+                }
+            }
+
+            &.col-md-7 {
+                > hr {
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    border-top: 1px solid #eee;
+                }
+
+                > p {
+                    color: #585858;
+
+                    &:nth-of-type(1) {
+                        color: #9a9a9a;
+                        font-weight: bold;
+                        font-size: 15px;
+                    }
+
+                    &:nth-of-type(2) {
+                        background: url(https://vcdn.tikicdn.com/desktop/img/beseller-product.png) center left no-repeat;
+                        padding-left: 20px;
+                    }
+
+                    &:nth-of-type(3) {
+                        > b {
+                            &:nth-of-type(1) {
+                                color: #585858;
+                            }
+
+                            &:nth-of-type(2) {
+                                color: #599461;
+                            }
+                        }
+                    }
+
+                    &:nth-of-type(4) {
+                        font-size: 30px;
+                        margin-bottom: 10px;
+
+                        > del {
+                            color: #859086;
+                            padding-left: 3%;
+                            font-size: 20px;
+                        }
+                    }
+                }
+
+                > h2 {
+                    font-weight: 700;
+                    margin-top: 10px;
+                }
+
+                > div {
+                    &:nth-of-type(1) {
+                        display: flex;
+                        justify-content: flex-start;
+
+                        > div {
+                            display: flex;
+                            align-items: center;
+                            margin-right: 20px;
+
+                            > input {
+                                text-align: center;
+                                width: 40px;
+                                margin-left: 5px;
+                                margin-right: 5px;
+                                padding-top: 4px;
+                                padding-bottom: 4px;
+                                outline: none;
+                                border: 1px solid #969696;
+                            }
+
+                            > button {
+                                background-color: #4e4d4d;
+                                color: #fff;
+                                border: 1px solid #4e4d4d;
+                                padding: 5px 13px;
+                                border-radius: 3px;
+
+                                &:nth-of-type(2) {
+                                    padding: 5px 16px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -16,9 +16,9 @@ const Book = ({editionId, img, name, author, price, discount, sendAddCart}) => (
                 </button>
             </div>
         </div>
-        <a href="/">{name}</a>
+        <a href={`/store/${editionId}`}>{name}</a>
         <p>{author}</p>
-        <p>${Math.floor(price*(100-discount)/100).toFixed(2)} <span>{price.toFixed(2)}</span> <span>-{discount}%</span></p>
+        <p>${(price*(100-discount)/100).toFixed(2)} <span>{price.toFixed(2)}</span> <span>-{discount}%</span></p>
     </div>
 );
 

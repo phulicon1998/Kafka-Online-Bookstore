@@ -7,11 +7,13 @@ import Cart from "./Cart";
 import Store from "./Store";
 import Become from "./Become";
 import AccountLayout from "./Account";
+import Detail from "./Detail";
 
 function ShopRoutes({match, location}) {
     return (
         <Switch>
             <Route path={`${match.url}cart`} component={Cart}/>
+            <Route path={`${match.url}store/:edition_id`} component={Detail}/>
             <Route path={`${match.url}store`} component={Store}/>
             <RouteControl
                 path={`${match.url}become`}

@@ -51,7 +51,7 @@ function Store() {
 
     useEffect(() => {
         load();
-    })
+    }, [load])
 
     return (
         <div>

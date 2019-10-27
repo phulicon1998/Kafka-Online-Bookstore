@@ -10,6 +10,8 @@ router.route("/")
 
 router.route("/cart").post(hdl.Edition.getInCart);
 
-router.route("/:edition_id").delete(hdl.Edition.remove);
+router.route("/:edition_id")
+.get(hdl.Edition.getOne)
+.delete(hdl.Edition.remove);
 
 module.exports = router;

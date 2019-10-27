@@ -28,6 +28,23 @@ exports.getInCart = async(req, res, next) => {
     }
 }
 
+exports.getOne = async(req, res, next) => {
+    try {
+        const {edition_id} = req.params;
+        let foundEdition = await db.Edition.findById(edition_id).populate("book_id").lean().exec();
+
+        // get the author and genre for the edition
+        let authors = await db.BookAuthor.find().populate("author_id").lean().exec();
+        let genres = await db.BookGenre.find().populate("genre_id").lean().exec();
+        foundEdition.authors = gatherDataById(foundEdition.book_id._id, "author_id", authors);
+        foundEdition.genres = gatherDataById(foundEdition.book_id._id, "genre_id", genres);
+
+        return res.status(200).json(foundEdition);
+    } catch (e) {
+        return next(e);
+    }
+}
+
 exports.create = async(req, res, next) => {
     try {
         const {uploadImgs, book_id} = req.body;
