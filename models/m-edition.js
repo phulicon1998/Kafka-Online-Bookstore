@@ -29,10 +29,12 @@ const editionSchema = mongoose.Schema({
             }
         }
     ],
-    review_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review"
-    },
+    review_id: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Review"
+        }
+    ],
     price: {
         type: Number,
         required: true

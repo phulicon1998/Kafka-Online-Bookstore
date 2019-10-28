@@ -31,12 +31,6 @@ var userSchema = new mongoose.Schema({
 			ref: "Shipment"
 		}
 	],
-	review_id: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Review"
-		}
-	],
 	active: {
 		type: Boolean,
 		default: false

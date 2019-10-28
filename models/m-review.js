@@ -5,13 +5,24 @@ const reviewSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Edition"
 	},
-	bookimage_id: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "BookImage"
+	images: [
+		{
+			url: String,
+			cloud_id: String
+		}
+	],
+	rate: {
+		type: Number,
+		default: 0
 	},
-	rate: Number,
 	title: String,
-	content: String
+	content: String,
+	userLiked: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User"
+		}
+	]
 }, {timestamp: true});
 
 module.exports = mongoose.model("Review", reviewSchema);

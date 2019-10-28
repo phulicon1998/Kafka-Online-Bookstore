@@ -31,7 +31,12 @@ exports.getInCart = async(req, res, next) => {
 exports.getOne = async(req, res, next) => {
     try {
         const {edition_id} = req.params;
-        let foundEdition = await db.Edition.findById(edition_id).populate("book_id").lean().exec();
+        let foundEdition = await db.Edition.findById(edition_id).populate({
+            path: "review_id",
+            populate: {
+                path: "user_id"
+            }
+        }).populate("book_id").lean().exec();
 
         // get the author and genre for the edition
         let authors = await db.BookAuthor.find().populate("author_id").lean().exec();

@@ -61,8 +61,14 @@ const order = {
     edit: order_id => ["put", `/api/orders/${order_id}`]
 }
 
+const review = {
+    create: edition_id => ["post", `/api/editions/${edition_id}/reviews`],
+    get: edition_id => ["get", `/api/editions/${edition_id}/reviews`]
+}
+
 export default {
     genre, author, user,
     publisher, book, provider,
-    shipment, order, edition
+    shipment, order, edition,
+    review
 };

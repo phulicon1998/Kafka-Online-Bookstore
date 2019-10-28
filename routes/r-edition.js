@@ -14,4 +14,6 @@ router.route("/:edition_id")
 .get(hdl.Edition.getOne)
 .delete(hdl.Edition.remove);
 
+router.use("/:edition_id/reviews", require("./r-review"));
+
 module.exports = router;
