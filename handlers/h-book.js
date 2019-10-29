@@ -92,7 +92,9 @@ exports.getForStore = async(req, res, next) => {
         // retrieves all the authors
         let authors = await db.BookAuthor.find().populate("author_id").exec();
 
+        // Only get book has edition
         let books = await db.Book.find().populate("edition_id").lean().exec();
+        books = books.filter(b => b.edition_id.length > 0);
 
         books.forEach(b => {
             // Retrieve the best deal of each book

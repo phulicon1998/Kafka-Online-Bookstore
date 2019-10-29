@@ -63,7 +63,8 @@ const order = {
 
 const review = {
     create: edition_id => ["post", `/api/editions/${edition_id}/reviews`],
-    get: edition_id => ["get", `/api/editions/${edition_id}/reviews`]
+    get: edition_id => ["get", `/api/editions/${edition_id}/reviews`],
+    remove: (edition_id, review_id) => ["delete", `/api/editions/${edition_id}/reviews/${review_id}`]
 }
 
 export default {

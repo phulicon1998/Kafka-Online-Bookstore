@@ -5,6 +5,7 @@ import Loader from "components/Shop/Load/Loader";
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import {Rate, Upload, Icon, Modal} from 'antd';
 import {connect} from "react-redux";
+import moment from "moment";
 
 const DEFAULT_REVIEW = {
     images: [],
@@ -13,8 +14,33 @@ const DEFAULT_REVIEW = {
     content: ""
 }
 
+const Review = ({username, rate, title, content, userLiked, createdAt, canRemove, doRemove}) => (
+    <div className="row">
+        <div className="col-md-1 text-center">
+			<i className="fas fa-book-reader"/>
+		</div>
+		<div className="col-md-10">
+			<div>
+                <div>
+                    <p><b>{username}</b> has rated it</p>
+                    <Rate value={rate}/>
+                </div>
+                <div>
+                    <p>{moment(createdAt).format("DD-MM-YYYY, h:mm:ss a")}</p>
+                    {canRemove && <button onClick={doRemove}>Remove</button>}
+                </div>
+			</div>
+			<h4><b>{title}</b></h4>
+			<p>{content}</p>
+			<span>This review is useful, isn't it?</span>
+            <button><i className="far fa-thumbs-up"/> Likes ({userLiked.length})</button>
+		</div>
+    </div>
+)
+
 function Detail({match, user, ...props}) {
     const [loading, setLoading] = useState(true);
+    const [openCommentForm, setOpenCommentForm] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [review, setReview] = useState(DEFAULT_REVIEW);
     const [quantity, setQuantity] = useState(1);
@@ -69,6 +95,12 @@ function Detail({match, user, ...props}) {
             ...prev,
             images: fileList
         }))
+    }
+
+    async function removeReview(review_id) {
+        await apiCall(...api.review.remove(edition._id, review_id));
+        let newReviews = reviews.filter(v => v._id !== review_id);
+        setReviews(newReviews);
     }
 
     async function submitReview() {
@@ -152,69 +184,83 @@ function Detail({match, user, ...props}) {
                         <h3>This is designed later</h3>
                     </div>
                     <div className="col-md-12">
-                        <div className="order-detail-review">
+                        <div className="store-detail-review">
                             <h4>Community reviews
-                                <span><i className="far fa-edit"/> Rate & write review</span>
+                                {openCommentForm || <span onClick={() => setOpenCommentForm(prev => !prev)}><i className="far fa-edit"/> Rate & write review</span>}
                                 {/* <a href="/login"><i className="far fa-edit"/> Login To Write Review</a> */}
                             </h4>
                             <p><i className="far fa-caret-square-down"/> Rating Details</p>
-                            <div className="row">
-                                <div className="col-md-1 text-center">
-                                    <i className="fas fa-book-reader"/>
-                                </div>
-                                <div className="col-md-10">
-                                    <div>
-                                        <span>Your Rate - </span>
-                                        <Rate
-                                            value={review.rate}
-                                            onChange={(rate) => setReview(prev => ({...prev, rate}))}
-                                        />
-                                        <span className={review.rate > 0 ? "rated" : ""}>- {review.rate}/5 star(s)</span>
+                            {
+                                openCommentForm && <div className="row">
+                                    <div className="col-md-1 text-center">
+                                        <i className="fas fa-book-reader"/>
                                     </div>
-                                    <div>
-                                        {/* <p>Upload Your Images For This Book</p> */}
-                                        <Upload
-                                            listType="picture-card"
-                                            fileList={review.images}
-                                            onPreview={hdPreview}
-                                            onChange={hdChangeImg}
-                                            beforeUpload={() => false}
-                                        >
-                                            <div>
-                                                <Icon type="plus"/>
-                                                <div className="ant-upload-text">Upload</div>
-                                            </div>
-                                        </Upload>
-                                        <Modal
-                                            visible={preview.visible}
-                                            footer={null}
-                                            onCancel={hdCancelPreview}
-                                        >
-                                            <img
-                                                alt="example"
-                                                style={{width: '100%'}}
-                                                src={preview.url}
+                                    <div className="col-md-10">
+                                        <div>
+                                            <span>Your Rate - </span>
+                                            <Rate
+                                                value={review.rate}
+                                                onChange={(rate) => setReview(prev => ({...prev, rate}))}
                                             />
-                                        </Modal>
+                                            <span className={review.rate > 0 ? "rated" : ""}>- {review.rate}/5 star(s)</span>
+                                        </div>
+                                        <div>
+                                            <Upload
+                                                listType="picture-card"
+                                                fileList={review.images}
+                                                onPreview={hdPreview}
+                                                onChange={hdChangeImg}
+                                                beforeUpload={() => false}
+                                            >
+                                                <div>
+                                                    <Icon type="plus"/>
+                                                    <div className="ant-upload-text">Upload</div>
+                                                </div>
+                                            </Upload>
+                                            <Modal
+                                                visible={preview.visible}
+                                                footer={null}
+                                                onCancel={hdCancelPreview}
+                                            >
+                                                <img
+                                                    alt="example"
+                                                    style={{width: '100%'}}
+                                                    src={preview.url}
+                                                />
+                                            </Modal>
+                                        </div>
+                                        <textarea
+                                            rows="1"
+                                            name="title"
+                                            placeholder="Write your title here..."
+                                            value={review.title}
+                                            onChange={hdChange}
+                                        />
+                                        <textarea
+                                            rows="3"
+                                            name="content"
+                                            placeholder="Review of this book..."
+                                            value={review.content}
+                                            onChange={hdChange}
+                                        />
+                                        <button onClick={submitReview}>Send review</button>
+                                        <button onClick={() => setOpenCommentForm(false)}>Cancel</button>
                                     </div>
-                                    <textarea
-                                        rows="1"
-                                        name="title"
-                                        placeholder="Write your title here..."
-                                        value={review.title}
-                                        onChange={hdChange}
-                                    />
-                                    <textarea
-                                        rows="3"
-                                        name="content"
-                                        placeholder="Review of this book..."
-                                        value={review.content}
-                                        onChange={hdChange}
-                                    />
-                                    <button onClick={submitReview}>Send review</button>
-                                    <button>Cancel</button>
                                 </div>
-                            </div>
+                            }
+                        </div>
+                        <div className="store-row-review">
+                            {
+                                reviews.map((v, i) => (
+                                    <Review
+                                        {...v}
+                                        username={v.user_id.username}
+                                        canRemove={v.user_id._id === user._id}
+                                        doRemove={removeReview.bind(this, v._id)}
+                                        key={i}
+                                    />
+                                ))
+                            }
                         </div>
                     </div>
                 </div>

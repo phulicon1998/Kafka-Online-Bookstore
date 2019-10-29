@@ -15,3 +15,13 @@ exports.create = async(req, res, next) => {
         return next(e);
     }
 }
+
+exports.remove = async(req, res, next) => {
+    try {
+        let foundReview = await db.Review.findById(req.params.review_id);
+        if(foundReview) await foundReview.remove();
+        return res.status(200).json(foundReview);
+    } catch (e) {
+        return next(e);
+    }
+}

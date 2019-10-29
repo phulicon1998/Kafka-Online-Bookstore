@@ -6,4 +6,6 @@ const {upload} = require("../utils/uploader");
 
 router.route("/").post(upload.fields([{name: "images"}]), mw.Image.get, hdl.Review.create);
 
+router.route("/:review_id").delete(hdl.Review.remove);
+
 module.exports = router;
