@@ -6,6 +6,7 @@ import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import {Rate, Upload, Icon, Modal} from 'antd';
 import {connect} from "react-redux";
 import moment from "moment";
+import ioClient from "socket.io-client";
 
 const DEFAULT_REVIEW = {
     images: [],
@@ -65,6 +66,8 @@ function Detail({match, user, ...props}) {
     })
 
     const load = useCallback(async() => {
+        // const socket = ioClient("http://127.0.0.1:8080");
+
         const {edition_id} = match.params;
         let retrievedEdition = await apiCall(...api.edition.getOne(edition_id));
         const {review_id, ...editionData} = retrievedEdition;

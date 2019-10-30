@@ -20,3 +20,5 @@ module.exports.Shipment = require("./m-shipment");
 module.exports.User = require("./m-user");
 module.exports.UserRole = require("./m-user-role");
 module.exports.Role = require("./m-role");
+module.exports.Message = require("./m-message");
+module.exports.Chat = require("./m-chat");

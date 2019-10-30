@@ -2,7 +2,7 @@ const db = require("../models");
 const {docsToData, docToData, getAndRemoveOldData} = require("./helpers");
 const {assignId, pushId} = require("../utils/dbSupport");
 
-async function newMigrateEdition() {
+async function migrateEdition() {
     try {
         console.log("- MIGRATING EDITION...");
 
@@ -38,4 +38,4 @@ async function newMigrateEdition() {
     }
 }
 
-module.exports = newMigrateEdition;
+module.exports = migrateEdition;
