@@ -15,17 +15,17 @@ exports.create = async(req, res, next) => {
             let name = `${email.split("@")[0]}-croom`;
 
             // Create the chat room
-            let createdChat = await db.Room.create({name, user_id});
+            let createdChat = await db.Chat.create({name, user_id});
 
             // Create the message and push id to chat
-            let createdMessage = await db.Message.create({...req.body, createdChat._id});
+            let createdMessage = await db.Message.create({...req.body, chat_id: createdChat._id});
             createdChat.message_id.push(createdMessage._id);
             await createdChat.save();
 
             return res.status(200).json(createdMessage);
         } else {
             // Create the message and push id to chat
-            let createdMessage = await db.Message.create({...req.body, foundChat._id});
+            let createdMessage = await db.Message.create({...req.body, chat_id: foundChat._id});
             foundChat.message_id.push(createdMessage._id);
             await foundChat.save();
 

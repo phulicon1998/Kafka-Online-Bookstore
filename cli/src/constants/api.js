@@ -67,9 +67,14 @@ const review = {
     remove: (edition_id, review_id) => ["delete", `/api/editions/${edition_id}/reviews/${review_id}`]
 }
 
+const message = {
+    get: user_id => ["get", `/api/user/${user_id}/messages`],
+    create: user_id => ["post", `/api/user/${user_id}/messages`]
+}
+
 export default {
     genre, author, user,
     publisher, book, provider,
     shipment, order, edition,
-    review
+    review, message
 };

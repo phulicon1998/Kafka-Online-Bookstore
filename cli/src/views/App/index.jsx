@@ -12,6 +12,7 @@ import Provider from "./Provider";
 import Edition from "./Edition";
 import Order from "./ManageOrder";
 import CreateEdition from "./Edition/Create";
+import Chat from "./Chat/index";
 
 function AppRoutes(props) {
     const url = props.match.url;
@@ -79,6 +80,14 @@ function AppRoutes(props) {
                     path={`${url}/orders`}
                     redirectPath="/app/dashboard"
                     component={Order}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/chat`}
+                    redirectPath="/app/dashboard"
+                    component={Chat}
                     access={[
                         "ADMIN_PERMISSION",
                     ]}

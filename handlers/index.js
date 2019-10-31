@@ -9,3 +9,5 @@ module.exports.Provider = require("./h-provider");
 module.exports.Edition = require("./h-edition");
 module.exports.Shipment = require("./h-shipment");
 module.exports.Order = require("./h-order");
+module.exports.Chat = require("./h-chat");
+module.exports.Message = require("./h-message");
