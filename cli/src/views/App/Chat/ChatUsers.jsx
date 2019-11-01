@@ -13,12 +13,7 @@ const ChatUsers = ({updateSearchChatUser, searchChatUser, onSelectUser, ...state
 
         <div className="gx-chat-sidenav-header">
             <div className="gx-chat-user-hd">
-                <div
-                    className="gx-chat-avatar gx-mr-3"
-                    onClick={() => {
-                        this.setState({ userState: 2 });
-                    }}
-                >
+                <div className="gx-chat-avatar gx-mr-3">
                     <div className="gx-status-pos">
                         <Avatar
                             id="avatar-button"
@@ -54,25 +49,28 @@ const ChatUsers = ({updateSearchChatUser, searchChatUser, onSelectUser, ...state
             {/*<AppBar position="static" className="no-shadow chat-tabs-header">*/}
             <Tabs className="gx-tabs-half" defaultActiveKey="1">
                 <TabPane label={<IntlMessages id="chat.chatUser"/>} tab={<IntlMessages id="chat.chatUser"/>} key="1">
-                <CustomScrollbars className="gx-chat-sidenav-scroll-tab-1">
-                    {state.chatUsers.length === 0 ?
-                        <div className="gx-p-5">{state.userNotFound}</div>
-                        :
-                        <ChatUserList chatUsers={state.chatUsers}
-                            selectedSectionId={state.selectedSectionId}
-                            onSelectUser={onSelectUser}/>
+                    <CustomScrollbars className="gx-chat-sidenav-scroll-tab-1">
+                        {
+                            state.chatUsers.length === 0
+                            ? <div className="gx-p-5">{state.userNotFound}</div>
+                            : <ChatUserList
+                                chatUsers={state.chatUsers}
+                                selectedSectionId={state.selectedSectionId}
+                                onSelectUser={onSelectUser}
+                            />
                         }
                     </CustomScrollbars>
                 </TabPane>
                 <TabPane label={<IntlMessages id="chat.contacts"/>} tab={<IntlMessages id="chat.contacts"/>} key="2">
-                <CustomScrollbars className="gx-chat-sidenav-scroll-tab-2">
-                    {
-                        state.contactList.length === 0 ?
-                        <div className="gx-p-5">{state.userNotFound}</div>
-                        :
-                        <ContactList contactList={state.contactList}
-                            selectedSectionId={state.selectedSectionId}
-                            onSelectUser={onSelectUser}/>
+                    <CustomScrollbars className="gx-chat-sidenav-scroll-tab-2">
+                        {
+                            state.contactList.length === 0
+                            ? <div className="gx-p-5">{state.userNotFound}</div>
+                            : <ContactList
+                                contactList={state.contactList}
+                                selectedSectionId={state.selectedSectionId}
+                                onSelectUser={onSelectUser}
+                            />
                         }
                     </CustomScrollbars>
                 </TabPane>

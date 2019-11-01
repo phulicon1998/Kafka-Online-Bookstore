@@ -28,7 +28,7 @@ const Communication = ({message, selectedUser, conversation, onToggleDrawer, _ha
 
         <CustomScrollbars className="gx-chat-list-scroll">
             <Conversation
-                conversationData={conversation.conversationData}
+                conversationData={conversation}
                 selectedUser={selectedUser}
             />
         </CustomScrollbars>
