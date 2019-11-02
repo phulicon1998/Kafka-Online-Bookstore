@@ -42,7 +42,7 @@ const Communication = ({message, selectedUser, conversation, onToggleDrawer, _ha
                             className="gx-border-0 ant-input gx-chat-textarea"
                             onKeyUp={_handleKeyPress}
                             onChange={updateMessageValue}
-                            value={message}
+                            value={message.text}
                             placeholder="Type and hit enter to send message"
                         />
                     </div>

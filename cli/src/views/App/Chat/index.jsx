@@ -1,55 +1,64 @@
 import React, {useState, useEffect, useCallback} from "react";
-// import {Button, Drawer} from "antd";
-// import Moment from "moment";
-
-// import conversationList from "./data/conversationList";
+import {Button, Drawer} from "antd";
 import users from "./data/chatUsers";
-// import IntlMessages from "util/IntlMessages";
+import IntlMessages from "util/IntlMessages";
 import CircularProgress from "components/CircularProgress/index";
-
+import {apiCall} from "constants/apiCall";
+import api from "constants/api";
 import Communication from "./Communication";
-// import AppUsersInfo from "./AppUsersInfo";
 import ChatUsers from "./ChatUsers";
+import MESSAGE from "constants/messageTypes";
+import moment from "moment";
+import {
+    isPermit,
+    CUSTOMER_PERMISSION
+} from "constants/credentialControl";
+import {connect} from "react-redux";
+
 import ioClient from "socket.io-client";
 const socket = ioClient("localhost:8080");
 
-// const MODE = {
-//     CHAT: 1,
-//     CONTACT: 2
-// }
-
-export default function Chat(props) {
+function Chat({userHas, ...props}) {
+    const DEFAULT_MESSAGE = {
+        type: getSenderType(),
+        status: 0,
+        text: ""
+    }
     // const [searchChatUser, setSearchChatUser] = useState("");
     // const [contacts, setContacts] = useState(users.filter((user) => !user.recent));
     // const [chats, setChats] = useState(users.filter((user) => user.recent));
 
     const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState({
-        _id: false,
-        status: 0,
-        text: ""
-    });
+    const [message, setMessage] = useState(DEFAULT_MESSAGE);
     const [conversation, setConversation] = useState(null);
+    const [conversations, setConversations] = useState([]);
 
     // const [selectedUser, setSelectedUser] = useState(null);
     // const [selectedSectionId, setSelectedSectionId] = useState("");
-    // const [message, setMessage] = useState({
-    //     type: "sent",
-    //     message: "",
-    //     sentAt: Moment().format('hh:mm:ss A')
-    // });
     // const [conversations, setConversations] = useState(conversationList);
-    // const [conversation, setConversation] = useState(null);
-    // const [drawerState, setDrawerState] = useState(false);
+    const [drawerState, setDrawerState] = useState(false);
     // const [mode, setMode] = useState(MODE.CHAT);
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
+
+    function getSenderType() {
+        return userHas(CUSTOMER_PERMISSION) ? MESSAGE.CUSTOMER : MESSAGE.SYSTEM
+    }
+
+    const load = useCallback(async() => {
+        let conversationList = await apiCall(...api.message.get());
+        setConversations(conversationList);
+        setLoader(false);
+    }, []);
+
+    useEffect(() => {
+        load();
+    }, [load])
 
     const listenSocket = useCallback(() => {
         let conversationName = "a";
         socket.emit("join", conversationName);
 
         socket.on("new message", function(message) {
-            console.log(message);
             setMessages(prev => [...prev, message]);
         })
     }, [])
@@ -88,42 +97,16 @@ export default function Chat(props) {
     };
 
     function submitComment() {
-        // if (message.message.length > 0) {
-        //     // Create the message
-        //     let sentMessage = {
-        //         ...message,
-        //         sentAt: Moment().format('hh:mm:ss A')
-        //     }
-        //
-        //     // Create the updated conversations
-        //     let updatedConversationData = [
-        //         ...conversation.conversationData,
-        //         sentMessage
-        //     ]
-        //
-        //     // Update the current conversations
-        //     setConversation(prev => ({
-        //         ...prev,
-        //         conversationData: updatedConversationData
-        //     }))
-        //
-        //     setConversations(conversations.map(convers => {
-        //         if (convers.id === conversation.id) {
-        //             return {...conversation, conversationData: updatedConversationData};
-        //         } else {
-        //             return convers;
-        //         }
-        //     }))
-        //     setMessage("");
-        // }
         if(message.text.length > 0) {
-
+            let sentMessage = {...message, createdAt: moment()};
+            socket.emit("create", sentMessage);
+            setMessage(DEFAULT_MESSAGE);
         }
     }
 
-    // function onToggleDrawer() {
-    //     setDrawerState(prev => !prev);
-    // }
+    function onToggleDrawer() {
+        setDrawerState(prev => !prev);
+    }
 
     // function onSelectUser(user) {
     //     setLoader(true);
@@ -139,8 +122,8 @@ export default function Chat(props) {
     function showCommunication() {
         return (
             <div className="gx-chat-box">
-                {/* {
-                    selectedUser === null
+                {
+                    conversation === null
                     ? <div className="gx-comment-box">
                         <div className="gx-fs-80">
                             <i className="icon icon-chat gx-text-muted"/>
@@ -158,24 +141,15 @@ export default function Chat(props) {
 
                     </div>
                     : <Communication
-                        selectedUser={selectedUser}
-                        conversation={conversation}
-                        message={message.messsage}
+                        selectedUser={users[0]}
+                        conversation={messages}
+                        message={message}
                         // onToggleDrawer={onToggleDrawer}
                         _handleKeyPress={_handleKeyPress}
                         updateMessageValue={updateMessageValue}
                         submitComment={submitComment}
                     />
-                } */}
-                <Communication
-                    selectedUser={users[0]}
-                    conversation={messages}
-                    message={message.text}
-                    // onToggleDrawer={onToggleDrawer}
-                    _handleKeyPress={_handleKeyPress}
-                    updateMessageValue={updateMessageValue}
-                    submitComment={submitComment}
-                />
+                }
             </div>
         )
     }
@@ -222,3 +196,12 @@ export default function Chat(props) {
         </div>
     )
 }
+
+function mapState({user}) {
+    return {
+        user: user.data,
+        userHas: isPermit(user.data.role.map(v => v.code))
+    }
+}
+
+export default connect(mapState, null)(Chat);

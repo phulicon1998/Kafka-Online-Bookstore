@@ -4,58 +4,88 @@ import {connect} from "react-redux";
 import api from "constants/api";
 import ioClient from "socket.io-client";
 import moment from "moment";
+import {
+    isPermit,
+    CUSTOMER_PERMISSION
+} from "constants/credentialControl";
+import MESSAGE from "constants/messageTypes";
 
 const socket = ioClient("localhost:8080");
 
-function Message({name="unknow", text, status, isView}) {
-    let sttText = "sending..."
-    if(status === 1) sttText = "sent";
-    if(status === 2) sttText = "received";
-    return <p><b>{name}:</b>{text} {isView || `| ${sttText}`}</p>
+function Message({text, status, type}) {
+    let icon = <i className="far fa-circle"/>
+    if(status === 1) icon = <i className="fas fa-circle"/>;
+    // if(status === 2) icon = "viewed";
+    return (
+        <p style={{"textAlign": `${type === MESSAGE.CUSTOMER ? "right" : "left"}`}}>
+            <b>{type === MESSAGE.CUSTOMER ? "Customer" : "System"}:</b> {text} {icon}
+        </p>
+    )
 }
 
-function ChatBox({user}) {
-    const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState({
-        _id: false,
+function ChatBox({user, userHas}) {
+    const DEFAULT_MESSAGE = {
+        type: getSenderType(),
         status: 0,
         text: ""
-    });
+    }
+    const [messages, setMessages] = useState([]);
+    const [message, setMessage] = useState(DEFAULT_MESSAGE);
     const [conversation, setConversation] = useState(null);
 
     const listenSocket = useCallback(() => {
-        // let conversationName = conversation ? conversation.name : `${user.email.split("@")[0]}-croom`;
-        let conversationName = "a";
-        socket.emit("join", conversationName);
+        // Connect to user conversation
+        let name = conversation ? conversation.name : `${user.email.split("@")[0]}-croom`;
+        socket.emit("join", {
+            name,
+            user_id: userHas(CUSTOMER_PERMISSION) ? user._id : false
+        });
 
         socket.on("new message", function(message) {
-
+            setMessages(prev => prev.map(v => {
+                return {
+                    ...v,
+                    status: v.status === 0 ? 1 : v.status
+                }
+            }))
         })
 
-    }, [conversation, user.email]);
+        socket.on("create conversation", function(conversationData){
+            setConversation(conversationData);
+        })
+    }, [conversation, user._id, user.email, userHas]);
 
     useEffect(() => {
         listenSocket();
     }, [listenSocket])
 
     const load = useCallback(async() => {
-        let conversationData = await apiCall(...api.message.get(user._id));
+        let conversationData = await apiCall(...api.message.getOne(user._id));
         if(conversationData) {
             const {message_id, ...conversationInfo} = conversationData;
             setConversation(conversationInfo);
             setMessages(message_id);
         }
-    }, [setMessages, user._id]);
+    }, [user._id]);
 
     useEffect(() => {
         load();
     }, [load])
 
+    function getSenderType() {
+        return userHas(CUSTOMER_PERMISSION) ? MESSAGE.CUSTOMER : MESSAGE.SYSTEM
+    }
+
     function submit(e) {
         e.preventDefault();
-        let sentMessage = {...message, createdAt: moment()};
+        let sentMessage = {
+            ...message,
+            conversation_id: conversation._id,
+            createdAt: moment()
+        };
         setMessages(prev => [...prev, sentMessage]);
         socket.emit("create", sentMessage);
+        setMessage(DEFAULT_MESSAGE);
     }
 
     function hdChange(e) {
@@ -86,7 +116,10 @@ function ChatBox({user}) {
 }
 
 function mapState({user}) {
-    return {user: user.data}
+    return {
+        user: user.data,
+        userHas: isPermit(user.data.role.map(v => v.code))
+    }
 }
 
 export default connect(mapState, null)(ChatBox);

@@ -1,16 +1,11 @@
 const mongoose = require("mongoose");
 
-const SYSTEM_MSG = 0;
-
 var messageSchema = new mongoose.Schema({
-	type: {
-		type: Number,
-		default: SYSTEM_MSG
-	},
+	type: Number,
 	text: String,
-	chat_id: {
+	conversation_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "Chat"
+		ref: "Conversation"
 	},
 	isView: {
 		type: Boolean,

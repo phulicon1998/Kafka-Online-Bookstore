@@ -68,7 +68,8 @@ const review = {
 }
 
 const message = {
-    get: user_id => ["get", `/api/user/${user_id}/messages`],
+    getOne: user_id => ["get", `/api/user/${user_id}/messages`],
+    get: () => ["get", `/api/messages`],
     create: user_id => ["post", `/api/user/${user_id}/messages`]
 }
 

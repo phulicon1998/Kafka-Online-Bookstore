@@ -7,9 +7,9 @@ export const GUEST_PERMISSION = "004";
 // Secondary permission
 export const PROVIDER_PERMISSION = "005";
 
-export function isPermit({role = GUEST_PERMISSION} = {}){
+export function isPermit(role = [GUEST_PERMISSION]){
     let uCode = role;
     return function(vCode) {
-        return uCode === vCode;
+        return uCode.indexOf(vCode) !== -1;
     }
 }
