@@ -3,7 +3,7 @@ const db = require("../models");
 exports.get = async(req, res, next) => {
     try {
         const {user_id} = req.params;
-        let conversations = await db.Conversation.find().populate("message_id").lean().exec();
+        let conversations = await db.Conversation.find().populate("user_id").populate("message_id").lean().exec();
         return res.status(200).json(conversations);
     } catch (e) {
         return next(e);

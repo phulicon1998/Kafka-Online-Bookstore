@@ -1,16 +1,30 @@
 import React from "react";
 import {Avatar, Tabs} from "antd";
 import SearchBox from "components/SearchBox";
-import IntlMessages from "util/IntlMessages";
 import CustomScrollbars from "util/CustomScrollbars";
-import ContactList from "components/chat/ContactList/index";
-import ChatUserList from "components/chat/ChatUserList";
+import ConversationCell from "components/Shop/Cell/ConversationCell";
 
 const TabPane = Tabs.TabPane;
 
-const ChatUsers = ({updateSearchChatUser, searchChatUser, onSelectUser, ...state}) => (
-    <div className="gx-chat-sidenav-main">
+const ConversationList = ({conversations, conversation, selectConversation}) => {
+    return (
+        <div className="gx-chat-user">
+            {
+                conversations.map((con, i) => (
+                    <ConversationCell
+                        {...con}
+                        selected={conversation._id === con.user_id._id || false}
+                        onSelect={() => selectConversation(con)}
+                        key={i}
+                    />
+                ))
+            }
+        </div>
+    )
+};
 
+const ChatUsers = ({searchCustomer, customer, selectConversation, conversation, ...state}) => (
+    <div className="gx-chat-sidenav-main">
         <div className="gx-chat-sidenav-header">
             <div className="gx-chat-user-hd">
                 <div className="gx-chat-avatar gx-mr-3">
@@ -39,44 +53,40 @@ const ChatUsers = ({updateSearchChatUser, searchChatUser, onSelectUser, ...state
                 <SearchBox
                     styleName="gx-chat-search-bar gx-lt-icon-search-bar-lg"
                     placeholder="Search or start new chat"
-                    onChange={updateSearchChatUser}
-                    value={searchChatUser}
+                    onChange={searchCustomer}
+                    value={customer}
                 />
             </div>
         </div>
-
         <div className="gx-chat-sidenav-content">
-            {/*<AppBar position="static" className="no-shadow chat-tabs-header">*/}
-            <Tabs className="gx-tabs-half" defaultActiveKey="1">
-                <TabPane label={<IntlMessages id="chat.chatUser"/>} tab={<IntlMessages id="chat.chatUser"/>} key="1">
+            <Tabs className="gx-tabs-half" defaultActiveKey="2">
+                <TabPane label="Handling" tab="Handling" key="1">
                     <CustomScrollbars className="gx-chat-sidenav-scroll-tab-1">
                         {
-                            state.chatUsers.length === 0
-                            ? <div className="gx-p-5">{state.userNotFound}</div>
-                            : <ChatUserList
-                                chatUsers={state.chatUsers}
-                                selectedSectionId={state.selectedSectionId}
-                                onSelectUser={onSelectUser}
+                            state.handlers.length === 0
+                            ? <div className="gx-p-5">No user found</div>
+                            : <ConversationList
+                                conversations={state.handlers}
+                                conversation={conversation}
+                                selectConversation={selectConversation}
                             />
                         }
                     </CustomScrollbars>
                 </TabPane>
-                <TabPane label={<IntlMessages id="chat.contacts"/>} tab={<IntlMessages id="chat.contacts"/>} key="2">
-                    <CustomScrollbars className="gx-chat-sidenav-scroll-tab-2">
+                <TabPane label="Waiting" tab="Waiting" key="2">
+                    <CustomScrollbars className="gx-chat-sidenav-scroll-tab-1">
                         {
-                            state.contactList.length === 0
-                            ? <div className="gx-p-5">{state.userNotFound}</div>
-                            : <ContactList
-                                contactList={state.contactList}
-                                selectedSectionId={state.selectedSectionId}
-                                onSelectUser={onSelectUser}
+                            state.waiters.length === 0
+                            ? <div className="gx-p-5">No waiting message found.</div>
+                            : <ConversationList
+                                conversations={state.waiters}
+                                conversation={conversation}
+                                selectConversation={selectConversation}
                             />
                         }
                     </CustomScrollbars>
                 </TabPane>
             </Tabs>
-
-
         </div>
     </div>
 );

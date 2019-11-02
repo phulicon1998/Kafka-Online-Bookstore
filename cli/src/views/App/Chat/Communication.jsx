@@ -3,7 +3,7 @@ import {Avatar} from "antd";
 import CustomScrollbars from "util/CustomScrollbars";
 import Conversation from "components/chat/Conversation/index";
 
-const Communication = ({message, selectedUser, conversation, onToggleDrawer, _handleKeyPress, updateMessageValue, submitComment}) => (
+const Communication = ({message, selectedUser, messages, onToggleDrawer, _handleKeyPress, updateMessageValue, submitComment}) => (
     <div className="gx-chat-main">
         <div className="gx-chat-main-header">
             <span className="gx-d-block gx-d-lg-none gx-chat-btn">
@@ -15,20 +15,20 @@ const Communication = ({message, selectedUser, conversation, onToggleDrawer, _ha
             <div className="gx-chat-main-header-info">
                 <div className="gx-chat-avatar gx-mr-2">
                     <div className="gx-status-pos">
-                        <Avatar src={selectedUser.thumb}
+                        <Avatar src={selectedUser.avatar.link}
                             className="gx-rounded-circle gx-size-60"
                             alt=""
                         />
-                        <span className={`gx-status gx-${selectedUser.status}`}/>
+                        <span className={`gx-status ${"gx-online"}}`}/>
                     </div>
                 </div>
-                <div className="gx-chat-contact-name">{selectedUser.name}</div>
+                <div className="gx-chat-contact-name">{selectedUser.username}</div>
             </div>
         </div>
 
         <CustomScrollbars className="gx-chat-list-scroll">
             <Conversation
-                conversationData={conversation}
+                conversationData={messages}
                 selectedUser={selectedUser}
             />
         </CustomScrollbars>

@@ -24,20 +24,13 @@ function Chat({userHas, ...props}) {
         status: 0,
         text: ""
     }
-    // const [searchChatUser, setSearchChatUser] = useState("");
-    // const [contacts, setContacts] = useState(users.filter((user) => !user.recent));
-    // const [chats, setChats] = useState(users.filter((user) => user.recent));
-
+    const [searchCustomer, setSearchCustomer] = useState("abc");
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState(DEFAULT_MESSAGE);
-    const [conversation, setConversation] = useState(null);
-    const [conversations, setConversations] = useState([]);
-
-    // const [selectedUser, setSelectedUser] = useState(null);
-    // const [selectedSectionId, setSelectedSectionId] = useState("");
-    // const [conversations, setConversations] = useState(conversationList);
+    const [conversation, setConversation] = useState({_id: null});
+    const [waiterChat, setWaiterChat] = useState([]);
+    const [handlerChat, setHandlerChat] = useState([]);
     const [drawerState, setDrawerState] = useState(false);
-    // const [mode, setMode] = useState(MODE.CHAT);
     const [loader, setLoader] = useState(true);
 
     function getSenderType() {
@@ -45,8 +38,8 @@ function Chat({userHas, ...props}) {
     }
 
     const load = useCallback(async() => {
-        let conversationList = await apiCall(...api.message.get());
-        setConversations(conversationList);
+        let waiterList = await apiCall(...api.message.get());
+        setWaiterChat(waiterList);
         setLoader(false);
     }, []);
 
@@ -75,22 +68,10 @@ function Chat({userHas, ...props}) {
         }));
     }
 
-    // function filterContact(userName) {
-    //     if (userName === '') return users.filter(user => !user.recent);
-    //     return users.filter((user) => !user.recent && user.name.toLowerCase().indexOf(userName.toLowerCase()) > -1);
-    // };
-    //
-    // function filterUsers(userName) {
-    //     if (userName === '') return users.filter(user => user.recent);
-    //     return users.filter(user => user.recent && user.name.toLowerCase().indexOf(userName.toLowerCase()) > -1);
-    // };
-
-    // hd change search chat user
-    // function updateSearchChatUser(e) {
-    //     setSearchChatUser(e.target.value);
-    //     setContacts(filterContact(e.target.value));
-    //     setChats(filterUsers(e.target.value));
-    // }
+    function filterUsers(userName) {
+        if (userName === '') return users.filter(user => user.recent);
+        return users.filter(user => user.recent && user.name.toLowerCase().indexOf(userName.toLowerCase()) > -1);
+    };
 
     function _handleKeyPress(e) {
         if (e.key === 'Enter') submitComment();
@@ -108,22 +89,20 @@ function Chat({userHas, ...props}) {
         setDrawerState(prev => !prev);
     }
 
-    // function onSelectUser(user) {
-    //     setLoader(true);
-    //     setSelectedUser(user);
-    //     setSelectedSectionId(user.id);
-    //     setDrawerState(props.drawerState);
-    //     setConversation(conversations.find(data => data.id === user.id));
-    //     setTimeout(() => {
-    //         setLoader(false);
-    //     }, 1500);
-    // };
+    function selectConversation(selectCon) {
+        if(selectCon._id !== conversation._id) {
+            setConversation(selectCon);
+            setHandlerChat(prev => [selectCon, ...prev]);
+            setWaiterChat(prev => prev.filter(d => d._id !== selectCon._id));
+            setMessages(selectCon.message_id);
+        }
+    };
 
     function showCommunication() {
         return (
             <div className="gx-chat-box">
                 {
-                    conversation === null
+                    conversation._id === null
                     ? <div className="gx-comment-box">
                         <div className="gx-fs-80">
                             <i className="icon icon-chat gx-text-muted"/>
@@ -138,11 +117,10 @@ function Chat({userHas, ...props}) {
                         >
                             {<IntlMessages id="chat.selectContactChat"/>}
                         </Button>
-
                     </div>
                     : <Communication
-                        selectedUser={users[0]}
-                        conversation={messages}
+                        selectedUser={conversation.user_id}
+                        messages={messages}
                         message={message}
                         // onToggleDrawer={onToggleDrawer}
                         _handleKeyPress={_handleKeyPress}
@@ -154,34 +132,40 @@ function Chat({userHas, ...props}) {
         )
     }
 
+    function hdSearch(e) {
+        setSearchCustomer(e.target.value);
+        // setContacts(filterContact(e.target.value));
+        // setChats(filterUsers(e.target.value));
+    }
+
     return (
         <div className="gx-main-content">
             <div className="gx-app-module gx-chat-module">
                 <div className="gx-chat-module-box">
                     <div className="gx-d-block gx-d-lg-none">
-                        {/* <Drawer
+                        <Drawer
                             placement="left"
                             closable={false}
                             visible={drawerState}
                             onClose={onToggleDrawer}>
                             <ChatUsers
-                                contactList={contacts}
-                                chatUsers={chats}
-                                updateSearchChatUser={updateSearchChatUser}
-                                searchChatUser={searchChatUser}
-                                onSelectUser={onSelectUser}
+                                waiters={waiterChat}
+                                handlers={handlerChat}
+                                searchCustomer={hdSearch}
+                                customer={searchCustomer}
+                                selectConversation={selectConversation}
+                                conversation={conversation}
                             />
-                        </Drawer> */}
+                        </Drawer>
                     </div>
                     <div className="gx-chat-sidenav gx-d-none gx-d-lg-flex">
                         <ChatUsers
-                            // chatUsers={chats}
-                            // contactList={contacts}
-                            chatUsers={[]}
-                            contactList={[]}
-                            // updateSearchChatUser={updateSearchChatUser}
-                            // searchChatUser={searchChatUser}
-                            // onSelectUser={onSelectUser}
+                            waiters={waiterChat}
+                            handlers={handlerChat}
+                            searchCustomer={hdSearch}
+                            customer={searchCustomer}
+                            selectConversation={selectConversation}
+                            conversation={conversation}
                         />
                     </div>
                     {

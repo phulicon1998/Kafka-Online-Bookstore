@@ -7,7 +7,7 @@ const ReceivedMessageCell = ({conversation, user}) => {
         <div className="gx-chat-item">
             <Avatar
                 className="gx-size-40 gx-align-self-end"
-                src={user.thumb}
+                src={user.avatar.link}
                 alt=""
             />
             <div className="gx-bubble-block">
