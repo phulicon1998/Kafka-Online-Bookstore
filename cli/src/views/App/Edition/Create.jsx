@@ -258,7 +258,7 @@ function CreateEdition({notify, ...props}) {
                                             onChange={hdChange}
                                         />
                                     </FormItem>
-                                    <FormItem label="Price's Discount">
+                                    <FormItem label="Edition Quality">
                                         <Select
                                             className="gx-mr-3 gx-mb-3"
                                             value={edition.quality}

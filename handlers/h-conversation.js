@@ -4,7 +4,12 @@ exports.get = async(req, res, next) => {
     try {
         const {user_id} = req.params;
         let conversations = await db.Conversation.find().populate("user_id").populate("message_id").lean().exec();
-        return res.status(200).json(conversations);
+
+        // Gather conversations which have unseen messages
+        let hasMsgConversations = conversations.filter(v => v.message_id.length > 0);
+        let unseenMsgConversations = hasMsgConversations.filter(v => v.message_id.some(msg => !msg.isView));
+
+        return res.status(200).json(unseenMsgConversations);
     } catch (e) {
         return next(e);
     }

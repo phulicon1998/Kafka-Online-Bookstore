@@ -14,6 +14,7 @@ const author = {
 
 const user = {
     auth: type => ["post", `/api/user/${type}`],
+    create: userType => ["post", `/api/user/${userType}`],
     getOne: user_id => ["get", `/api/user/${user_id}`],
     activate: user_id => ["put", `/api/user/${user_id}/activate`]
 }
