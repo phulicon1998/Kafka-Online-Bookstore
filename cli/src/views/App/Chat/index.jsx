@@ -68,10 +68,10 @@ function Chat({userHas, ...props}) {
         }));
     }
 
-    function filterUsers(userName) {
-        if (userName === '') return users.filter(user => user.recent);
-        return users.filter(user => user.recent && user.name.toLowerCase().indexOf(userName.toLowerCase()) > -1);
-    };
+    // function filterUsers(userName) {
+    //     if (userName === '') return users.filter(user => user.recent);
+    //     return users.filter(user => user.recent && user.name.toLowerCase().indexOf(userName.toLowerCase()) > -1);
+    // };
 
     function _handleKeyPress(e) {
         if (e.key === 'Enter') submitComment();

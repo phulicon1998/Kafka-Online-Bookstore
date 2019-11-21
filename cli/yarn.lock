@@ -10092,6 +10092,14 @@ react-flip-move@^3.0.2:
   resolved "https://registry.yarnpkg.com/react-flip-move/-/react-flip-move-3.0.3.tgz#3065b0b9e622ae73953aba725f8feed8e4643667"
   integrity sha512-gR2jvjUgIXI7ceFWJkr8owX4vKhV0IJoXIf/Dt7gESFe5OKiSz2H6d10mKTW8fN134NDI16J4HgEgq9pKqJd5A==
 
+react-google-login@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-5.0.7.tgz#6f4f117a234c6eca3132773ad051d1a36c95204d"
+  integrity sha512-e/OU8PcvtVetD73hZ9/g4k4K3GrOHb0bTXU1i2xZBzSCCfDY/QW6M7oQpwvPwyZ3C3clz0YWUFJkxX65PSdgQg==
+  dependencies:
+    "@types/react" "*"
+    prop-types "^15.6.0"
+
 react-google-maps@^9.4.5:
   version "9.4.5"
   resolved "https://registry.yarnpkg.com/react-google-maps/-/react-google-maps-9.4.5.tgz#920c199bdc925e0ce93880edffb09428d263aafa"
@@ -10407,6 +10415,11 @@ react-star-rating-component@^1.4.1:
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.1"
+
+react-stripe-checkout@^2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/react-stripe-checkout/-/react-stripe-checkout-2.6.3.tgz#3173a870b04e5a3c321a06d24cd53c6030111c45"
+  integrity sha1-MXOocLBOWjwyGgbSTNU8YDARHEU=
 
 react-transition-group@^1.2.0:
   version "1.2.1"

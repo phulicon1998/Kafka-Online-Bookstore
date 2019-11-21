@@ -9,7 +9,6 @@ const {Option} = Select;
 const FormItem = Form.Item;
 const DEFAULT_ACCOUNT = {
     email: "",
-    password: "",
     role: SALESTAFF_PERMISSION
 }
 
@@ -19,8 +18,8 @@ function Account({notify, ...props}) {
 
     const load = useCallback(async() => {
         try {
-            let data = await apiCall(...api.account.get());
-            setStaffs(data);
+            // let data = await apiCall(...api.account.get());
+            // setStaffs(data);
         } catch(err) {
             notify("error", "Data is not loaded");
         }
@@ -60,31 +59,23 @@ function Account({notify, ...props}) {
                         wrapperCol={{xs: 24, sm: 10}}
                     >
                         <Input
-                            placeholder="Enter the name here..."
-                            name="name"
+                            placeholder="Enter the email here..."
+                            name="email"
                             value={account.email}
                             onChange={hdChange}
                         />
                     </FormItem>
                     <FormItem
-                        label="Account Password"
+                        label="Edition Quality"
                         labelCol={{xs: 24, sm: 6}}
                         wrapperCol={{xs: 24, sm: 10}}
                     >
-                        <Input
-                            placeholder="Enter the description here..."
-                            name="desc"
-                            value={account.password}
-                            onChange={hdChange}
-                        />
-                    </FormItem>
-                    <FormItem label="Edition Quality">
                         <Select
                             className="gx-mr-3 gx-mb-3"
                             value={account.role}
                             onChange={hdChangeRole}
                         >
-                            <Option value={SALESTAFF_PERMISSION}>Sale staff</Option>
+                            <Option value={SALESTAFF_PERMISSION}>Sale Staff</Option>
                             <Option value={MANAGER_PERMISSION}>Manager</Option>
                         </Select>
                     </FormItem>

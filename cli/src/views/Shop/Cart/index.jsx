@@ -3,60 +3,22 @@ import {connect} from "react-redux";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
 import {sendEmptyCart} from "appRedux/actions/cart";
+import StripeCheckout from "react-stripe-checkout";
 
 // comps
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import TitleBar from "components/Shop/Bar/TitleBar";
-import CartBook from "containers/Product/CartBook";
 import PricePanel from "components/Shop/Panel/PricePanel";
-import SubmitCart from "./SubmitCart";
 
-const EmptyCart = ({back, msg}) => (
-    <div className="empty-cart">
-        <i className="fas fa-cart-arrow-down fa-6x"></i>
-        <p>{msg}</p>
-        {back && <a href="/store">Back to store</a>}
-    </div>
-);
+// views
+import CartList from "./CartList";
+import SubmitCart from "./SubmitCart";
 
 const EmptyWish = ({back, msg}) => (
     <div className="empty-wish">
         <p>{msg}</p>
     </div>
 );
-
-const CartList = ({empty, carts}) => (
-    <div>
-        <TitleBar title="Your cart" icon="fas fa-list-ul"/>
-        {
-            !empty
-            ? (
-                <div className="cart-table">
-                    <div className="row">
-                        <div className="col-md-6">Books</div>
-                        <div className="col-md-3">Price</div>
-                        <div className="col-md-3">Amount</div>
-                    </div>
-                    <div className="list">
-                        {
-                            carts.map((v, i) => (
-                                <CartBook
-                                    {...v}
-                                    img={v.book_id.image.url}
-                                    name={v.book_id.name}
-                                    author={v.authors.map(v => v.name).toString()}
-                                    quantity={v.quantity}
-                                    key={i}
-                                />
-                            ))
-                        }
-                    </div>
-                </div>
-            )
-            : <EmptyCart msg="You don't have any books inside cart yet" back/>
-        }
-    </div>
-)
 
 const DEFAULT_ORDER = {
     money: 0,
@@ -68,6 +30,11 @@ const DEFAULT_ORDER = {
 	phone: "",
 }
 
+const STEPS = {
+    LIST: 1,
+    SUBMIT: 2
+}
+
 function Cart({cart, sendEmptyCart, user, ...props}) {
     const [carts, setCarts] = useState([]);
     const [subMoney, setSubMoney] = useState({
@@ -75,7 +42,7 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
         cover: 0
     })
     const [order, setOrder] = useState(DEFAULT_ORDER);
-    const [submitStep, toSubmitStep] = useState(false);
+    const [step, toStep] = useState(STEPS.LIST);
 
     const load = useCallback(async() => {
         let cartData = await apiCall(...api.edition.getInCart(), cart);
@@ -109,10 +76,14 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
 
     useEffect(() => {
         calcTotalPrice();
-    }, [calcTotalPrice])
+    }, [calcTotalPrice]);
 
     function eachPrice({price, quantity, discount}) {
         return price * quantity * (100 - discount) / 100;
+    }
+
+    function getBackToken(token) {
+        console.log(token);
     }
 
     function hdChangeCover(cartItem_id) {
@@ -174,9 +145,11 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
             <div className="container">
                 <div className="row">
                     <div className={cartIsEmpty ? "col-md-12" : "col-md-8"}>
-                        { submitStep || <CartList empty={cartIsEmpty} carts={carts}/> }
                         {
-                            submitStep && <SubmitCart
+                            step === STEPS.LIST && <CartList empty={cartIsEmpty} carts={carts}/>
+                        }
+                        {
+                            step === STEPS.SUBMIT && <SubmitCart
                                 carts={carts}
                                 user={user}
                                 order={order}
@@ -194,17 +167,26 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
                                 total={order.money}
                             />
                             {
-                                submitStep || <div className="cart-button">
-                                    <button onClick={() => toSubmitStep(prev => !prev)}><i className="fas fa-shopping-cart"/> Create order</button>
+                                step === STEPS.LIST && <div className="cart-button">
+                                    <button onClick={() => toStep(STEPS.SUBMIT)}><i className="fas fa-shopping-cart"/> Create order</button>
                                     <button onClick={sendEmptyCart}>Remove</button>
                                 </div>
                             }
                             {
-                                submitStep && <div className="submit-cart-button">
+                                step === STEPS.SUBMIT && <div className="submit-cart-button">
                                     <button onClick={submitOrder}>
-                                        <i className="fas fa-file"/> Submit Order
+                                        <i className="fas fa-file"/> Submit Order (COD)
                                     </button>
-                                    <button onClick={() => toSubmitStep(prev => !prev)}>
+                                    <StripeCheckout
+                                        name="Kafka Checkout"
+                                        description="Fill those below to finish payment"
+                                        amount={100}
+                                        token={getBackToken}
+                                        stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                                    >
+                                        <button className="checkout">Submit & Checkout Order</button>
+                                    </StripeCheckout>
+                                    <button onClick={() => toStep(STEPS.LIST)}>
                                         Back to cart
                                     </button>
                                 </div>
@@ -212,7 +194,7 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
                         </div>
                     }
                     {
-                        submitStep|| <div className="col-md-12">
+                        step === STEPS.LIST && <div className="col-md-12">
                             <TitleBar title="Wishlist" icon="fas fa-list-ul"/>
                             <EmptyWish msg="You don't have any favourite books yet"/>
                         </div>

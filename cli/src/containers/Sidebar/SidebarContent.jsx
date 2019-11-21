@@ -68,6 +68,17 @@ class SidebarContent extends Component {
                                         <Link to="/main/dashboard/crypto"><i className="icon icon-crypto"/>Dashboard</Link>
                                     </Menu.Item>
                                 </SubMenu>
+                                <SubMenu
+                                    key="reports"
+                                    className={this.getNavStyleSubMenuClass(navStyle)}
+                                    title={
+                                        <span><i className="icon icon-dasbhoard"/>Manage Reports</span>
+                                    }
+                                >
+                                    <Menu.Item key="main/dashboard/crypto">
+                                        <Link to="/app/"><i className="icon icon-crypto"/>Dashboard</Link>
+                                    </Menu.Item>
+                                </SubMenu>
                                 <Menu.Item key="app/genres">
                                     <Link to="/app/genres"><i className="icon icon-tag"/> Manage genres</Link>
                                 </Menu.Item>
@@ -94,6 +105,9 @@ class SidebarContent extends Component {
                                 </Menu.Item>
                                 <Menu.Item key="app/chat">
                                     <Link to="/app/chat"><i className="icon icon-product-list"/> Chat</Link>
+                                </Menu.Item>
+                                <Menu.Item key="app/accounts">
+                                    <Link to="/app/accounts"><i className="icon icon-product-list"/> Manage accounts</Link>
                                 </Menu.Item>
                             </MenuItemGroup>
                         </Menu>

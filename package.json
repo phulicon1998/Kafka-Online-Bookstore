@@ -2,10 +2,6 @@
     "name": "KafkaBook",
     "version": "1.0.0",
     "description": "",
-    "engines": {
-        "node": "8.11.2",
-        "npm": "6.10.1"
-    },
     "main": "index.js",
     "scripts": {
         "start": "nodemon index",
@@ -19,7 +15,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "bcrypt": "^3.0.6",
+        "bcrypt": "^3.0.7",
         "body-parser": "^1.19.0",
         "cloudinary": "^1.16.0",
         "concurrently": "^4.1.2",
@@ -31,10 +27,15 @@
         "mongoose": "^5.7.6",
         "multer": "^1.4.2",
         "node-emoji": "^1.10.0",
+        "node-gyp": "^6.0.1",
         "nodemailer": "^6.3.1",
-        "socket.io": "^2.3.0"
+        "nodemon": "^1.19.4",
+        "socket.io": "^2.3.0",
+        "stripe": "^7.13.0",
+        "windows-build-tools": "^5.2.2"
     },
     "devDependencies": {
+        "eslint": "^6.6.0",
         "expect.js": "^0.3.1",
         "mocha": "^6.2.2",
         "node-mocks-http": "^1.8.0"

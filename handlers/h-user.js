@@ -76,6 +76,51 @@ exports.signUp = async(req, res, next) => {
     }
 }
 
+exports.social = async(req, res, next) => {
+    try {
+        console.log(req.body);
+    } catch (e) {
+        return next(e);
+    }
+}
+
+exports.generate = async(req, res, next) => {
+    try {
+        // Create user
+        // assume that sysUser must use real email for getting the account
+        const {email, role, password} = req.body;
+        let defaultUsername = req.body.email.split("@")[0];
+        let sysUser = await db.User.create({
+            ...req.body,
+            username: defaultUsername,
+            active: true
+        });
+
+        // Add role for sysUser
+        let foundRole = await db.Role.findOne({code: role});
+        await db.UserRole.create({role_id: foundRole._id, user_id: sysUser._id});
+
+        // Send mail for user to receive their generated account
+        mail.receiveAcc(email, defaultUsername, password);
+
+        return res.status(200).json(sysUser);
+    } catch (e) {
+        return next(e);
+    }
+}
+
+exports.get = async(req, res, next) => {
+    try {
+        let accounts = await db.UserRole.find().populate("role_id").populate("user_id").lean().exec();
+        let customers = accounts.filter(a => a.role_id.code === "001");
+        let sales = accounts.filter(a => a.role_id.code === "002");
+        let managers = accounts.filter(a => a.role_id.code === "003");
+        return res.status(200).json({customers, sales, managers});
+    } catch(e) {
+        return next(e);
+    }
+}
+
 exports.activate = async(req, res, next) => {
     try {
         let user = await db.User.findById(req.params.user_id);
@@ -83,7 +128,7 @@ exports.activate = async(req, res, next) => {
             user.active = true;
             await user.save();
 
-            // add role for user
+            // Add role for user
             let role = await db.Role.findOne({code: "001"});
             await db.UserRole.create({role_id: role._id, user_id: user._id});
         }

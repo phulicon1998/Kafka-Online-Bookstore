@@ -3,10 +3,10 @@ const {spliceId} = require("../utils/dbSupport");
 const {cloudinary} = require("../utils/uploader");
 
 // QUALITY CONTROLS
-const BRAND_NEW = 1;
-const LIKE_NEW = 2;
-const GOOD = 3;
-const ACCEPTABLE = 4;
+// const BRAND_NEW = 1;
+// const LIKE_NEW = 2;
+// const GOOD = 3;
+// const ACCEPTABLE = 4;
 
 const editionSchema = mongoose.Schema({
     book_id: {

@@ -1,6 +1,6 @@
 import React from "react";
 import {Switch, Route, withRouter} from "react-router-dom";
-import Auth from "./Auth";
+import Auth from "./Authenticate";
 import Activate from "./Activate";
 import RouteControl from "containers/Route/RouteControl";
 

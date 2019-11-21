@@ -47,4 +47,22 @@ This is the automatic email from the system, please do not reply.`;
 	return send(to, subject, text);
 }
 
-module.exports = { activate }
+async function receiveAcc(to, username, password) {
+	let subject = emoji.emojify(`:closed_lock_with_key: Your account has been registered successfully! - Kafka`);
+	let text = `
+Good day ${username}, this mail comes from Kafka,
+
+Your account has been generated successfully, and here it is:
+
+	Your registered Email: ${to}
+	Your registered Password: ${password}
+
+We registered this account for you and only you, please do not share it to anyone.
+This account provide permission for you to work as a Sale Staff in out system.
+
+And that's all, thank you for your time. Have a good day and see you later.
+
+This is the automatic email from the system, please do not reply.`;
+}
+
+module.exports = { activate, receiveAcc }

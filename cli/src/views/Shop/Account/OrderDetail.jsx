@@ -82,7 +82,8 @@ function OrderDetail({...props}) {
                         </div>
                         <div className="deliveryPayment">
                             <h5><i className="fas fa-caret-down"></i> Delivery & payment</h5>
-                            <p>Checkout method: COD</p>
+                            <p>Checkout method: {order.cashOnDelivery ? "COD" : "Online Payment"}</p>
+                            <p>Checkout status: {order.isCheckedOut ? "Already paid" : "Not yet"}</p>
                             {
                                 order.fastDelivery
                                 ? <p>Delivery: Fast delivery ($20)</p>

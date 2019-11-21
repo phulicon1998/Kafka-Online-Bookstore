@@ -31,5 +31,5 @@ app.use((req, res, next) => {
 app.use(hdl.Error.handle);
 
 server.listen(process.env.PORT, async() => {
-    console.log(`[ SERVER IS RUNNING ON PORT ${process.env.PORT} ]`)
+    console.log(`[ SERVER IS RUNNING ON PORT ${process.env.PORT} ]`);
 });

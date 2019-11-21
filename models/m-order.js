@@ -14,6 +14,14 @@ var orderSchema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+	cashOnDelivery: {
+		type: Boolean,
+		default: true
+	},
+	isCheckedOut: {
+		type: Boolean,
+		default: false
+	},
 	receiver: String,
 	address: String,
 	city: String,

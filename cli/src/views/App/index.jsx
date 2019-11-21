@@ -6,6 +6,7 @@ import RouteControl from "containers/Route/RouteControl";
 import Dashboard from "./CRM/index";
 import Genre from "./Genre";
 import Author from "./Author";
+import Account from "./Account";
 import Book from "./Book";
 import Publisher from "./Publisher";
 import Provider from "./Provider";
@@ -80,6 +81,14 @@ function AppRoutes(props) {
                     path={`${url}/orders`}
                     redirectPath="/app/dashboard"
                     component={Order}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/accounts`}
+                    redirectPath="/app/accounts"
+                    component={Account}
                     access={[
                         "ADMIN_PERMISSION",
                     ]}
