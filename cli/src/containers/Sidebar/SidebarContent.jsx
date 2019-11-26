@@ -10,10 +10,11 @@ import UserProfile from "./UserProfile";
 import AppsNavigation from "./AppsNavigation";
 import {
     NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
-    NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-    THEME_TYPE_LITE
+    NAV_STYLE_NO_HEADER_MINI_SIDEBAR
 } from "../../constants/ThemeSetting";
 import {connect} from "react-redux";
+import * as credentials from "constants/credentialControl";
+import {clearAuthData} from "appRedux/actions/user";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -34,7 +35,7 @@ class SidebarContent extends Component {
     };
 
     render() {
-        const {themeType, navStyle, pathname} = this.props;
+        const {navStyle, pathname, user, clearAuthData, role} = this.props;
         const selectedKeys = pathname.substr(1);
         const defaultOpenKeys = selectedKeys.split('/')[1];
         return (
@@ -42,14 +43,18 @@ class SidebarContent extends Component {
                 <SidebarLogo/>
                 <div className="gx-sidebar-content">
                     <div className={`gx-sidebar-notifications ${this.getNoHeaderClass(navStyle)}`}>
-                        <UserProfile/>
+                        <UserProfile
+                            username={user.username}
+                            avatar={user.avatar.link}
+                            logout={clearAuthData}
+                        />
                         <AppsNavigation/>
                     </div>
                     <CustomScrollbars className="gx-layout-sider-scrollbar">
                         <Menu
                             defaultOpenKeys={[defaultOpenKeys]}
                             selectedKeys={[selectedKeys]}
-                            theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
+                            theme='dark'
                             mode="inline"
                         >
                             <MenuItemGroup
@@ -60,56 +65,85 @@ class SidebarContent extends Component {
                                 <SubMenu
                                     key="dashboard"
                                     className={this.getNavStyleSubMenuClass(navStyle)}
-                                    title={
-                                        <span><i className="icon icon-dasbhoard"/>Dashboard</span>
-                                    }
+                                    title={ <span><i className="icon icon-dasbhoard"/>Dashboard</span> }
                                 >
-                                    <Menu.Item key="main/dashboard/crypto">
-                                        <Link to="/main/dashboard/crypto"><i className="icon icon-crypto"/>Dashboard</Link>
+                                    <Menu.Item key="/app/dasbhoard">
+                                        <Link to="/app/dasbhoard"><i className="icon icon-crypto"/>Dashboard</Link>
                                     </Menu.Item>
                                 </SubMenu>
                                 <SubMenu
                                     key="reports"
                                     className={this.getNavStyleSubMenuClass(navStyle)}
                                     title={
-                                        <span><i className="icon icon-dasbhoard"/>Manage Reports</span>
+                                        <span><i className="icon icon-data-display"/>Manage Reports</span>
                                     }
                                 >
-                                    <Menu.Item key="main/dashboard/crypto">
-                                        <Link to="/app/"><i className="icon icon-crypto"/>Dashboard</Link>
+                                    <Menu.Item key="app/reports/book">
+                                        <Link to="/app/reports/book"><i className="icon icon-crypto"/>For Books</Link>
+                                    </Menu.Item>
+                                    <Menu.Item key="app/reports/category">
+                                        <Link to="/app/reports/category"><i className="icon icon-crypto"/>For Categories</Link>
                                     </Menu.Item>
                                 </SubMenu>
-                                <Menu.Item key="app/genres">
-                                    <Link to="/app/genres"><i className="icon icon-tag"/> Manage genres</Link>
+                            </MenuItemGroup>
+
+                            {(role.isSalestaff || role.isAdmin) && <MenuItemGroup
+                                key="tools"
+                                className="gx-menu-group"
+                                title="Tools"
+                            >
+                                <Menu.Item key="app/chat">
+                                    <Link to="/app/chat"><i className="icon icon-chat"/> Chat Tool</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/authors">
-                                    <Link to="/app/authors"><i className="icon icon-avatar"/> Manage authors</Link>
+                            </MenuItemGroup>}
+
+                            {role.isAdmin && <MenuItemGroup
+                                key="system"
+                                className="gx-menu-group"
+                                title="System"
+                            >
+                                <Menu.Item key="app/accounts">
+                                    <Link to="/app/accounts"><i className="icon icon-auth-screen"/> Manage Accounts</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/books">
-                                    <Link to="/app/books"><i className="icon icon-product-list"/> Manage books</Link>
-                                </Menu.Item>
-                                <Menu.Item key="app/publishers">
-                                    <Link to="/app/publishers"><i className="icon icon-product-list"/> Manage publishers</Link>
-                                </Menu.Item>
+                            </MenuItemGroup>}
+
+                            {(role.isSalestaff || role.isProvider || role.isAdmin) && <MenuItemGroup
+                                key="counter"
+                                className="gx-menu-group"
+                                title="Counter"
+                            >
                                 <Menu.Item key="app/providers">
-                                    <Link to="/app/providers"><i className="icon icon-product-list"/> Manage providers</Link>
+                                    <Link to="/app/providers"><i className="icon icon-profile"/> Manage Provider</Link>
                                 </Menu.Item>
                                 <Menu.Item key="app/editions">
-                                    <Link to="/app/editions"><i className="icon icon-product-list"/> Manage editions</Link>
+                                    <Link to="/app/editions"><i className="icon icon-files"/> Manage Edition</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/editions/add">
+                                {role.isProvider && <Menu.Item key="app/editions/add">
                                     <Link to="/app/editions/add"><i className="icon icon-product-list"/> Add new edition</Link>
+                                </Menu.Item>}
+                            </MenuItemGroup>}
+
+                            {(role.isSalestaff || role.isAdmin) && <MenuItemGroup
+                                key="book"
+                                className="gx-menu-group"
+                                title="Book"
+                            >
+                                <Menu.Item key="app/books">
+                                    <Link to="/app/books"><i className="icon icon-pricing-table"/> Manage Books</Link>
                                 </Menu.Item>
                                 <Menu.Item key="app/orders">
-                                    <Link to="/app/orders"><i className="icon icon-product-list"/> Manage orders</Link>
+                                    <Link to="/app/orders"><i className="icon icon-shopping-cart"/> Manage Orders</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/chat">
-                                    <Link to="/app/chat"><i className="icon icon-product-list"/> Chat</Link>
+                                <Menu.Item key="app/genres">
+                                    <Link to="/app/genres"><i className="icon icon-tag"/> Manage Genres</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/accounts">
-                                    <Link to="/app/accounts"><i className="icon icon-product-list"/> Manage accounts</Link>
+                                <Menu.Item key="app/authors">
+                                    <Link to="/app/authors"><i className="icon icon-user-o"/> Manage Authors</Link>
                                 </Menu.Item>
-                            </MenuItemGroup>
+                                <Menu.Item key="app/publishers">
+                                    <Link to="/app/publishers"><i className="icon icon-user"/> Manage Publishers</Link>
+                                </Menu.Item>
+                            </MenuItemGroup>}
                         </Menu>
                     </CustomScrollbars>
                 </div>
@@ -119,8 +153,19 @@ class SidebarContent extends Component {
 }
 
 SidebarContent.propTypes = {};
-const mapStateToProps = ({settings}) => {
+const mapStateToProps = ({user, settings}) => {
     const {navStyle, themeType, locale, pathname} = settings;
-    return {navStyle, themeType, locale, pathname}
+    const {isPermit} = credentials;
+    const {role} = user.data;
+    return {
+        navStyle, themeType, locale, pathname,
+        user: user.data,
+        role: {
+            isSalestaff: isPermit(role)(credentials.SALESTAFF_PERMISSION),
+            isManager: isPermit(role)(credentials.MANAGER_PERMISSION),
+            isAdmin: isPermit(role)(credentials.ADMIN_PERMISSION),
+            isProvider: isPermit(role)(credentials.PROVIDER_PERMISSION)
+        }
+    }
 };
-export default connect(mapStateToProps)(SidebarContent);
+export default connect(mapStateToProps, {clearAuthData})(SidebarContent);

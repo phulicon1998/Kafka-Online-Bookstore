@@ -14,6 +14,12 @@ import Edition from "./Edition";
 import Order from "./ManageOrder";
 import CreateEdition from "./Edition/Create";
 import Chat from "./Chat/index";
+import Profile from "./Profile";
+
+import BookReport from "./Reports/Book";
+import BookReportDetail from "./Reports/Book/Detail";
+import CategoryReport from "./Reports/Category";
+import CategoryReportDetail from "./Reports/Category/Detail";
 
 function AppRoutes(props) {
     const url = props.match.url;
@@ -21,12 +27,14 @@ function AppRoutes(props) {
         <div className="gx-main-content-wrapper">
             <Switch>
                 <Route path={`${url}/dashboard`} component={Dashboard}/>
+                <Route path={`${url}/profile`} component={Profile}/>
                 <RouteControl
                     path={`${url}/genres`}
                     redirectPath="/app/dashboard"
                     component={Genre}
                     access={[
                         "ADMIN_PERMISSION",
+                        "SALESTAFF_PERMISSION"
                     ]}
                 />
                 <RouteControl
@@ -35,6 +43,7 @@ function AppRoutes(props) {
                     component={Author}
                     access={[
                         "ADMIN_PERMISSION",
+                        "SALESTAFF_PERMISSION"
                     ]}
                 />
                 <RouteControl
@@ -43,6 +52,7 @@ function AppRoutes(props) {
                     component={Book}
                     access={[
                         "ADMIN_PERMISSION",
+                        "SALESTAFF_PERMISSION"
                     ]}
                 />
                 <RouteControl
@@ -51,6 +61,7 @@ function AppRoutes(props) {
                     component={Publisher}
                     access={[
                         "ADMIN_PERMISSION",
+                        "SALESTAFF_PERMISSION"
                     ]}
                 />
                 <RouteControl
@@ -59,6 +70,8 @@ function AppRoutes(props) {
                     component={Provider}
                     access={[
                         "ADMIN_PERMISSION",
+                        "SALESTAFF_PERMISSION",
+                        "ADMIN_PERMISSION"
                     ]}
                 />
                 <RouteControl
@@ -75,6 +88,8 @@ function AppRoutes(props) {
                     component={Edition}
                     access={[
                         "PROVIDER_PERMISSION",
+                        "SALESTAFF_PERMISSION",
+                        "ADMIN_PERMISSION"
                     ]}
                 />
                 <RouteControl
@@ -83,6 +98,7 @@ function AppRoutes(props) {
                     component={Order}
                     access={[
                         "ADMIN_PERMISSION",
+                        "SALESTAFF_PERMISSION"
                     ]}
                 />
                 <RouteControl
@@ -95,6 +111,47 @@ function AppRoutes(props) {
                 />
                 <RouteControl
                     path={`${url}/chat`}
+                    redirectPath="/app/dashboard"
+                    component={Chat}
+                    access={[
+                        "ADMIN_PERMISSION",
+                        "SALESTAFF_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/reports/category/detail`}
+                    redirectPath="/app/dashboard"
+                    component={CategoryReportDetail}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/reports/category`}
+                    redirectPath="/app/dashboard"
+                    component={CategoryReport}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/reports/book/detail`}
+                    redirectPath="/app/dashboard"
+                    component={BookReportDetail}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/reports/book`}
+                    redirectPath="/app/dashboard"
+                    component={BookReport}
+                    access={[
+                        "ADMIN_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/reports/category`}
                     redirectPath="/app/dashboard"
                     component={Chat}
                     access={[

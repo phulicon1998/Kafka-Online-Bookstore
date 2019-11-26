@@ -2,22 +2,6 @@ const db = require("../models");
 const {genToken} = require("../utils/token");
 const mail = require("../utils/mail");
 
-exports.getOne = async(req, res, next) => {
-    try {
-        let foundUser = await db.User.findById(req.params.user_id);
-        let {_id, username, email, active, avatar} = foundUser;
-
-        // get role of user
-        let userRole = await db.UserRole.find({user_id: _id}).populate("role_id").exec();
-        let uRole = userRole.map(v => v.role_id);
-        let role = uRole.length > 0 ? uRole : false;
-
-        return res.status(200).json({_id, username, email, active, role, avatar});
-    } catch(err) {
-        return next(err);
-    }
-}
-
 exports.logIn = async(req, res, next) => {
     try {
         let user = await db.User.findOne({email: req.body.email});
@@ -84,6 +68,23 @@ exports.social = async(req, res, next) => {
     }
 }
 
+exports.activate = async(req, res, next) => {
+    try {
+        let user = await db.User.findById(req.params.user_id);
+        if(user) {
+            user.active = true;
+            await user.save();
+
+            // Add role for user
+            let role = await db.Role.findOne({code: "001"});
+            await db.UserRole.create({role_id: role._id, user_id: user._id});
+        }
+        return res.status(200).json("Success");
+    } catch(err) {
+        return next(err);
+    }
+}
+
 exports.generate = async(req, res, next) => {
     try {
         // Create user
@@ -103,9 +104,15 @@ exports.generate = async(req, res, next) => {
         // Send mail for user to receive their generated account
         mail.receiveAcc(email, defaultUsername, password);
 
-        return res.status(200).json(sysUser);
+        // Retrieve the data for rendering on client
+        let createdAccount = await db.UserRole.findOne({user_id: sysUser._id}).populate("role_id").populate("user_id").lean().exec();
+
+        return res.status(200).json(createdAccount);
     } catch (e) {
-        return next(e);
+        return next({
+            status: 400,
+            message: "The entered email has been used. Please try again with a different one."
+        });
     }
 }
 
@@ -121,19 +128,46 @@ exports.get = async(req, res, next) => {
     }
 }
 
-exports.activate = async(req, res, next) => {
+exports.getOne = async(req, res, next) => {
     try {
-        let user = await db.User.findById(req.params.user_id);
-        if(user) {
-            user.active = true;
-            await user.save();
+        let foundUser = await db.User.findById(req.params.user_id);
+        let {_id, username, email, active, avatar} = foundUser;
 
-            // Add role for user
-            let role = await db.Role.findOne({code: "001"});
-            await db.UserRole.create({role_id: role._id, user_id: user._id});
-        }
-        return res.status(200).json("Success");
+        // get role of user
+        let userRole = await db.UserRole.find({user_id: _id}).populate("role_id").exec();
+        let uRole = userRole.map(v => v.role_id);
+        let role = uRole.length > 0 ? uRole : false;
+
+        return res.status(200).json({_id, username, email, active, role, avatar});
     } catch(err) {
         return next(err);
+    }
+}
+
+exports.changePassword = async(req, res, next) => {
+    try {
+        let foundAccount = await db.User.findById(req.params.user_id);
+
+        // Compare if the entered current pass is matched
+        const {current, change} = req.body;
+        let match = await foundAccount.comparePassword(current);
+        if(!match) {
+            return next({
+                status: 500,
+                message: "The current password entered is not matched. Please try again."
+            })
+        }
+        foundAccount.password = change;
+        await foundAccount.save();
+
+        // Send mail for informing about changing password
+        mail.changePassword(foundAccount.email, foundAccount.username);
+
+        return res.status(200).json({success: true});
+    } catch (e) {
+        return next({
+            status: 500,
+            message: "There are some problems with the server. Please try again."
+        });
     }
 }

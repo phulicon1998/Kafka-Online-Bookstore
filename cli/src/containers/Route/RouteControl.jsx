@@ -12,6 +12,7 @@ function RouteControl({access, inaccess=[], path, component, redirectPath, role,
     let unallowedPassport = inaccess.map(v => permissions[v]);
     let containAccessPass = (role.filter(r => allowedPassport.indexOf(r.code) !== -1)).length > 0;
     let containInaccessPass = (role.filter(r => unallowedPassport.indexOf(r.code) !== -1)).length > 0;
+    // it it contain at least one access and no inaccess code, it can get pass
     if(containAccessPass && !containInaccessPass) {
         return <Route path={path} component={component}/>
     } else {

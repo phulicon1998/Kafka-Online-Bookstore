@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useCallback, useEffect} from "react";
 import {Card, Table, Divider, Form, Input, Button} from "antd";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
@@ -16,14 +16,18 @@ function Genre({notify}) {
     const [genres, setGenres] = useState([]);
     const [genre, setGenre] = useState(DEFAULT_GENRE);
 
-    async function load() {
+    const load = useCallback(async() => {
         try {
             let data = await apiCall(...api.genre.get());
             setGenres(data);
         } catch(err) {
             notify("error", "Data is not loaded");
         }
-    }
+    }, [notify]);
+
+    useEffect(() => {
+        load();
+    }, [load]);
 
     function hdChange(e) {
         const {name, value} = e.target;
@@ -71,11 +75,6 @@ function Genre({notify}) {
     function edit(genre) {
         setGenre(genre);
     }
-
-    useEffect(() => {
-        load();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <div>

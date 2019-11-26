@@ -12,6 +12,7 @@ router.route("/generate").post(mw.User.genPassword, hdl.User.generate);
 
 router.route("/:user_id").get(hdl.User.getOne);
 router.route("/:user_id/activate").put(hdl.User.activate);
+router.route("/:user_id/password").post(hdl.User.changePassword);
 
 router.use("/:user_id/providers", require("./r-provider"));
 router.use("/:user_id/orders", require("./r-order"));

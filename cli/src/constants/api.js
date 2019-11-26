@@ -14,10 +14,12 @@ const author = {
 
 const user = {
     auth: type => ["post", `/api/user/${type}`],
-    create: userType => ["post", `/api/user/${userType}`],
+    generate: () => ["post", `/api/user/generate`],
     getOne: user_id => ["get", `/api/user/${user_id}`],
+    get: () => ["get", `/api/user`],
     social: () => ["post", `/api/user/social`],
-    activate: user_id => ["put", `/api/user/${user_id}/activate`]
+    activate: user_id => ["put", `/api/user/${user_id}/activate`],
+    changePassword: user_id => ["post", `/api/user/${user_id}/password`]
 }
 
 const publisher = {
