@@ -3,6 +3,7 @@ import ShopRoutes from "views/Shop";
 import Navbar from "containers/Bar/Navbar";
 import Logo from "components/Shop/Bar/Logo";
 import FootBook from "components/Shop/Product/FootBook";
+import ChatSection from "containers/Box/ChatBox";
 
 import book from "assets/imgs/book.jpg"
 const bseller =  [
@@ -35,8 +36,9 @@ export default function ShopLayout(props) {
     useEffect(() =>  document.body.classList.add("kafka-layout"), []);
 
     return (
-        <div>
+        <div style={{"position": "relative"}}>
             <Navbar transparent={transNavbar()}/>
+            <ChatSection />
             <ShopRoutes/>
             <div className="shop-footer">
                 <div className="container">

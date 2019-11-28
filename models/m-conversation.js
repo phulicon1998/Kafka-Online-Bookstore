@@ -10,6 +10,10 @@ var conversationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+	isFinished: {
+		type: Boolean,
+		default: true
+	},
     message_id: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -6,7 +6,6 @@ import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import {Rate, Upload, Icon, Modal} from 'antd';
 import {connect} from "react-redux";
 import moment from "moment";
-import ChatBox from "containers/Box/ChatBox";
 
 const DEFAULT_REVIEW = {
     images: [],
@@ -267,7 +266,6 @@ function Detail({match, user, ...props}) {
                         </div>
                     </div>
                 </div>
-                <ChatBox />
             </div>
         </div>
     )

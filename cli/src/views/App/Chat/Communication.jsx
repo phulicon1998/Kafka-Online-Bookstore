@@ -3,7 +3,7 @@ import {Avatar} from "antd";
 import CustomScrollbars from "util/CustomScrollbars";
 import Conversation from "components/chat/Conversation/index";
 
-const Communication = ({message, selectedUser, messages, onToggleDrawer, _handleKeyPress, updateMessageValue, submitComment}) => (
+const Communication = ({message, selectedUser, messages, onToggleDrawer, _handleKeyPress, updateMessageValue, submitComment, leaveChat}) => (
     <div className="gx-chat-main">
         <div className="gx-chat-main-header">
             <span className="gx-d-block gx-d-lg-none gx-chat-btn">
@@ -35,6 +35,7 @@ const Communication = ({message, selectedUser, messages, onToggleDrawer, _handle
 
         <div className="gx-chat-main-footer">
             <div className="gx-flex-row gx-align-items-center" style={{maxHeight: 51}}>
+                <i className="gx-icon-btn icon icon-sent" onClick={submitComment}/>
                 <div className="gx-col">
                     <div className="gx-form-group">
                         <textarea
@@ -47,7 +48,7 @@ const Communication = ({message, selectedUser, messages, onToggleDrawer, _handle
                         />
                     </div>
                 </div>
-                <i className="gx-icon-btn icon icon-sent" onClick={submitComment}/>
+                <i className="gx-icon-btn icon icon-close-circle" onClick={leaveChat}/>
             </div>
         </div>
     </div>

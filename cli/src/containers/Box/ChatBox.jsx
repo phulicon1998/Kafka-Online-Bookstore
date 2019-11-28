@@ -8,25 +8,33 @@ import {
     isPermit,
     CUSTOMER_PERMISSION
 } from "constants/credentialControl";
-import MESSAGE from "constants/messageTypes";
+import {sentBy, msgIs} from "constants/messageTypes";
 
 const socket = ioClient("localhost:8080");
 
 function Message({text, status, type}) {
-    let icon = <i className="far fa-circle"/>
-    if(status === 1) icon = <i className="fas fa-circle"/>;
-    // if(status === 2) icon = "viewed";
+    let icon;
+    switch (status) {
+        case msgIs.RECEIVED:
+            icon = "fas fa-circle";
+            break;
+        case msgIs.READ:
+            icon = "fas fa-check-circle";
+            break;
+        default:
+            icon = "far fa-circle";
+    }
     return (
-        <p style={{"textAlign": `${type === MESSAGE.CUSTOMER ? "right" : "left"}`}}>
-            <b>{type === MESSAGE.CUSTOMER ? "Customer" : "System"}:</b> {text} {icon}
+        <p style={{"textAlign": `${type === sentBy.CUSTOMER ? "right" : "left"}`}}>
+            <b>{type === sentBy.CUSTOMER ? "Customer" : "System"}:</b> {text} <i className={icon}></i>
         </p>
     )
 }
 
-function ChatBox({user, userHas}) {
+function ChatBox({user, role, toggle}) {
     const DEFAULT_MESSAGE = {
-        type: getSenderType(),
-        status: 0,
+        type: role.isCustomer ? sentBy.CUSTOMER : sentBy.SYSTEM,
+        status: msgIs.SENDING,
         text: ""
     }
     const [messages, setMessages] = useState([]);
@@ -35,29 +43,25 @@ function ChatBox({user, userHas}) {
 
     const listenSocket = useCallback(() => {
         // Connect to user conversation
-        let name = conversation ? conversation.name : `${user.email.split("@")[0]}-croom`;
-        socket.emit("join", {
-            name,
-            user_id: userHas(CUSTOMER_PERMISSION) ? user._id : false
-        });
+        socket.emit("control chat app");
+        socket.emit("customer join", user);
 
         socket.on("new message", function(message) {
-            setMessages(prev => prev.map(v => {
-                return {
-                    ...v,
-                    status: v.status === 0 ? 1 : v.status
-                }
-            }))
+            if(message.type === sentBy.CUSTOMER) {
+                // If the message is sent by customer, update msg status
+                setMessages(prev => prev.map(v => {
+                    return !v._id ? message : v
+                }))
+            } else {
+                // if not, just add it to the message list
+                setMessages(prev => [...prev, message]);
+            }
         })
 
-        socket.on("create conversation", function(conversationData){
-            setConversation(conversationData);
+        socket.on("create conversation", function(conversation){
+            setConversation(conversation);
         })
-    }, [conversation, user._id, user.email, userHas]);
-
-    useEffect(() => {
-        listenSocket();
-    }, [listenSocket])
+    }, [user]);
 
     const load = useCallback(async() => {
         let conversationData = await apiCall(...api.message.getOne(user._id));
@@ -70,11 +74,9 @@ function ChatBox({user, userHas}) {
 
     useEffect(() => {
         load();
-    }, [load])
-
-    function getSenderType() {
-        return userHas(CUSTOMER_PERMISSION) ? MESSAGE.CUSTOMER : MESSAGE.SYSTEM
-    }
+        listenSocket();
+        return () => socket.removeAllListeners();
+    }, [load, listenSocket])
 
     function submit(e) {
         e.preventDefault();
@@ -84,7 +86,7 @@ function ChatBox({user, userHas}) {
             createdAt: moment()
         };
         setMessages(prev => [...prev, sentMessage]);
-        socket.emit("create", sentMessage);
+        socket.emit("create message", sentMessage);
         setMessage(DEFAULT_MESSAGE);
     }
 
@@ -95,6 +97,10 @@ function ChatBox({user, userHas}) {
 
     return (
         <div className="chat-box">
+            <div onClick={() => toggle(prev => !prev)}>
+                <h3>Messages</h3>
+                <i className="fas fa-angle-down"/>
+            </div>
             <div>
                 {
                     messages.map((v, i) => (
@@ -109,8 +115,32 @@ function ChatBox({user, userHas}) {
                     placeholder="Enter something here to chat..."
                     onChange={hdChange}
                 />
-                <button type="submit">Send</button>
+                <button type="submit"><i className="fas fa-paper-plane"/></button>
             </form>
+        </div>
+    )
+}
+
+function ChatButton({toggle}) {
+    return (
+        <div className="chat-button" onClick={() => toggle(prev => !prev)}>
+            <i className="far fa-comments"/>
+            {/* <p>Chat with us</p> */}
+        </div>
+    )
+}
+
+
+function ChatSection({user, role}) {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div>
+            {
+                open
+                ? <ChatBox user={user} role={role} toggle={setOpen}/>
+                : <ChatButton toggle={setOpen}/>
+            }
         </div>
     )
 }
@@ -118,8 +148,10 @@ function ChatBox({user, userHas}) {
 function mapState({user}) {
     return {
         user: user.data,
-        userHas: isPermit(user.data.role.map(v => v.code))
+        role: {
+            isCustomer: isPermit(user.data.role)(CUSTOMER_PERMISSION)
+        }
     }
 }
 
-export default connect(mapState, null)(ChatBox);
+export default connect(mapState, null)(ChatSection);

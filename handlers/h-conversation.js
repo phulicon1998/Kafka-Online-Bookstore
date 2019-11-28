@@ -2,14 +2,9 @@ const db = require("../models");
 
 exports.get = async(req, res, next) => {
     try {
-        const {user_id} = req.params;
         let conversations = await db.Conversation.find().populate("user_id").populate("message_id").lean().exec();
-
-        // Gather conversations which have unseen messages
-        let hasMsgConversations = conversations.filter(v => v.message_id.length > 0);
-        let unseenMsgConversations = hasMsgConversations.filter(v => v.message_id.some(msg => !msg.isView));
-
-        return res.status(200).json(unseenMsgConversations);
+        let unfinishedConversations = conversations.filter(c => !c.isFinished);
+        return res.status(200).json(unfinishedConversations);
     } catch (e) {
         return next(e);
     }
@@ -30,7 +25,6 @@ exports.create = async(req, res, next) => {
         // Check whether the conversation room has been created
         const {user_id} = req.params;
         let foundConversation = await db.Conversation.findOne({user_id});
-        let conversation_id;
         if(!foundConversation) {
             // Make a name for the conversation
             let userData = await db.User.findById(user_id);

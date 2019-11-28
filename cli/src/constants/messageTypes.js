@@ -1,6 +1,12 @@
-const MESSAGE = {
+const sentBy = {
     SYSTEM: 0,
     CUSTOMER: 1
 }
 
-export default MESSAGE;
+const msgIs = {
+    SENDING: 0,
+    RECEIVED: 1,
+    READ: 2
+}
+
+export {sentBy, msgIs};

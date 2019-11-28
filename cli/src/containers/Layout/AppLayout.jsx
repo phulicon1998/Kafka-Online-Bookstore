@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Layout} from "antd";
 
 import AppLocale from "lngProvider";
-import {LocaleProvider} from "antd";
+import {ConfigProvider} from "antd";
 import {IntlProvider} from "react-intl";
 
 import Sidebar from "../Sidebar/index";
@@ -34,8 +34,11 @@ import {
     LAYOUT_TYPE_FULL
 } from "constants/ThemeSetting";
 import NoHeaderNotification from "../Topbar/NoHeaderNotification/index";
-
-import {onLayoutTypeChange, onNavStyleChange, setThemeType} from "appRedux/actions/setting";
+import {
+    onLayoutTypeChange,
+    onNavStyleChange,
+    setThemeType
+} from "appRedux/actions/setting";
 
 const {Content, Footer} = Layout;
 
@@ -57,6 +60,7 @@ export class AppLayout extends Component {
             return '';
         }
     };
+
     getNavStyles = (navStyle) => {
         switch (navStyle) {
             case NAV_STYLE_DEFAULT_HORIZONTAL :
@@ -140,7 +144,7 @@ export class AppLayout extends Component {
         this.setNavStyle(navStyle);
         const currentAppLocale = AppLocale[locale.locale];
         return (
-            <LocaleProvider locale={currentAppLocale.antd}>
+            <ConfigProvider locale={currentAppLocale.antd}>
                 <IntlProvider
                     locale={currentAppLocale.locale}
                     messages={currentAppLocale.messages}
@@ -159,14 +163,14 @@ export class AppLayout extends Component {
                         <Customizer/>
                     </Layout>
                 </IntlProvider>
-            </LocaleProvider>
+            </ConfigProvider>
         )
     }
 }
 
 const mapStateToProps = ({settings}) => {
     const {locale, layoutType, width, navStyle} = settings;
-    return {width, navStyle, locale, layoutType,}
+    return {width, navStyle, locale, layoutType}
 };
 
 export default connect(mapStateToProps, {

@@ -592,19 +592,79 @@ body.kafka-layout {
   color: #5c5c5c;
   margin: 0;
 }
-.chat-box {
+.chat-button {
+  position: fixed;
   box-sizing: border-box;
-  width: 400px;
+  border-radius: 55%;
+  bottom: 50px;
+  right: 80px;
+  z-index: 99;
+  background-color: white;
+  -webkit-box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.3);
+  box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
-.chat-box > div {
-  border: 1px solid gray;
+.chat-button > i {
+  font-size: 25px;
+  padding: 15px;
+}
+.chat-box {
+  position: fixed;
+  box-sizing: border-box;
+  width: 330px;
+  bottom: 50px;
+  right: 60px;
+  z-index: 99;
+  -webkit-box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.35);
+  -moz-box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.35);
+  box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.35);
+}
+.chat-box > div:nth-of-type(1) {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #343434;
+  font-family: "Lato", sans-serif;
+  color: white;
+  cursor: pointer;
+}
+.chat-box > div:nth-of-type(1) > h3 {
+  color: white;
+  margin: 5px 0;
+}
+.chat-box > div:nth-of-type(1) > i {
+  font-size: 22px;
+}
+.chat-box > div:nth-of-type(2) {
+  background-color: white;
   width: 100%;
   height: 300px;
+  overflow: auto;
 }
-.chat-box input {
-  padding: 5px;
+.chat-box > form {
+  border-top: 1px solid #b3b3b3;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: white;
+}
+.chat-box > form input {
+  background-color: transparent;
+  padding: 12px 0px 12px 10px;
   width: 100%;
-  border: 1px solid black;
+  border: none;
+  outline: none;
+}
+.chat-box > form button {
+  height: 100%;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  margin-right: 10px;
 }
 .landing-header {
   width: 100%;
