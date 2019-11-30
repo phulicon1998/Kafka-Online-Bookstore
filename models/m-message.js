@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 var messageSchema = new mongoose.Schema({
-	type: Number,
+	type: Number, // 1 is for CUSTOMER and 0 for SYSTEM USER
 	text: String,
 	status: Number,
 	conversation_id: {

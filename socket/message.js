@@ -26,22 +26,25 @@ module.exports = function(socket) {
             // Pass the message to saleman
             socket.to(conversation.name).emit("new message", createdMsg);
         } catch (e) {
+            console.log("create message err");
             console.log(e);
         }
     });
 
     socket.on("customer join", async function({email, _id}) {
         try {
-            let name = `${email.split("@")[0]}-croom`;
+            if(email && _id) {
+                let name = `${email.split("@")[0]}-croom`;
 
-            // check if the conversation exist
-            let foundConversation = await db.Conversation.findOne({name});
-            if(!foundConversation) {
-                // If there is no conversation found, create one
-                let createdConversation = await db.Conversation.create({name, user_id: _id});
-                socket.emit("create conversation", createdConversation);
+                // check if the conversation exist
+                let foundConversation = await db.Conversation.findOne({name});
+                if(!foundConversation) {
+                    // If there is no conversation found, create one
+                    let createdConversation = await db.Conversation.create({name, user_id: _id});
+                    socket.emit("create conversation", createdConversation);
+                }
+                socket.join(name);
             }
-            socket.join(name);
         } catch (e) {
             console.log(e);
         }

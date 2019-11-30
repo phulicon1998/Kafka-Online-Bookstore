@@ -7,7 +7,7 @@ module.exports = function(io) {
     io.on("connection", function(socket) {
 
         socket.on("register user", function(user) {
-            if(user) {
+            if(Object.keys(user).length > 0) {
                 activeUsers.push({
                     socket_id: socket.id,
                     user_id: user._id,
@@ -20,9 +20,13 @@ module.exports = function(io) {
         chatAppIO(socket);
 
         socket.on("disconnect", function() {
-            let offlineUser = activeUsers.filter(u => u.socket_id === socket.id)[0];
-            activeUsers = activeUsers.filter(u => u.socket_id !== socket.id)
-            if(offlineUser) console.log(`[ ${offlineUser.username} is offline ]`);
+            try {
+                let offlineUser = activeUsers.filter(u => u.socket_id === socket.id)[0];
+                if(offlineUser) console.log(`[ ${offlineUser.username} is offline ]`);
+                activeUsers = activeUsers.filter(u => u.socket_id !== socket.id)
+            } catch (e) {
+                console.log(e);
+            }
         })
     })
 }

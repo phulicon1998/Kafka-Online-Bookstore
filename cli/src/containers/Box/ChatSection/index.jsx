@@ -42,11 +42,13 @@ function ChatSection({user, role}) {
     }, [user]);
 
     const load = useCallback(async() => {
-        let conversationData = await apiCall(...api.message.getOne(user._id));
-        if(conversationData) {
-            const {message_id, ...conversationInfo} = conversationData;
-            setConversation(conversationInfo);
-            setMessages(message_id);
+        if(user._id) {
+            let conversationData = await apiCall(...api.message.getOne(user._id));
+            if(conversationData) {
+                const {message_id, ...conversationInfo} = conversationData;
+                setConversation(conversationInfo);
+                setMessages(message_id);
+            }
         }
     }, [user._id]);
 
