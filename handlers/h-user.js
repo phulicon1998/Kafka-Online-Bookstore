@@ -138,7 +138,10 @@ exports.getOne = async(req, res, next) => {
         let uRole = userRole.map(v => v.role_id);
         let role = uRole.length > 0 ? uRole : false;
 
-        return res.status(200).json({_id, username, email, active, role, avatar});
+        // gen token for storing on client
+        let token = genToken(_id);
+
+        return res.status(200).json({_id, username, email, active, role, avatar, token});
     } catch(err) {
         return next(err);
     }

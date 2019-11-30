@@ -26,7 +26,6 @@ module.exports = function(socket) {
             // Pass the message to saleman
             socket.to(conversation.name).emit("new message", createdMsg);
         } catch (e) {
-            console.log("create message err");
             console.log(e);
         }
     });
@@ -53,6 +52,14 @@ module.exports = function(socket) {
     socket.on("salestaff join", function({name}){
         if(name) {
             socket.join(name)
+        }
+    })
+
+    socket.on("complete conversation", async function(conversation) {
+        let foundConversation = await db.Conversation.findById(conversation._id);
+        if(foundConversation) {
+            foundConversation.isFinished = true;
+            await foundConversation.save();
         }
     })
 

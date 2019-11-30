@@ -1,16 +1,8 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {
-    Col,
-    Row,
-    Card,
-    Form,
-    Input,
-    Upload,
-    Modal,
-    Icon,
-    Spin,
-    Select,
-    Button
+    Col, Row, Card, Form,
+    Input, Upload, Modal, Icon,
+    Spin, Select, Button
 } from "antd";
 import SearchBar from "components/Shop/Bar/SearchBar";
 import withNoti from "hocs/App/withNoti";
@@ -170,9 +162,9 @@ function CreateEdition({notify, ...props}) {
         setLoading(true);
         try {
             // Validation for uploading images
-            if(edition.images.length < 3) {
+            if(edition.images.length < 2) {
                 setLoading(false);
-                return notify("error", "Data is not submitted", "You have to upload at least 3 images.");
+                return notify("error", "Data is not submitted", "You have to upload at least 2 images.");
             }
 
             // Create new form data for submitting

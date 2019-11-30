@@ -75,7 +75,7 @@ function Edition({notify, ...props}) {
                         {
                             title: "Book's Provider",
                             dataIndex: 'provider_id',
-                            render: text => <span>{text.name}</span>
+                            render: text => <span>{text === null ? "Unknown" : text.name}</span>
                         },
                         {
                             title: "Book Images",

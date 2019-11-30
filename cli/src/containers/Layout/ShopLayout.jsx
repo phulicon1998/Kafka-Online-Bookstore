@@ -4,6 +4,8 @@ import Navbar from "containers/Bar/Navbar";
 import Logo from "components/Shop/Bar/Logo";
 import FootBook from "components/Shop/Product/FootBook";
 import ChatSection from "containers/Box/ChatSection";
+import {connect} from "react-redux";
+import * as permissions from "constants/credentialControl";
 
 import book from "assets/imgs/book.jpg"
 const bseller =  [
@@ -27,10 +29,15 @@ const bseller =  [
     }
 ]
 
-export default function ShopLayout(props) {
+function ShopLayout({role, ...props}) {
 
     function transNavbar() {
         return props.location.pathname === "/";
+    }
+
+    function showChatBox() {
+        const rightPath = props.location.pathname.includes("/store");
+        return rightPath && role.isCustomer;
     }
 
     useEffect(() =>  document.body.classList.add("kafka-layout"), []);
@@ -38,7 +45,7 @@ export default function ShopLayout(props) {
     return (
         <div style={{"position": "relative"}}>
             <Navbar transparent={transNavbar()}/>
-            <ChatSection />
+            {showChatBox() && <ChatSection />}
             <ShopRoutes/>
             <div className="shop-footer">
                 <div className="container">
@@ -108,3 +115,14 @@ export default function ShopLayout(props) {
         </div>
     )
 }
+
+function mapState({user}) {
+    const {isPermit} = permissions;
+    return {
+        role: {
+            isCustomer: isPermit(user.data.role)(permissions.CUSTOMER_PERMISSION)
+        }
+    }
+}
+
+export default connect(mapState, null)(ShopLayout);

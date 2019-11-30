@@ -2,12 +2,6 @@ const mongoose = require("mongoose");
 const {spliceId} = require("../utils/dbSupport");
 const {cloudinary} = require("../utils/uploader");
 
-// QUALITY CONTROLS
-// const BRAND_NEW = 1;
-// const LIKE_NEW = 2;
-// const GOOD = 3;
-// const ACCEPTABLE = 4;
-
 const editionSchema = mongoose.Schema({
     book_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -35,6 +29,10 @@ const editionSchema = mongoose.Schema({
             ref: "Review"
         }
     ],
+    outOfBusiness: {
+        type: Boolean,
+        default: false
+    },
     price: {
         type: Number,
         required: true

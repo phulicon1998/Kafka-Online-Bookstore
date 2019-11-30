@@ -17,7 +17,7 @@ const socket = ioClient("localhost:8080");
 function ChatSection({user, role}) {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState([]);
-    const [conversation, setConversation] = useState(null);
+    const [conversation, setConversation] = useState({});
 
     const listenSocket = useCallback(() => {
         // Connect to user conversation
@@ -39,6 +39,7 @@ function ChatSection({user, role}) {
         socket.on("create conversation", function(conversation){
             setConversation(conversation);
         })
+
     }, [user]);
 
     const load = useCallback(async() => {

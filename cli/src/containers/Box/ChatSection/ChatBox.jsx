@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState} from "react";
 import moment from "moment";
 import {sentBy, msgIs} from "constants/messageTypes";
 
@@ -23,7 +23,7 @@ function Message({text, status, type}) {
     )
 }
 
-function ChatBox({user, role, toggle, conversation, hdSubmit, messages}) {
+function ChatBox({user, role, toggle, conversation, hdSubmit, messages, moreConversation, setMoreConversation}) {
     const DEFAULT_MESSAGE = {
         type: role.isCustomer ? sentBy.CUSTOMER : sentBy.SYSTEM,
         status: msgIs.SENDING,
@@ -40,8 +40,8 @@ function ChatBox({user, role, toggle, conversation, hdSubmit, messages}) {
                 createdAt: moment()
             };
             hdSubmit(sentMessage);
-            setMessage(DEFAULT_MESSAGE);
         }
+        setMessage(DEFAULT_MESSAGE);
     }
 
     function hdChange(e) {

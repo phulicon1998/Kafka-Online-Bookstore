@@ -1,17 +1,9 @@
 import React, {useState, useEffect} from "react";
 import {
-    Card,
-    Table,
-    Divider,
-    Form,
-    Input,
-    Button,
-    DatePicker,
-    Icon,
-    Select,
-    Spin,
-    Checkbox,
-    Upload
+    Card, Table, Divider,
+    Form, Input, Button,
+    DatePicker, Icon, Select,
+    Spin, Checkbox, Upload
 } from "antd";
 import api from "constants/api";
 import {apiCall, apiFdCall} from "constants/apiCall";
@@ -341,7 +333,7 @@ function Book({notify}) {
                     </Form>
                 </Spin>
             </Card>
-            <Card title="Selection Table">
+            <Card title="Subject Book List">
                 <Spin spinning={loading}>
                     <Table
                         className="gx-table-responsive"

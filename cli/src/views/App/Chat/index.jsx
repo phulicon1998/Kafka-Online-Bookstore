@@ -138,10 +138,14 @@ function Chat({role, ...props}) {
         // setChats(filterUsers(e.target.value));
     }
 
-    function leaveChat() {
+    function leaveChat(complete=false) {
         setHandlerChat(prev => prev.filter(c => c._id !== conversation._id));
         setConversation(DEFAULT_CONVERSATION);
-        socket.emit("leave handler", conversation);
+        if(!complete) {
+            socket.emit("leave handler", conversation);
+        } else {
+            socket.emit("complete conversation", conversation);
+        }
     }
 
     return (

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {connect} from "react-redux";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
-import {addUser} from "appRedux/actions/user";
+import {sendReloadUser} from "appRedux/actions/user";
 
 const DEFAULT_PROVIDER = {
     name: "",
@@ -10,7 +10,7 @@ const DEFAULT_PROVIDER = {
     email: ""
 }
 
-function Become({user, addUser, ...props}) {
+function Become({user, sendReloadUser, ...props}) {
     const [provider, setProvider] = useState(DEFAULT_PROVIDER);
     const [useUserEmail, setUseUserEmail] = useState(false);
     const [error, setError] = useState("");
@@ -31,7 +31,7 @@ function Become({user, addUser, ...props}) {
         if(isFilled) {
             try {
                 await apiCall(...api.provider.create(user._id), provider);
-                addUser();
+                sendReloadUser(user._id);
             } catch(err) {
                 setError("Oops, there are some troubles with the server. Please try again.");
             }
@@ -118,4 +118,4 @@ function mapState({user}) {
     }
 }
 
-export default connect(mapState, {addUser})(Become);
+export default connect(mapState, {sendReloadUser})(Become);

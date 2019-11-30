@@ -2,6 +2,7 @@ import {takeLatest, call, put} from "redux-saga/effects";
 import {
     SEND_AUTH_DATA,
     CLEAR_AUTH_DATA,
+    SEND_RELOAD_USER,
     ACTIVATED_USER
 } from "constants/ActionTypes";
 import api from "constants/api";
@@ -46,8 +47,16 @@ function* hdAfterActivate() {
     yield put(addUser());
 }
 
+function* hdReloadUser({value}) {
+    let {token, ...user} = yield call(apiCall, ...api.user.getOne(value.user_id));
+    sessionStorage.setItem("auth", JSON.stringify(user));
+    localStorage.setItem("token", token);
+    yield put(addUser(user));
+}
+
 export const userSagas = [
     takeLatest(SEND_AUTH_DATA, hdAuthData),
     takeLatest(ACTIVATED_USER, hdAfterActivate),
+    takeLatest(SEND_RELOAD_USER, hdReloadUser),
     takeLatest(CLEAR_AUTH_DATA, hdClearAuthData)
 ]

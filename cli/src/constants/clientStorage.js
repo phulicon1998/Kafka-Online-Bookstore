@@ -2,6 +2,7 @@ import jwtDecode from "jwt-decode";
 import {clearAuthData, addUser} from "appRedux/actions/user";
 import {setTokenHeader, apiCall} from "constants/apiCall";
 import {reloadCart} from "appRedux/actions/cart";
+import api from "constants/api";
 
 export default async function extractStorage(store) {
     try {
@@ -13,7 +14,7 @@ export default async function extractStorage(store) {
                 store.dispatch(addUser(user));
             } else {
                 let tokenData = jwtDecode(localStorage.token);
-                let user = await apiCall("get", `/api/user/${tokenData._id}`);
+                let {token, ...user} = await apiCall(...api.user.getOne(tokenData._id));
                 sessionStorage.setItem("auth", JSON.stringify(user));
                 store.dispatch(addUser(user));
             }
