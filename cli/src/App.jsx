@@ -17,7 +17,6 @@ import configureStore from "appRedux";
 const store = configureStore();
 extractStorage(store);
 
-
 function App() {
     return (
         <Provider store={store}>

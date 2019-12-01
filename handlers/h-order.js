@@ -1,13 +1,35 @@
 const db = require("../models");
 const {gatherDataById} = require("../manipulate");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 exports.create = async(req, res, next) => {
     try {
         const {user_id} = req.params;
-        const {orderEditions, order} = req.body;
+        const {orderEditions, order, stripeToken} = req.body;
+
+        // Create stripe charge if the order is online paid successfully
+        let isCheckedOut = false;
+        // if(stripeToken) {
+        //     let charge = await stripe.charges.create({
+        //         amount: order.money * 100,
+        //         currency: 'usd',
+        //         source: stripeToken,
+        //         description: 'Charge for order book',
+        //     })
+        //     if(charge.paid) isCheckedOut = true;
+        // }
+
+        // Decrease the amount of each edition
+        for(let e of orderEditions) {
+            let foundEdition = await db.Edition.findById(e.edition_id);
+            if(foundEdition) {
+                foundEdition.amount -= e.quantity;
+                await foundEdition.save();
+            }
+        }
 
         // Create the Order and get the order id
-        let createdOrder = await db.Order.create({...order, user_id});
+        let createdOrder = await db.Order.create({...order, user_id, isCheckedOut});
 
         // Using the created order id for creating OrderItem
         for(let e of orderEditions) {

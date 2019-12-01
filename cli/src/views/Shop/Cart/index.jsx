@@ -83,7 +83,7 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
     }
 
     function getBackToken(token) {
-        console.log(token);
+        submitOrder(token.id);
     }
 
     function hdChangeCover(cartItem_id) {
@@ -110,11 +110,17 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
         setOrder(prev => ({...prev, fastDelivery}));
     }
 
-    async function submitOrder() {
+    async function submitOrder(stripeToken = false) {
         try {
             // Remove the shipment_id (used for identifying selected address)
-            const submitOrder = {...order};
+            let submitOrder = {...order};
             delete submitOrder.shipment_id;
+
+            // Check if the order method is online payment
+            if(stripeToken) {
+                // if the payment method is applied
+                submitOrder = {...submitOrder, cashOnDelivery: false};
+            }
 
             // Get list of OrderItem
             let orderEditions = carts.map(v => {
@@ -125,7 +131,7 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
                 }
             })
 
-            let createdOrder = await apiCall(...api.order.create(user._id), {order: submitOrder, orderEditions});
+            let createdOrder = await apiCall(...api.order.create(user._id), {order: submitOrder, orderEditions, stripeToken});
             sendEmptyCart();
             return props.history.push(`/account/orders/${createdOrder._id}`);
         } catch (e) {
@@ -174,13 +180,13 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
                             }
                             {
                                 step === STEPS.SUBMIT && <div className="submit-cart-button">
-                                    <button onClick={submitOrder}>
+                                    <button onClick={submitOrder.bind(this, false)}>
                                         <i className="fas fa-file"/> Submit Order (COD)
                                     </button>
                                     <StripeCheckout
                                         name="Kafka Checkout"
                                         description="Fill those below to finish payment"
-                                        amount={100}
+                                        amount={order.money*100}
                                         token={getBackToken}
                                         stripeKey={process.env.REACT_APP_STRIPE_KEY}
                                     >

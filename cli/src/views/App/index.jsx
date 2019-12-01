@@ -12,7 +12,7 @@ import Publisher from "./Publisher";
 import Provider from "./Provider";
 import Edition from "./Edition";
 import Order from "./ManageOrder";
-import CreateEdition from "./Edition/Create";
+import CreateEdition from "./Edition/Add";
 import Chat from "./Chat/index";
 import Profile from "./Profile";
 
@@ -69,7 +69,6 @@ function AppRoutes(props) {
                     redirectPath="/app/dashboard"
                     component={Provider}
                     access={[
-                        "ADMIN_PERMISSION",
                         "SALESTAFF_PERMISSION",
                         "ADMIN_PERMISSION"
                     ]}

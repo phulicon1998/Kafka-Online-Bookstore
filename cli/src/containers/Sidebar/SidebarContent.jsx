@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Menu} from "antd";
 import {Link} from "react-router-dom";
+import {withRouter} from "react-router";
 
 import CustomScrollbars from "util/CustomScrollbars";
 import SidebarLogo from "./SidebarLogo";
@@ -35,8 +36,8 @@ class SidebarContent extends Component {
     };
 
     render() {
-        const {navStyle, pathname, user, clearAuthData, role} = this.props;
-        const selectedKeys = pathname.substr(1);
+        const {navStyle, user, clearAuthData, role, location} = this.props;
+        const selectedKeys = location.pathname;
         const defaultOpenKeys = selectedKeys.split('/')[1];
         return (
             <Auxiliary>
@@ -67,24 +68,24 @@ class SidebarContent extends Component {
                                     className={this.getNavStyleSubMenuClass(navStyle)}
                                     title={ <span><i className="icon icon-dasbhoard"/>Dashboard</span> }
                                 >
-                                    <Menu.Item key="/app/dasbhoard">
-                                        <Link to="/app/dasbhoard"><i className="icon icon-crypto"/>Dashboard</Link>
+                                    <Menu.Item key="/app/dashboard">
+                                        <Link to="/app/dashboard"><i className="icon icon-crypto"/>Dashboard</Link>
                                     </Menu.Item>
                                 </SubMenu>
-                                <SubMenu
+                                {role.isProvider || <SubMenu
                                     key="reports"
                                     className={this.getNavStyleSubMenuClass(navStyle)}
                                     title={
                                         <span><i className="icon icon-data-display"/>Manage Reports</span>
                                     }
                                 >
-                                    <Menu.Item key="app/reports/book">
+                                    <Menu.Item key="/app/reports/book">
                                         <Link to="/app/reports/book"><i className="icon icon-crypto"/>For Books</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="app/reports/category">
+                                    <Menu.Item key="/app/reports/category">
                                         <Link to="/app/reports/category"><i className="icon icon-crypto"/>For Categories</Link>
                                     </Menu.Item>
-                                </SubMenu>
+                                </SubMenu>}
                             </MenuItemGroup>
 
                             {(role.isSalestaff || role.isAdmin) && <MenuItemGroup
@@ -92,7 +93,7 @@ class SidebarContent extends Component {
                                 className="gx-menu-group"
                                 title="Tools"
                             >
-                                <Menu.Item key="app/chat">
+                                <Menu.Item key="/app/chat">
                                     <Link to="/app/chat"><i className="icon icon-chat"/> Chat Tool</Link>
                                 </Menu.Item>
                             </MenuItemGroup>}
@@ -102,7 +103,7 @@ class SidebarContent extends Component {
                                 className="gx-menu-group"
                                 title="System"
                             >
-                                <Menu.Item key="app/accounts">
+                                <Menu.Item key="/app/accounts">
                                     <Link to="/app/accounts"><i className="icon icon-auth-screen"/> Manage Accounts</Link>
                                 </Menu.Item>
                             </MenuItemGroup>}
@@ -112,13 +113,13 @@ class SidebarContent extends Component {
                                 className="gx-menu-group"
                                 title="Counter"
                             >
-                                <Menu.Item key="app/providers">
+                                { role.isProvider || <Menu.Item key="/app/providers">
                                     <Link to="/app/providers"><i className="icon icon-profile"/> Manage Provider</Link>
-                                </Menu.Item>
-                                <Menu.Item key="app/editions">
+                                </Menu.Item>}
+                                <Menu.Item key="/app/editions">
                                     <Link to="/app/editions"><i className="icon icon-files"/> Manage Edition</Link>
                                 </Menu.Item>
-                                {role.isProvider && <Menu.Item key="app/editions/add">
+                                {role.isProvider && <Menu.Item key="/app/editions/add">
                                     <Link to="/app/editions/add"><i className="icon icon-product-list"/> Add new edition</Link>
                                 </Menu.Item>}
                             </MenuItemGroup>}
@@ -128,19 +129,19 @@ class SidebarContent extends Component {
                                 className="gx-menu-group"
                                 title="Book"
                             >
-                                <Menu.Item key="app/books">
+                                <Menu.Item key="/app/books">
                                     <Link to="/app/books"><i className="icon icon-pricing-table"/> Manage Books</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/orders">
+                                <Menu.Item key="/app/orders">
                                     <Link to="/app/orders"><i className="icon icon-shopping-cart"/> Manage Orders</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/genres">
+                                <Menu.Item key="/app/genres">
                                     <Link to="/app/genres"><i className="icon icon-tag"/> Manage Genres</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/authors">
+                                <Menu.Item key="/app/authors">
                                     <Link to="/app/authors"><i className="icon icon-user-o"/> Manage Authors</Link>
                                 </Menu.Item>
-                                <Menu.Item key="app/publishers">
+                                <Menu.Item key="/app/publishers">
                                     <Link to="/app/publishers"><i className="icon icon-user"/> Manage Publishers</Link>
                                 </Menu.Item>
                             </MenuItemGroup>}
@@ -168,4 +169,4 @@ const mapStateToProps = ({user, settings}) => {
         }
     }
 };
-export default connect(mapStateToProps, {clearAuthData})(SidebarContent);
+export default connect(mapStateToProps, {clearAuthData})(withRouter(SidebarContent));

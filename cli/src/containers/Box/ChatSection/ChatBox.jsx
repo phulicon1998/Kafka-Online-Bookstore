@@ -3,17 +3,17 @@ import moment from "moment";
 import {sentBy, msgIs} from "constants/messageTypes";
 
 function Message({text, status, type}) {
-    let icon;
-    switch (status) {
-        case msgIs.RECEIVED:
-            icon = "fas fa-circle";
-            break;
-        case msgIs.READ:
-            icon = "fas fa-check-circle";
-            break;
-        default:
-            icon = "far fa-circle";
-    }
+    // let icon;
+    // switch (status) {
+    //     case msgIs.RECEIVED:
+    //         icon = "fas fa-circle";
+    //         break;
+    //     case msgIs.READ:
+    //         icon = "fas fa-check-circle";
+    //         break;
+    //     default:
+    //         icon = "far fa-circle";
+    // }
     return (
         <div className={type === sentBy.CUSTOMER ? "right" : "left"}>
             <div>

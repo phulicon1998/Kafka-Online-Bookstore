@@ -28,9 +28,15 @@ function SearchBar({setData, data, keys, ...props}) {
 
     useEffect(() => {
         // run on the first time data is passed
-        if(data.length > 0 && list.length === 0) setList(data);
+        if(data.length > 0 && list.length === 0) {
+            // console.log("case 1", list, data);
+            setList(data);
+        }
 
-        if(search.length === 0) setData(list);
+        if(search.length === 0 && list.length > 0) {
+            // console.log("case 2", list, data);
+            setData(list);
+        }
 
         if(search.length > 0) {
             let sData = list.length > 0 ? list : data;
