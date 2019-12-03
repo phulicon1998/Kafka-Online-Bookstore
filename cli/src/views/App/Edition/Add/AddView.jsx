@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Widget from "components/Widget/index";
 import {
     Col, Row, Card, Form,
@@ -22,16 +22,27 @@ const DEFAULT_EDITION = {
     amount: 1
 }
 
-function AddView({notify, selectedBook, setSelectedBook, hdSubmit}) {
+function AddView({notify, book, setSelectedBook, hdSubmit, editEdition, loading, setLoading}) {
     const [edition, setEdition] = useState({
         ...DEFAULT_EDITION,
-        book_id: selectedBook._id
+        book_id: book._id
     });
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const [preview, setPreview] = useState({
         url: "",
         visible: false
     })
+
+    useEffect(() => {
+        if(editEdition && editEdition._id !== edition._id) {
+            const {_id, images, desc, quality, price, discount, amount, book_id} = editEdition;
+            setEdition(prev => ({
+                _id, images, desc, quality,
+                price, discount, amount,
+                book_id: book_id._id
+            }))
+        }
+    }, [editEdition, edition._id])
 
     function hdChange(e) {
         const {name, value} = e.target;
@@ -46,7 +57,7 @@ function AddView({notify, selectedBook, setSelectedBook, hdSubmit}) {
     }
 
     function hdPreview(file) {
-        setPreview({url: file.thumbUrl, visible: true});
+        setPreview({url: file.thumbUrl || file.url, visible: true});
     }
 
     function hdCancelPreview() {
@@ -72,17 +83,21 @@ function AddView({notify, selectedBook, setSelectedBook, hdSubmit}) {
 
         // Create new form data for submitting
         let fd = new FormData();
-        edition.images.forEach(img => fd.append("images", img.originFileObj));
+        if(edition._id) {
+            let newImgs = edition.images.filter(img => img.originFileObj);
+            let currentImgs = edition.images.filter(img => !img.originFileObj);
+            newImgs.forEach(img => fd.append("images", img.originFileObj));
+            currentImgs.forEach(img => fd.append("currentImgs[]", JSON.stringify(img)));
+        } else {
+            edition.images.forEach(img => fd.append("images", img.originFileObj));
+        }
         fd.append("book_id", edition.book_id);
         fd.append("desc", edition.desc);
         fd.append("price", edition.price);
         fd.append("discount", edition.discount);
         fd.append("quality", edition.quality);
-
+        fd.append("amount", edition.amount);
         await hdSubmit(fd);
-
-        setEdition(DEFAULT_EDITION);
-        setLoading(false);
     }
 
     return (
@@ -145,51 +160,53 @@ function AddView({notify, selectedBook, setSelectedBook, hdSubmit}) {
             </Col>
             <Col xl={12} lg={24} md={24} sm={24} xs={24}>
                 <Widget styleName="gx-p-lg-1">
-                    <Row>
-                        <Col xl={9} lg={10} md={10} sm={10} xs={24}>
-                            <img className="gx-rounded-lg gx-w-100" alt="..." src={selectedBook.image.url}/>
-                        </Col>
-                        <Col xl={15} lg={14} md={14} sm={14} xs={24}>
-                            <div className="gx-fnd-content">
-                                <p className="gx-text-grey">ISBN - {selectedBook.isbn}</p>
-                                <h2 className="gx-text-uppercase gx-text-black gx-font-weight-bold gx-fnd-title">{selectedBook.name}</h2>
-                                <p>Author(s) - {selectedBook.authors.map(v => v.name).toString()}</p>
-                                <p>Genre(s) - {selectedBook.genres.map(v => v.name).toString()}</p>
-                                <br/>
-                                <Upload
-                                    listType="picture-card"
-                                    fileList={edition.images}
-                                    onPreview={hdPreview}
-                                    onChange={hdChangeImg}
-                                    beforeUpload={() => false}
-                                >
-                                    <div>
-                                        <Icon type="plus"/>
-                                        <div className="ant-upload-text">Upload</div>
-                                    </div>
-                                </Upload>
-                                <Modal
-                                    visible={preview.visible}
-                                    footer={null}
-                                    onCancel={hdCancelPreview}
-                                >
-                                    <img
-                                        alt="example"
-                                        style={{width: '100%'}}
-                                        src={preview.url}
-                                    />
-                                </Modal>
-                            </div>
-                        </Col>
-                    </Row>
+                    <Spin spinning={loading}>
+                        <Row>
+                            <Col xl={9} lg={10} md={10} sm={10} xs={24}>
+                                <img className="gx-rounded-lg gx-w-100" alt="..." src={book.image.url}/>
+                            </Col>
+                            <Col xl={15} lg={14} md={14} sm={14} xs={24}>
+                                <div className="gx-fnd-content">
+                                    <p className="gx-text-grey">ISBN - {book.isbn}</p>
+                                    <h2 className="gx-text-uppercase gx-text-black gx-font-weight-bold gx-fnd-title">{book.name}</h2>
+                                    <p>Author(s) - {book.authors.map(v => v.name).toString()}</p>
+                                    <p>Genre(s) - {book.genres.map(v => v.name).toString()}</p>
+                                    <br/>
+                                    <Upload
+                                        listType="picture-card"
+                                        fileList={edition.images}
+                                        onPreview={hdPreview}
+                                        onChange={hdChangeImg}
+                                        beforeUpload={() => false}
+                                    >
+                                        <div>
+                                            <Icon type="plus"/>
+                                            <div className="ant-upload-text">Upload</div>
+                                        </div>
+                                    </Upload>
+                                    <Modal
+                                        visible={preview.visible}
+                                        footer={null}
+                                        onCancel={hdCancelPreview}
+                                    >
+                                        <img
+                                            alt="example"
+                                            style={{width: '100%'}}
+                                            src={preview.url}
+                                        />
+                                    </Modal>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Spin>
                 </Widget>
                 <Card className="gx-card" title="Confirm Edition Information?">
-                    <Button type="primary" onClick={submit}>Confirm & Save</Button>
-                    <Button type="default" onClick={() => setSelectedBook({})}>Select different one...</Button>
+                    <Spin spinning={loading}>
+                        <Button type="primary" onClick={submit}>Confirm & Save</Button>
+                        {setSelectedBook && <Button type="default" onClick={() => setSelectedBook({})}>Cancel</Button>}
+                    </Spin>
                 </Card>
             </Col>
-
-
         </Row>
     )
 }

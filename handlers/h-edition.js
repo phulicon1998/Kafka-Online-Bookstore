@@ -1,5 +1,6 @@
 const db = require("../models");
 const {gatherDataById} = require("../manipulate");
+const {cloudinary} = require("../utils/uploader");
 
 exports.get = async(req, res, next) => {
     try {
@@ -75,5 +76,48 @@ exports.remove = async(req, res, next) => {
         return res.status(200).json(foundEdition);
     } catch (e) {
         return next(e);
+    }
+}
+
+exports.edit = async(req, res, next) => {
+    try {
+        // Get text data from the request
+        const {edition_id} = req.params;
+        let {currentImgs, uploadImgs, ...edition} = req.body;
+        currentImgs = currentImgs ? Array.from(currentImgs).map(img => JSON.parse(img)) : [];
+
+        // Retrieve current stored edition
+        let foundEdition = await db.Edition.findById(edition_id);
+        let storedImgs = foundEdition.images;
+
+        // Remove all those images no longer in use
+        let currentImgsIsReduced = currentImgs.length < foundEdition.images.length;
+        if(currentImgsIsReduced) {
+
+            // Determine the images no longer in use
+            let currentImgsId = currentImgs.map(img => img.uid);
+            let removeImgs = foundEdition.images.filter(img => currentImgsId.indexOf(img.cloud_id) === -1);
+
+            // If there are any image no longer in use, remove them
+            for(let img of removeImgs) {
+                cloudinary.v2.uploader.destroy(img.cloud_id);
+            }
+
+            // Get stored images still in use
+            storedImgs = storedImgs.filter(img => currentImgsId.indexOf(img.cloud_id) !== -1);
+        }
+
+        // Assign the new images list of the edition
+        let images = uploadImgs ? [...storedImgs, ...uploadImgs] : storedImgs;
+        edition = {...edition, images};
+
+        // Update the text data of the edition
+        await db.Edition.findByIdAndUpdate(edition_id, edition, {new: true});
+
+        // Retrieve updated data to render on client
+        let editedEdition = await db.Edition.findById(edition_id).populate("book_id").populate("provider_id").exec();
+        return res.status(200).json(editedEdition);
+    } catch (e) {
+        return next(e)
     }
 }

@@ -2,16 +2,23 @@ import React, {useState, useEffect, useCallback} from "react";
 import {Card, Table, Divider, Spin} from "antd";
 import withNoti from "hocs/App/withNoti";
 import api from "constants/api";
-import {apiCall} from "constants/apiCall";
+import {apiCall, apiFdCall} from "constants/apiCall";
 import PopConfirm from "components/Shop/Pop/PopConfirm";
 import {qualityToString} from "constants/qualityControl";
 import {connect} from "react-redux";
 import * as permissions from "constants/credentialControl";
 
+import AddView from "./Add/AddView";
+
+const DEFAULT_EDITION = {
+    book: {},
+    edition: {}
+}
+
 function Edition({notify, role, user, ...props}) {
     const [editions, setEditions] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [edition, setEdition] = useState({});
+    const [edition, setEdition] = useState(DEFAULT_EDITION);
 
     const load = useCallback(async() => {
         try {
@@ -31,8 +38,27 @@ function Edition({notify, role, user, ...props}) {
         load();
     }, [load])
 
-    function hdEdit(edition){
-        setEdition(edition);
+    async function hdEdit(edition){
+        let foundEdition = await apiCall(...api.edition.getOne(edition._id));
+        setEdition(foundEdition);
+    }
+
+    async function editEdition(fd) {
+        try {
+            let updatedEdition = await apiFdCall(...api.edition.edit(edition._id), fd);
+            let newEditions = editions.map(e => {
+                if(e._id === updatedEdition._id) {
+                    return updatedEdition
+                }
+                return e;
+            })
+            setEditions(newEditions);
+            setEdition(DEFAULT_EDITION);
+            notify("success", "Edition data is updated successfully!", "New edition's information has been saved.");
+        } catch (e) {
+            notify("error", "Update edition information is not completed!");
+        }
+        setLoading(false);
     }
 
     async function hdRemove(edition_id) {
@@ -90,42 +116,63 @@ function Edition({notify, role, user, ...props}) {
     }
 
     return (
-        <Card title="Your Uploaded Editions">
-            <Spin spinning={loading}>
-                <Table
-                    className="gx-table-responsive"
-                    dataSource={editions}
-                    rowKey="_id"
-                    columns={[
-                        ...controlCols(),
-                        {
-                            title: 'Action',
-                            key: 'action',
-                            width: 100,
-                            render: (text, record) => (
-                                <span>
-                                    <span
-                                        className="gx-link"
-                                        onClick={hdEdit.bind(this, record)}
-                                    >
-                                        Edit
+        <div>
+            {edition._id && <AddView
+                editEdition={{
+                    ...edition,
+                    images: edition.images.map(img => ({
+                        uid: img.cloud_id,
+                        url: img.url
+                    }))
+                }}
+                book={{
+                    ...edition.book_id,
+                    authors: edition.authors,
+                    genres: edition.genres
+                }}
+                setSelectedBook={() => setEdition(DEFAULT_EDITION)}
+                notify={notify}
+                hdSubmit={editEdition}
+                loading={loading}
+                setLoading={setLoading}
+            />}
+            <Card title="Your Uploaded Editions">
+                <Spin spinning={loading}>
+                    <Table
+                        className="gx-table-responsive"
+                        dataSource={editions}
+                        rowKey="_id"
+                        columns={[
+                            ...controlCols(),
+                            {
+                                title: 'Action',
+                                key: 'action',
+                                width: 100,
+                                render: (text, record) => (
+                                    <span>
+                                        <span
+                                            className="gx-link"
+                                            onClick={hdEdit.bind(this, record)}
+                                        >
+                                            Edit
+                                        </span>
+                                        <Divider type="vertical"/>
+                                        <PopConfirm
+                                            title="Are you sure to delete this edition?"
+                                            task={hdRemove.bind(this, record._id)}
+                                            okText="Sure, remove it"
+                                            cancelText="Not now"
+                                        >
+                                            <span className="gx-link">Delete</span>
+                                        </PopConfirm>
                                     </span>
-                                    <Divider type="vertical"/>
-                                    <PopConfirm
-                                        title="Are you sure to delete this edition?"
-                                        task={hdRemove.bind(this, record._id)}
-                                        okText="Sure, remove it"
-                                        cancelText="Not now"
-                                    >
-                                        <span className="gx-link">Delete</span>
-                                    </PopConfirm>
-                                </span>
-                            )
-                        }
-                    ]}
-                />
-            </Spin>
-        </Card>
+                                )
+                            }
+                        ]}
+                    />
+                </Spin>
+            </Card>
+        </div>
     )
 }
 

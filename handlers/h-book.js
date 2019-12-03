@@ -59,7 +59,7 @@ exports.create = async(req, res, next) => {
         let genres = await db.BookGenre.find().populate("genre_id").exec();
         let authors = await db.BookAuthor.find().populate("author_id").exec();
 
-        // // get the returned data to update on client
+        // get the returned data to update on client
         let returnBook = await getReturnBookData(createdBook._id, genres, authors);
 
         return res.status(200).json(returnBook);
@@ -108,7 +108,6 @@ exports.getForStore = async(req, res, next) => {
         })
         return res.status(200).json(books);
     } catch (e) {
-        console.log(e);
         return next(e);
     }
 }
@@ -164,7 +163,6 @@ exports.edit = async(req, res, next) => {
 
         return res.status(200).json(returnBook);
     } catch(err) {
-        console.log(err);
         return next(err);
     }
 }

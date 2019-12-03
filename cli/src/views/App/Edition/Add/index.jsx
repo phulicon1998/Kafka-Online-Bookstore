@@ -10,11 +10,11 @@ import AddView from "./AddView";
 function CreateEdition({notify, ...props}) {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const load = useCallback(async() => {
         try {
             let bookData = await apiCall(...api.book.get());
-            console.log(bookData);
             setBooks(bookData);
         } catch (e) {
             return notify("error", "Data is not loaded");
@@ -37,6 +37,7 @@ function CreateEdition({notify, ...props}) {
         } catch(e) {
             notify("error", "Data is not submitted");
         }
+        setLoading(false);
     }
 
     return (
@@ -54,10 +55,12 @@ function CreateEdition({notify, ...props}) {
             }
             {
                 selectedBook._id && <AddView
-                    selectedBook={selectedBook}
+                    book={selectedBook}
                     setSelectedBook={setSelectedBook}
                     notify={notify}
                     hdSubmit={addEdition}
+                    loading={loading}
+                    setLoading={setLoading}
                 />
             }
         </div>

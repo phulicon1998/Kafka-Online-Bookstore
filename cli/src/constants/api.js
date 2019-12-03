@@ -48,7 +48,8 @@ const edition = {
     getOne: edition_id => ["get", `/api/editions/${edition_id}`],
     getInCart: () => ["post", "/api/editions/cart"],
     create: () => ["post", `/api/editions`],
-    remove: edition_id => ["delete", `/api/editions/${edition_id}`]
+    remove: edition_id => ["delete", `/api/editions/${edition_id}`],
+    edit: edition_id => ["put", `/api/editions/${edition_id}`]
 }
 
 const shipment = {
