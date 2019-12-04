@@ -42,6 +42,7 @@ const StarFilter = () => {
 function Store() {
     const [books, setBooks] = useState([]);
     const [filterFast, setFilterFast] = useState(false);
+
     const fastDeliBook = () => setFilterFast(prev => !prev);
 
     const load = useCallback(async() => {
@@ -51,7 +52,7 @@ function Store() {
 
     useEffect(() => {
         load();
-    }, [load])
+    }, [load]);
 
     return (
         <div>

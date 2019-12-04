@@ -12,6 +12,7 @@ router.route("/store")
 .get(hdl.Book.getForStore);
 
 router.route("/:book_id")
+.get(hdl.Book.getOne)
 .delete(hdl.Book.remove)
 .put(upload.single("image"), mw.Image.getOne, hdl.Book.edit);
 

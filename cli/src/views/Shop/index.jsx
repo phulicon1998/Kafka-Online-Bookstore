@@ -13,6 +13,7 @@ function ShopRoutes({match, location}) {
     return (
         <Switch>
             <Route path={`${match.url}cart`} component={Cart}/>
+            <Route path={`${match.url}store/quality/:book_id/:quality`} component={Store}/>
             <Route path={`${match.url}store/:edition_id`} component={Detail}/>
             <Route path={`${match.url}store`} component={Store}/>
             <RouteControl

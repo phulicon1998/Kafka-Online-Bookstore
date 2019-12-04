@@ -6,12 +6,25 @@ import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import {Rate, Upload, Icon, Modal} from 'antd';
 import {connect} from "react-redux";
 import moment from "moment";
+import {qualityToString} from "constants/qualityControl";
+import {Link} from "react-router-dom";
 
 const DEFAULT_REVIEW = {
     images: [],
     rate: 0,
     title: "",
     content: ""
+}
+
+function QualityBox({amount, qualityNum, book_id}) {
+    let qualityName = qualityToString(qualityNum);
+    return (
+        <div className="quality-box">
+            <h4>{qualityName}</h4>
+            <p>{amount} item(s)</p>
+            <button><Link to={`/store/quality/${book_id}/${qualityNum}`}>View</Link></button>
+        </div>
+    )
 }
 
 const Review = ({username, rate, title, content, userLiked, createdAt, canRemove, doRemove}) => (
@@ -63,13 +76,23 @@ function Detail({match, user, ...props}) {
         authors: [],
         images: []
     })
+    const [qualities, setQualities] = useState([]);
 
     const load = useCallback(async() => {
-        // const socket = ioClient("http://127.0.0.1:8080");
-
         const {edition_id} = match.params;
         let retrievedEdition = await apiCall(...api.edition.getOne(edition_id));
         const {review_id, ...editionData} = retrievedEdition;
+
+        let retrievedBook = await apiCall(...api.book.getOne(retrievedEdition.book_id._id));
+        // Get all the quality the book has
+        let allBookQualities = retrievedBook.edition_id.map(e => e.quality);
+        let uniqueBookQualities = [...(new Set(allBookQualities))];
+        let bookByQualities = uniqueBookQualities.map(q => ({
+            qualityNum: q,
+            amount: retrievedBook.edition_id.filter(b => b.quality === q).length
+        }))
+        setQualities(bookByQualities);
+
         setEdition(editionData);
         setReviews(review_id.reverse());
         setLoading(false);
@@ -184,6 +207,11 @@ function Detail({match, user, ...props}) {
                     </div>
                     <div className="col-md-3">
                         <h3>This is designed later</h3>
+                        {
+                            qualities.map((q, i) => (
+                                <QualityBox {...q} book_id={edition.book_id._id} key={i}/>
+                            ))
+                        }
                     </div>
                     <div className="col-md-12">
                         <div className="store-detail-review">
