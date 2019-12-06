@@ -1,5 +1,6 @@
 import {
     SEND_AUTH_DATA,
+    SEND_SOCIAL_AUTH_DATA,
     CLEAR_AUTH_DATA,
     ACTIVATED_USER,
     SEND_RELOAD_USER,
@@ -10,6 +11,13 @@ export function sendAuthData(route, authData){
     return {
         type: SEND_AUTH_DATA,
         value: {route, authData}
+    }
+}
+
+export function sendSocialAuthData(value) {
+    return {
+        type: SEND_SOCIAL_AUTH_DATA,
+        value
     }
 }
 

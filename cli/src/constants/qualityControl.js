@@ -7,7 +7,7 @@ export const quality = {
 }
 
 export function qualityToString(q) {
-    switch(q) {
+    switch(Number(q)) {
         case quality.BRAND_NEW:
             return "Brand New";
         case quality.LIKE_NEW:

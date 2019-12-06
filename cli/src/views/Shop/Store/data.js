@@ -8,25 +8,6 @@ import b7 from "assets/imgs/books/7.jpg";
 import b8 from "assets/imgs/books/8.jpg";
 import b9 from "assets/imgs/books/9.jpg";
 
-const genres = [
-    "All",
-	"Fantasy & Sci-Fi",
-	"Art & Photography",
-	"Cooking, Food & Wine",
-	"Literature & Fiction",
-	"Science & Education",
-	"Business",
-	"Childer's Book",
-	"Biographies & Memoirs"
-]
-
-const discounts = [
-    "Under $25",
-    "$50 to $100",
-    "$100 to $200",
-    "$200 to Above"
-]
-
 const storeBooks = [
     {
         img: b1,

@@ -2,42 +2,13 @@ import React, {useState, useEffect, useCallback} from "react";
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import TitleBar from "components/Shop/Bar/TitleBar";
 import Book from "containers/Product/Book";
-import {genres, discounts} from "./data";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
 
 import evA from "assets/imgs/gA.jpg"
 import evB from "assets/imgs/ev-a.jpg";
 
-const List = ({data}) => (
-    <ul className="store-nav-list">
-        {data.map((v, i) => ( <li key={i}><a href="/">{v}</a></li> )) }
-    </ul>
-)
-
-const StarFilter = () => {
-    return (
-        <div className="star-filter">
-            {
-                [4, 3, 2, 1].map((star, i) => (
-                    <div key={i}>
-                        {
-                            Array.apply(null, Array(star)).map((v, j) => (
-                                <i className="fas fa-star colorized" key={j}/>
-                            ))
-                        }
-                        {
-                            Array.apply(null, Array(5 - star)).map((v, j) => (
-                                <i className="fas fa-star" key={j}/>
-                            ))
-                        }
-                        <span> (at least)</span>
-                    </div>
-                ))
-            }
-        </div>
-    )
-}
+import Sidebar from "components/Shop/Bar/Sidebar";
 
 function Store() {
     const [books, setBooks] = useState([]);
@@ -84,12 +55,7 @@ function Store() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-3">
-                        <TitleBar icon="fas fa-list-ul" title="Book Category"/>
-                        <List data={genres}/>
-                        <TitleBar icon="fas fa-chart-bar" title="Rating Ranges"/>
-                        <StarFilter/>
-                        <TitleBar icon="fas fa-hand-holding-usd" title="Price Ranges"/>
-                        <List data={discounts}/>
+                        <Sidebar/>
                     </div>
                     <div className="col-md-9">
                         <TitleBar icon="fas fa-book-open" title="Book Showcase"/>
@@ -100,7 +66,7 @@ function Store() {
                                 <p>All books are displayed with no filter applied</p>
                             </div>
                             <div onClick={fastDeliBook} className={filterFast ? "checked" : ""}>
-                                <i className={filterFast? "fas fa-check-square" : "fas fa-square"}/>
+                                <i className={filterFast ? "fas fa-check-square" : "fas fa-square"}/>
                                 <p>Only Fast Delivery</p>
                             </div>
                         </div>

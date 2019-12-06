@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {connect} from "react-redux";
-import {sendAuthData} from "appRedux/actions/user";
+import {sendAuthData, sendSocialAuthData} from "appRedux/actions/user";
 import {addMessage} from "appRedux/actions/message";
 
 // Import views
@@ -24,7 +24,7 @@ const DEFAULT_FORM = {
     username: ""
 }
 
-function Auth({sendAuthData, message, addMessage, ...props}) {
+function Auth({sendAuthData, sendSocialAuthData, message, addMessage, ...props}) {
     const [isMember, setIsMember] = useState(true);
     const [switchMode, setSwitchMode] = useState(false);
     const [form, setForm] = useState(DEFAULT_FORM);
@@ -67,6 +67,7 @@ function Auth({sendAuthData, message, addMessage, ...props}) {
                     switchMode={switchMode}
                     changeMode={changeMode}
                     fadeEff={fadeEff}
+                    sendSocialAuthData={sendSocialAuthData}
                 />
                 <AuthForm
                     form={form}
@@ -87,4 +88,4 @@ function mapState({message}) {
     return {message};
 }
 
-export default connect(mapState, {sendAuthData, addMessage})(Auth);
+export default connect(mapState, {sendAuthData, sendSocialAuthData, addMessage})(Auth);

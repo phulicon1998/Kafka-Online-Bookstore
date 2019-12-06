@@ -6,7 +6,7 @@ const mw = require("../middlewares");
 router.route("/").get(hdl.User.get);
 
 router.route("/login").post(hdl.User.logIn);
-router.route("/social").post(hdl.User.social);
+router.route("/social").post(mw.User.genPassword, hdl.User.social);
 router.route("/signup").post(hdl.User.signUp);
 router.route("/generate").post(mw.User.genPassword, hdl.User.generate);
 

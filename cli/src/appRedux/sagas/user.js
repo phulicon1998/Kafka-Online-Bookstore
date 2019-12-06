@@ -1,6 +1,7 @@
 import {takeLatest, call, put} from "redux-saga/effects";
 import {
     SEND_AUTH_DATA,
+    SEND_SOCIAL_AUTH_DATA,
     CLEAR_AUTH_DATA,
     SEND_RELOAD_USER,
     ACTIVATED_USER
@@ -54,8 +55,16 @@ function* hdReloadUser({value}) {
     yield put(addUser(user));
 }
 
+function* hdSocialAuthData({value}) {
+    let {token, ...user} = yield call(apiCall, ...api.user.social(), value);
+    sessionStorage.setItem("auth", JSON.stringify(user));
+    localStorage.setItem("token", token);
+    yield put(addUser(user));
+}
+
 export const userSagas = [
     takeLatest(SEND_AUTH_DATA, hdAuthData),
+    takeLatest(SEND_SOCIAL_AUTH_DATA, hdSocialAuthData),
     takeLatest(ACTIVATED_USER, hdAfterActivate),
     takeLatest(SEND_RELOAD_USER, hdReloadUser),
     takeLatest(CLEAR_AUTH_DATA, hdClearAuthData)

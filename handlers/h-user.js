@@ -62,7 +62,32 @@ exports.signUp = async(req, res, next) => {
 
 exports.social = async(req, res, next) => {
     try {
-        console.log(req.body);
+        // Find out if the user data has been stored in the system
+        let foundUser = await db.User.findOne({email: req.body.email});
+        let role, user;
+        if(!foundUser) {
+            user = await db.User.create({...req.body, active: true});
+
+            // Add role for user
+            role = await db.Role.find({code: "001"});
+            await db.UserRole.create({
+                role_id: role[0]._id,
+                user_id: user._id
+            })
+        } else {
+            // get role of user
+            let userRole = await db.UserRole.find({user_id: foundUser._id}).populate("role_id").exec();
+            let uRole = userRole.map(v => v.role_id);
+            role = uRole.length > 0 ? uRole : false;
+
+            user = foundUser;
+        }
+        let {_id, username, email, active, avatar} = user;
+
+        // Generate token for storing on client
+        let token = genToken(_id, role);
+
+        return res.status(200).json({_id, username, email, active, avatar, role, token});
     } catch (e) {
         return next(e);
     }

@@ -1,10 +1,10 @@
 import React from "react";
 import {ModeButton, SocialButton} from "components/Auth/Button";
 import GoogleLogin from "react-google-login";
-import api from "constants/api";
-import {apiCall} from "constants/apiCall";
+// import api from "constants/api";
+// import {apiCall} from "constants/apiCall";
 
-function Intro({isMember, switchMode, changeMode, fadeEff}) {
+function Intro({isMember, switchMode, changeMode, fadeEff, sendSocialAuthData}) {
 
     async function hdSuccess(response) {
         try {
@@ -17,8 +17,7 @@ function Intro({isMember, switchMode, changeMode, fadeEff}) {
                     link: imageUrl
                 }
             }
-            await apiCall(...api.user.social(), user);
-            // clear cookie for logout
+            sendSocialAuthData(user);
         } catch (e) {
             console.log(e);
         }

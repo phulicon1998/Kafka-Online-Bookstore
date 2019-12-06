@@ -170,7 +170,12 @@ exports.edit = async(req, res, next) => {
 exports.getOne = async(req, res, next) => {
     try {
         const {book_id} = req.params;
-        let foundBook = await db.Book.findById(book_id).populate("edition_id").lean().exec();
+        let foundBook = await db.Book.findById(book_id).populate({
+            path: "edition_id",
+            populate: {
+                path: "provider_id"
+            }
+        }).lean().exec();
         return res.status(200).json(foundBook);
     } catch (e) {
         return next(e);
