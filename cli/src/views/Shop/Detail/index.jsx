@@ -1,20 +1,18 @@
 import React, {useState, useEffect, useCallback} from "react";
+import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {apiCall} from "constants/apiCall";
+import {qualityToString} from "constants/qualityControl";
 import api from "constants/api";
-import {apiCall, apiFdCall} from "constants/apiCall";
+import moment from "moment";
+
+import Book from "containers/Product/Book";
 import Loader from "components/Shop/Load/Loader";
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
-import {Rate, Upload, Icon, Modal} from 'antd';
-import {connect} from "react-redux";
-import moment from "moment";
-import {qualityToString} from "constants/qualityControl";
-import {Link} from "react-router-dom";
+import SectionBar from "components/Shop/Bar/SectionBar";
+import ReviewSection from "./ReviewSection";
 
-const DEFAULT_REVIEW = {
-    images: [],
-    rate: 0,
-    title: "",
-    content: ""
-}
+import detailBg from "assets/imgs/detailBg.jpg";
 
 function QualityBox({amount, qualityNum, book_id}) {
     let qualityName = qualityToString(qualityNum);
@@ -27,40 +25,10 @@ function QualityBox({amount, qualityNum, book_id}) {
     )
 }
 
-const Review = ({username, rate, title, content, userLiked, createdAt, canRemove, doRemove}) => (
-    <div className="row">
-        <div className="col-md-1 text-center">
-			<i className="fas fa-book-reader"/>
-		</div>
-		<div className="col-md-10">
-			<div>
-                <div>
-                    <p><b>{username}</b> has rated it</p>
-                    <Rate value={rate}/>
-                </div>
-                <div>
-                    <p>{moment(createdAt).format("DD-MM-YYYY, h:mm:ss a")}</p>
-                    {canRemove && <button onClick={doRemove}>Remove</button>}
-                </div>
-			</div>
-			<h4><b>{title}</b></h4>
-			<p>{content}</p>
-			<span>This review is useful, isn't it?</span>
-            <button><i className="far fa-thumbs-up"/> Likes ({userLiked.length})</button>
-		</div>
-    </div>
-)
-
 function Detail({match, user, ...props}) {
     const [loading, setLoading] = useState(true);
-    const [openCommentForm, setOpenCommentForm] = useState(false);
     const [reviews, setReviews] = useState([]);
-    const [review, setReview] = useState(DEFAULT_REVIEW);
     const [quantity, setQuantity] = useState(1);
-    const [preview, setPreview] = useState({
-        url: "",
-        visible: false
-    });
     const [edition, setEdition] = useState({
         "_id": "",
         "book_id": {
@@ -68,7 +36,12 @@ function Detail({match, user, ...props}) {
             name: "...",
             image: {
                 url: ""
-            }
+            },
+            publish: {
+                at: "",
+                by: ""
+            },
+            isbn: ""
         },
         price: 0,
         discount: 0,
@@ -77,6 +50,8 @@ function Detail({match, user, ...props}) {
         images: []
     })
     const [qualities, setQualities] = useState([]);
+    const [sameAuthorBooks, setSameAuthorBooks] = useState([]);
+    const [sameGenreBooks, setSameGenreBooks] = useState([]);
 
     const load = useCallback(async() => {
         const {edition_id} = match.params;
@@ -84,6 +59,7 @@ function Detail({match, user, ...props}) {
         const {review_id, ...editionData} = retrievedEdition;
 
         let retrievedBook = await apiCall(...api.book.getOne(retrievedEdition.book_id._id));
+
         // Get all the quality the book has
         let allBookQualities = retrievedBook.edition_id.map(e => e.quality);
         let uniqueBookQualities = [...(new Set(allBookQualities))];
@@ -93,6 +69,11 @@ function Detail({match, user, ...props}) {
         }))
         setQualities(bookByQualities);
 
+        // Get book in the same genre and same author
+        let books = await apiCall(...api.book.getForStore());
+        setSameAuthorBooks(books.slice(0, 4));
+        setSameGenreBooks(books.slice(4, 8));
+
         setEdition(editionData);
         setReviews(review_id.reverse());
         setLoading(false);
@@ -100,58 +81,24 @@ function Detail({match, user, ...props}) {
 
     useEffect(() => {
         load();
-    }, [load])
-
-    function hdChange(e) {
-        const {name, value} = e.target;
-        setReview(prev => ({...prev, [name]: value}));
-    }
-
-    function hdPreview(file) {
-        setPreview({url: file.thumbUrl, visible: true});
-    }
-
-    function hdCancelPreview() {
-        setPreview(prev => ({...prev, visible: false}))
-    }
-
-    function hdChangeImg({fileList}) {
-        setReview(prev => ({
-            ...prev,
-            images: fileList
-        }))
-    }
-
-    async function removeReview(review_id) {
-        await apiCall(...api.review.remove(edition._id, review_id));
-        let newReviews = reviews.filter(v => v._id !== review_id);
-        setReviews(newReviews);
-    }
-
-    async function submitReview() {
-        setLoading(true);
-        // Create new form data for submitting
-        let fd = new FormData();
-        review.images.forEach(img => fd.append("images", img.originFileObj));
-        fd.append("user_id", user._id);
-        fd.append("rate", review.rate);
-        fd.append("title", review.title);
-        fd.append("content", review.content);
-
-        let returnedReview = await apiFdCall(...api.review.create(edition._id), fd);
-        setReviews(prev => ([returnedReview, ...prev]));
-        setReview(DEFAULT_REVIEW);
-        setLoading(false);
-    }
+    }, [load]);
 
     return (
         <div>
+            <div className="store-detail-header" style={{"backgroundImage": `url(${detailBg})`}}>
+                <div className="container">
+                    <h1>Book Detail</h1>
+                    <p>New, cheap books with quality service.</p>
+                    <p>Kafka proud to be one of the best service in bringing knowledge closer to people's life.</p>
+                </div>
+            </div>
             <Breadcrumb
                 paths={[
                     {path: "/", name: "Home"},
                     {path: "/store", name: "Store"}
                 ]}
                 current={edition.book_id.name}
+                harder={true}
                 viewed
             />
             <div className="container">
@@ -214,81 +161,60 @@ function Detail({match, user, ...props}) {
                         }
                     </div>
                     <div className="col-md-12">
-                        <div className="store-detail-review">
-                            <h4>Community reviews
-                                {openCommentForm || <span onClick={() => setOpenCommentForm(prev => !prev)}><i className="far fa-edit"/> Rate & write review</span>}
-                                {/* <a href="/login"><i className="far fa-edit"/> Login To Write Review</a> */}
-                            </h4>
-                            <p><i className="far fa-caret-square-down"/> Rating Details</p>
+                        <SectionBar name="Other books of this author" />
+                        <div className="row">
                             {
-                                openCommentForm && <div className="row">
-                                    <div className="col-md-1 text-center">
-                                        <i className="fas fa-book-reader"/>
-                                    </div>
-                                    <div className="col-md-10">
-                                        <div>
-                                            <span>Your Rate - </span>
-                                            <Rate
-                                                value={review.rate}
-                                                onChange={(rate) => setReview(prev => ({...prev, rate}))}
-                                            />
-                                            <span className={review.rate > 0 ? "rated" : ""}>- {review.rate}/5 star(s)</span>
-                                        </div>
-                                        <div>
-                                            <Upload
-                                                listType="picture-card"
-                                                fileList={review.images}
-                                                onPreview={hdPreview}
-                                                onChange={hdChangeImg}
-                                                beforeUpload={() => false}
-                                            >
-                                                <div>
-                                                    <Icon type="plus"/>
-                                                    <div className="ant-upload-text">Upload</div>
-                                                </div>
-                                            </Upload>
-                                            <Modal
-                                                visible={preview.visible}
-                                                footer={null}
-                                                onCancel={hdCancelPreview}
-                                            >
-                                                <img
-                                                    alt="example"
-                                                    style={{width: '100%'}}
-                                                    src={preview.url}
-                                                />
-                                            </Modal>
-                                        </div>
-                                        <textarea
-                                            rows="1"
-                                            name="title"
-                                            placeholder="Write your title here..."
-                                            value={review.title}
-                                            onChange={hdChange}
+                                sameAuthorBooks.map((v, i) => (
+                                    <div className="col-md-3" key={i}>
+                                        <Book
+                                            img={v.image.url}
+                                            name={v.name}
+                                            author={v.authors.map(v => v.name).toString()}
+                                            price={v.bestDeal.price}
+                                            discount={v.bestDeal.discount}
+                                            editionId={v.bestDeal._id}
                                         />
-                                        <textarea
-                                            rows="3"
-                                            name="content"
-                                            placeholder="Review of this book..."
-                                            value={review.content}
-                                            onChange={hdChange}
-                                        />
-                                        <button onClick={submitReview}>Send review</button>
-                                        <button onClick={() => setOpenCommentForm(false)}>Cancel</button>
                                     </div>
-                                </div>
+                                ))
                             }
                         </div>
-                        <div className="store-row-review">
+                        <SectionBar name="Book Description" />
+                        <div className="store-detail-description">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    Despite the tumor-shrinking medical miracle that has bought her a few years, Hazel has never been anything but terminal, her final chapter inscribed upon diagnosis. But when a gorgeous plot twist named Augustus Waters suddenly appears at Cancer Kid Support Group, Hazel's story is about to be completely rewritten.
+                                    <br/><br/>
+                                    Insightful, bold, irreverent, and raw, The Fault in Our Stars is award-winning author John Green's most ambitious and heartbreaking work yet, brilliantly exploring the funny, thrilling, and tragic business of being alive and in love.
+                        		</div>
+                        		<div className="col-md-3">
+                        			<p><b>Publish Date:</b> {moment(edition.book_id.publish.at).format("DD/MM/YYYY")}</p>
+                        			<p><b>Publisher:</b> {edition.book_id.publish.by.name} </p>
+                        			<p><b>Page Number:</b>100</p>
+                        			<p><b>Language:</b> {edition.book_id.language} </p>
+                        			<p><b>ISBN:</b> {edition.book_id.isbn}</p>
+                        		</div>
+                            </div>
+                        </div>
+                        <ReviewSection
+                            user={user}
+                            edition={edition}
+                            reviews={reviews}
+                            setReviews={setReviews}
+                        />
+                        <SectionBar name="Other books in this genre" />
+                        <div className="row">
                             {
-                                reviews.map((v, i) => (
-                                    <Review
-                                        {...v}
-                                        username={v.user_id.username}
-                                        canRemove={v.user_id._id === user._id}
-                                        doRemove={removeReview.bind(this, v._id)}
-                                        key={i}
-                                    />
+                                sameGenreBooks.map((v, i) => (
+                                    <div className="col-md-3" key={i}>
+                                        <Book
+                                            img={v.image.url}
+                                            name={v.name}
+                                            author={v.authors.map(v => v.name).toString()}
+                                            price={v.bestDeal.price}
+                                            discount={v.bestDeal.discount}
+                                            editionId={v.bestDeal._id}
+                                        />
+                                    </div>
                                 ))
                             }
                         </div>

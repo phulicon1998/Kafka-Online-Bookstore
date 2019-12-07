@@ -37,7 +37,12 @@ exports.getOne = async(req, res, next) => {
             populate: {
                 path: "user_id"
             }
-        }).populate("book_id").lean().exec();
+        }).populate({
+            path: "book_id",
+            populate: {
+                path: "publish.by"
+            }
+        }).lean().exec();
 
         // get the author and genre for the edition
         let authors = await db.BookAuthor.find().populate("author_id").lean().exec();

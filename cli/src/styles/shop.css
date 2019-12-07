@@ -383,6 +383,9 @@ body.kafka-layout {
   background-color: #343434;
   margin-bottom: 38px;
 }
+.shop-breadcrumb.harder {
+  background-color: #1f1f1f;
+}
 .shop-breadcrumb > .container > .row > h4 {
   color: white;
   font-family: "Lato", sans-serif;
@@ -430,6 +433,21 @@ body.kafka-layout {
 }
 .title-bar > i {
   margin-right: 10px;
+}
+.section-bar {
+  color: #5f5f5f;
+  background-color: white;
+  padding-left: 0px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin: 0;
+  margin-bottom: 40px;
+  margin-top: 10px;
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  border-bottom: 1px solid #d6d6d6;
+  text-transform: capitalize;
 }
 .cart-table {
   margin-bottom: 50px;
@@ -1894,6 +1912,37 @@ body.kafka-layout {
 .store-detail > .row > div.col-md-7 > div:nth-of-type(2) > p > a {
   color: #8b98a2;
 }
+.store-detail-header {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 500px;
+}
+.store-detail-header > .container {
+  padding-left: 0px;
+  padding-right: 0px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  padding-bottom: 110px;
+}
+.store-detail-header > .container > h1 {
+  font-size: 50px;
+  color: white;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  text-align: left;
+}
+.store-detail-header > .container > p {
+  font-size: 19px;
+  font-weight: 300;
+  display: block;
+  margin-bottom: 7px;
+  color: #dadada;
+  font-family: "Lato", sans-serif;
+  text-align: left;
+}
 .store-detail-review {
   margin-bottom: 25px;
 }
@@ -1906,6 +1955,7 @@ body.kafka-layout {
   border-bottom: 1px solid #d6d6d6;
   margin: 10px 0;
   padding: 15px 0px;
+  font-size: 18px;
 }
 .store-detail-review > h4 > span,
 .store-detail-review > h4 a {
@@ -2059,6 +2109,16 @@ body.kafka-layout {
   border: none;
   border-radius: 5px;
   padding: 3px 25px;
+}
+.store-detail-description > .row > div.col-md-9 {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.store-detail-description > .row > div.col-md-3 {
+  line-height: 1.8;
+}
+.store-detail-description > .row > div.col-md-3 > p {
+  color: #585858;
 }
 .shop-footer {
   background-color: #191919;

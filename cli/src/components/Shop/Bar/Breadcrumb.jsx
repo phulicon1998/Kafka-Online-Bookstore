@@ -1,8 +1,8 @@
 import React from "react";
 
-const Breadcrumb = ({paths, current, viewed, ...props}) => {
+const Breadcrumb = ({paths, current, viewed, harder, ...props}) => {
     return (
-        <div className="shop-breadcrumb">
+        <div className={`shop-breadcrumb ${harder ? "harder" : ""}`}>
             <div className="container">
                 <div className={`row ${viewed ? "justify-content-between align-items-center" : ""}`}>
                     { viewed && <h4>Watched Books <i className="fas fa-angle-down"/></h4> }
