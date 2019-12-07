@@ -16,6 +16,7 @@ function CreateEdition({notify, ...props}) {
         try {
             let bookData = await apiCall(...api.book.get());
             setBooks(bookData);
+            setLoading(false);
         } catch (e) {
             return notify("error", "Data is not loaded");
         }

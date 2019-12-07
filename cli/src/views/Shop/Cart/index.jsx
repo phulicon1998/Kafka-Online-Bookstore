@@ -2,13 +2,14 @@ import React, {useState, useEffect, useCallback} from "react";
 import {connect} from "react-redux";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
-import {sendEmptyCart} from "appRedux/actions/cart";
+import {sendEmptyCart, sendRemoveCart, sendChangeCart} from "appRedux/actions/cart";
 import StripeCheckout from "react-stripe-checkout";
 
 // comps
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import TitleBar from "components/Shop/Bar/TitleBar";
 import PricePanel from "components/Shop/Panel/PricePanel";
+import Message from "components/Shop/Message";
 
 // views
 import CartList from "./CartList";
@@ -35,7 +36,7 @@ const STEPS = {
     SUBMIT: 2
 }
 
-function Cart({cart, sendEmptyCart, user, ...props}) {
+function Cart({cart, sendEmptyCart, sendRemoveCart, sendChangeCart, user, message, ...props}) {
     const [carts, setCarts] = useState([]);
     const [subMoney, setSubMoney] = useState({
         shipping: 10,
@@ -46,6 +47,7 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
 
     const load = useCallback(async() => {
         let cartData = await apiCall(...api.edition.getInCart(), cart);
+        let verififedCartData = [];
         if(cartData.length === 0) {
             /* if there is no data retrieved by those edition id,
             that means it's fake/unavailable */
@@ -59,10 +61,28 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
                 e.quantity = cart.list[position].quantity;
                 e.cover = false;
             })
-        }
-        setCarts(cartData);
 
-    }, [cart, sendEmptyCart]);
+            // Check and remove if any edition in cart is no more available
+            for(var edition of cartData) {
+                let rs = await apiCall(...api.edition.compare(edition._id), {
+                    amount: edition.quantity
+                });
+
+                if(!rs.available) {
+                    // if storedAmount is 0, it means the edition is out of business or sold out
+                    if(rs.storedAmount > 0) {
+                        sendChangeCart(edition._id, -(edition.quantity - rs.storedAmount))
+                    } else {
+                        sendRemoveCart(edition._id);
+                    }
+                } else {
+                    verififedCartData.push(edition);
+                }
+            }
+        }
+        setCarts(verififedCartData);
+
+    }, [cart, sendChangeCart, sendEmptyCart, sendRemoveCart]);
 
     useEffect(() => {
         load();
@@ -149,6 +169,13 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
                 current="Cart"
             />
             <div className="container">
+                {
+                    message.content.length > 0 && <div className="row">
+                        <div className="col-md-12">
+                            <Message {...message} />
+                        </div>
+                    </div>
+                }
                 <div className="row">
                     <div className={cartIsEmpty ? "col-md-12" : "col-md-8"}>
                         {
@@ -211,8 +238,11 @@ function Cart({cart, sendEmptyCart, user, ...props}) {
     )
 }
 
-function mapState({cart, user}) {
-    return {cart, user: user.data}
+function mapState({cart, user, message}) {
+    return {
+        cart, message,
+        user: user.data
+    }
 }
 
-export default connect(mapState, {sendEmptyCart})(Cart);
+export default connect(mapState, {sendEmptyCart, sendRemoveCart, sendChangeCart})(Cart);

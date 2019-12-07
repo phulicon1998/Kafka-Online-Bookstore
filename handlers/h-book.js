@@ -97,15 +97,24 @@ exports.getForStore = async(req, res, next) => {
         books = books.filter(b => b.edition_id.length > 0);
 
         books.forEach(b => {
+            // Remove out of business or out of stock edition
+            b.edition_id = b.edition_id.filter(e => !e.outOfBusiness).filter(e => e.amount > 0);
+
             // Retrieve the best deal of each book
-            let bestDeal = b.edition_id.reduce((acc, next) => {
-                let accMoney = acc.price * (100 - acc.discount) / 100;
-                let nextMoney = next.price * (100 - next.discount) / 100;
-                return accMoney <= nextMoney ? acc : next;
-            })
-            b.bestDeal = bestDeal;
-            b.authors = gatherDataById(b._id, "author_id", authors);
+            if(b.edition_id.length > 0) {
+                let bestDeal = b.edition_id.reduce((acc, next) => {
+                    let accMoney = acc.price * (100 - acc.discount) / 100;
+                    let nextMoney = next.price * (100 - next.discount) / 100;
+                    return accMoney <= nextMoney ? acc : next;
+                })
+                b.bestDeal = bestDeal;
+                b.authors = gatherDataById(b._id, "author_id", authors);
+            }
         })
+
+        // Get only book that contain valid editions
+        books = books.filter(b => b.edition_id.length > 0);
+        
         return res.status(200).json(books);
     } catch (e) {
         return next(e);

@@ -69,10 +69,13 @@ exports.create = async(req, res, next) => {
     }
 }
 
-exports.remove = async(req, res, next) => {
+exports.stop = async(req, res, next) => {
     try {
         let foundEdition = await db.Edition.findById(req.params.edition_id);
-        if(foundEdition) await foundEdition.remove();
+        if(foundEdition) {
+            foundEdition.outOfBusiness = !foundEdition.outOfBusiness;
+            await foundEdition.save();
+        }
         return res.status(200).json(foundEdition);
     } catch (e) {
         return next(e);
@@ -119,5 +122,29 @@ exports.edit = async(req, res, next) => {
         return res.status(200).json(editedEdition);
     } catch (e) {
         return next(e)
+    }
+}
+
+exports.compare = async(req, res, next) => {
+    try {
+        const {edition_id} = req.params;
+        const {amount} = req.body;
+        let foundEdition = await db.Edition.findById(edition_id).lean().exec();
+
+        // Check if the edition is still in business
+        if(foundEdition && !foundEdition.outOfBusiness) {
+            return res.status(200).json({
+                available: foundEdition.amount >= amount,
+                storedAmount: foundEdition.amount
+            })
+        }
+
+        // if the edition can be found or not in the business anymore
+        return res.status(200).json({
+            available: false,
+            storedAmount: 0
+        });
+    } catch (e) {
+        return next(e);
     }
 }

@@ -1,11 +1,14 @@
-import {takeLatest, put} from "redux-saga/effects";
+import {takeLatest, takeEvery, call, put} from "redux-saga/effects";
 import {
     SEND_ADD_CART,
     SEND_EMPTY_CART,
     SEND_CHANGE_CART,
     SEND_REMOVE_CART
 } from "constants/ActionTypes";
-import {reloadCart, emptyCart} from "appRedux/actions/cart";
+import {reloadCart, emptyCart, sendRemoveCart} from "appRedux/actions/cart";
+import {addMessage} from "appRedux/actions/message";
+import api from "constants/api";
+import {apiCall} from "constants/apiCall";
 
 function* hdSendAddCart({value}) {
     let cart = [];
@@ -42,12 +45,27 @@ function* hdSendEmptyCart() {
 
 function* hdSendChangeCart({value}) {
     let cart = JSON.parse(localStorage.kCart);
-    cart.forEach(v => {
-        if(v.edition_id === value.edition_id){
-            v.quantity += value.quantity;
+    for(var edi of cart) {
+        if(edi.edition_id === value.edition_id) {
+            let amount = edi.quantity + value.quantity;
+            if(amount > 0) {
+                let rs = yield call(apiCall, ...api.edition.compare(value.edition_id), {amount});
+                if(rs.available) {
+                    edi.quantity += value.quantity;
+                    yield put(addMessage());
+                } else {
+                    if(rs.storedAmount > 0) {
+                        yield put(addMessage("This is the amount we can provide you for this product at the moment."));
+                    } else {
+                        yield put(addMessage("This book edition is not available anymore."));
+                        yield put(sendRemoveCart(value.edition_id));
+                    }
+                }
+            } else {
+                yield put(addMessage("You have reached the minimum number of an item in cart."));
+            }
         }
-    })
-
+    }
     // Save changes in storage
     localStorage.setItem("kCart", JSON.stringify(cart));
 
@@ -65,8 +83,8 @@ function* hdSendRemoveCart({value}) {
 }
 
 export const cartSagas = [
-    takeLatest(SEND_ADD_CART, hdSendAddCart),
+    takeEvery(SEND_ADD_CART, hdSendAddCart),
     takeLatest(SEND_EMPTY_CART, hdSendEmptyCart),
-    takeLatest(SEND_CHANGE_CART, hdSendChangeCart),
+    takeEvery(SEND_CHANGE_CART, hdSendChangeCart),
     takeLatest(SEND_REMOVE_CART, hdSendRemoveCart)
 ]

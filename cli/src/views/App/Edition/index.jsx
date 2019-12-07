@@ -61,15 +61,23 @@ function Edition({notify, role, user, ...props}) {
         setLoading(false);
     }
 
-    async function hdRemove(edition_id) {
+    async function hdStop(edition_id) {
         setLoading(true);
         try {
-            await apiCall(...api.edition.remove(edition_id));
-            let newEditions = editions.filter(v => v._id !== edition_id);
+            await apiCall(...api.edition.stop(edition_id));
+            let newEditions = editions.map(v => {
+                if(v._id === edition_id) {
+                    return {
+                        ...v,
+                        outOfBusiness: !v.outOfBusiness
+                    }
+                }
+                return v;
+            });
             setEditions(newEditions);
-            notify("success", "Process is completed", "Edition is removed successfully.");
+            notify("success", "Process is completed", "Edition's state is updated successfully.");
         } catch(err) {
-            notify("error", "Data is not removed");
+            notify("error", "Data is not updated");
         }
         setLoading(false);
     }
@@ -158,12 +166,12 @@ function Edition({notify, role, user, ...props}) {
                                         </span>
                                         <Divider type="vertical"/>
                                         <PopConfirm
-                                            title="Are you sure to delete this edition?"
-                                            task={hdRemove.bind(this, record._id)}
-                                            okText="Sure, remove it"
+                                            title="Are you sure to change this edition's state?"
+                                            task={hdStop.bind(this, record._id)}
+                                            okText="Sure, change it"
                                             cancelText="Not now"
                                         >
-                                            <span className="gx-link">Delete</span>
+                                            <span className="gx-link">{record.outOfBusiness ? "Enable" : "Disable"}</span>
                                         </PopConfirm>
                                     </span>
                                 )

@@ -49,8 +49,9 @@ const edition = {
     getOne: edition_id => ["get", `/api/editions/${edition_id}`],
     getInCart: () => ["post", "/api/editions/cart"],
     create: () => ["post", `/api/editions`],
-    remove: edition_id => ["delete", `/api/editions/${edition_id}`],
-    edit: edition_id => ["put", `/api/editions/${edition_id}`]
+    stop: edition_id => ["put", `/api/editions/${edition_id}/stop`],
+    edit: edition_id => ["put", `/api/editions/${edition_id}`],
+    compare: edition_id => ["post", `/api/editions/${edition_id}/compare`]
 }
 
 const shipment = {

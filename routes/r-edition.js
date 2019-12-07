@@ -12,9 +12,13 @@ router.route("/cart").post(hdl.Edition.getInCart);
 
 router.route("/:edition_id")
 .get(hdl.Edition.getOne)
-.delete(hdl.Edition.remove)
 .put(upload.fields([{name: "images"}]), mw.Image.get, hdl.Edition.edit);
 
+router.route("/:edition_id/compare")
+.post(hdl.Edition.compare);
+
 router.use("/:edition_id/reviews", require("./r-review"));
+
+router.route("/:edition_id/stop").put(hdl.Edition.stop);
 
 module.exports = router;

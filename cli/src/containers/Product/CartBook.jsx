@@ -2,12 +2,9 @@ import React from "react";
 import {connect} from "react-redux";
 import {sendChangeCart, sendRemoveCart} from "appRedux/actions/cart";
 
-const CartBook = ({_id, img, name, author, fastDelivery, price, discount, quantity, user, sendChangeCart, sendRemoveCart}) => {
+function CartBook({_id, img, name, author, fastDelivery, price, discount, quantity, user, sendChangeCart, sendRemoveCart}) {
 
     function changeAmount(q) {
-        if(quantity === 1 && q < 0) {
-            return console.log("You have reached the minimum number of item in cart.");
-        }
         sendChangeCart(_id, q);
     }
 
@@ -18,7 +15,9 @@ const CartBook = ({_id, img, name, author, fastDelivery, price, discount, quanti
                 <div>
                     <h4>{name}</h4>
                     <p>{author}</p>
-                    <span className={fastDelivery ? "fast" : "standard"}><i className={fastDelivery ? "fas fa-rocket" : "fas fa-truck"}/>{fastDelivery ? "Fast Delivery" : "Standard"}</span>
+                    <span className={fastDelivery ? "fast" : "standard"}>
+                        <i className={fastDelivery ? "fas fa-rocket" : "fas fa-truck"}/>{fastDelivery ? "Fast Delivery" : "Standard"}
+                    </span>
                     <div>
                         <button>Wishlist</button>
                         <button onClick={sendRemoveCart.bind(this, _id)}>Remove</button>
