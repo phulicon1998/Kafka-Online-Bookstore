@@ -1927,8 +1927,8 @@ body.kafka-layout {
   flex-direction: column;
 }
 .store-detail-v2 > div:nth-of-type(1) > div img {
-  width: 60px;
-  height: 70px;
+  min-width: 70px;
+  height: 80px;
   padding: 5px 10px;
   border: 1px solid #b3b8bcc7;
   border-radius: 3px;

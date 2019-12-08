@@ -6,6 +6,7 @@ import {
     Spin, Select, Button
 } from "antd";
 import {quality} from "constants/qualityControl";
+import CKEditor from "react-ckeditor-component";
 
 const FormItem = Form.Item;
 const {TextArea} = Input;
@@ -100,6 +101,12 @@ function AddView({notify, book, setSelectedBook, hdSubmit, editEdition, loading,
         await hdSubmit(fd);
     }
 
+    function hdDescChange(e) {
+        const desc = e.editor.getData();
+        console.log(typeof desc);
+        setEdition(prev => ({...prev, desc}))
+    }
+
     return (
         <Row>
             <Col xl={12} lg={24} md={24} sm={24} xs={24}>
@@ -146,12 +153,19 @@ function AddView({notify, book, setSelectedBook, hdSubmit, editEdition, loading,
                                 </Select>
                             </FormItem>
                             <FormItem label="Edition's Description">
-                                <TextArea
+                                {/* <TextArea
                                     rows={4}
                                     name="desc"
                                     placeholder="Enter the edition's description here..."
                                     value={edition.desc}
                                     onChange={hdChange}
+                                /> */}
+                                <CKEditor
+                                    activeClass="p10"
+                                    content={edition.desc}
+                                    events={{
+                                        'change': hdDescChange
+                                    }}
                                 />
                             </FormItem>
                         </Form>
