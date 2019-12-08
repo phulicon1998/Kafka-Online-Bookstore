@@ -1912,6 +1912,123 @@ body.kafka-layout {
 .store-detail > .row > div.col-md-7 > div:nth-of-type(2) > p > a {
   color: #8b98a2;
 }
+.store-detail-v2 {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-family: "Verdana", sans-serif;
+  line-height: 2;
+}
+.store-detail-v2 > div:nth-of-type(1) {
+  display: flex;
+}
+.store-detail-v2 > div:nth-of-type(1) > div {
+  display: flex;
+  flex-direction: column;
+}
+.store-detail-v2 > div:nth-of-type(1) > div img {
+  width: 60px;
+  height: 70px;
+  padding: 5px 10px;
+  border: 1px solid #b3b8bcc7;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+.store-detail-v2 > div:nth-of-type(1) > img {
+  margin: 20px 80px;
+  padding: 20px;
+  width: 330px;
+  height: 470px;
+}
+.store-detail-v2 > div:nth-of-type(2) {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #80808040;
+  padding-left: 30px;
+}
+.store-detail-v2 > div:nth-of-type(2) > hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-top: 1px solid #eee;
+}
+.store-detail-v2 > div:nth-of-type(2) > p {
+  color: #585858;
+}
+.store-detail-v2 > div:nth-of-type(2) > p:nth-of-type(1) {
+  color: #9a9a9a;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+.store-detail-v2 > div:nth-of-type(2) > p:nth-of-type(3) > b:nth-of-type(1) {
+  color: #585858;
+}
+.store-detail-v2 > div:nth-of-type(2) > p:nth-of-type(3) > b:nth-of-type(2) {
+  color: #599461;
+}
+.store-detail-v2 > div:nth-of-type(2) > p:nth-of-type(4) {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.store-detail-v2 > div:nth-of-type(2) > p:nth-of-type(4) > del {
+  color: #859086;
+  padding-left: 3%;
+  font-size: 20px;
+}
+.store-detail-v2 > div:nth-of-type(2) > h2 {
+  font-weight: 700;
+  margin-top: 10px;
+  font-size: 30px;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) {
+  display: flex;
+  justify-content: flex-start;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div > input {
+  text-align: center;
+  width: 40px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  outline: none;
+  border: 1px solid #969696;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div > button {
+  background-color: #4e4d4d;
+  color: #fff;
+  border: 1px solid #4e4d4d;
+  padding: 5px 13px;
+  border-radius: 3px;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div > button:nth-of-type(2) {
+  padding: 5px 16px;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > button {
+  text-transform: uppercase;
+  background-color: #939454;
+  color: white;
+  font-weight: 700;
+  border: 1px solid #939454;
+  padding-left: 60px;
+  padding-right: 60px;
+  border-radius: 5px;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) {
+  display: flex;
+  align-items: center;
+  margin-top: 14px;
+  width: 280px;
+  justify-content: space-between;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) > p > a {
+  color: #8b98a2;
+}
 .store-detail-header {
   background-position: center;
   background-repeat: no-repeat;

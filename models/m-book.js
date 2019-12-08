@@ -41,7 +41,7 @@ var bookSchema = new mongoose.Schema({
 	],
 	reviewed: {
 		type: Boolean,
-		default: false
+		default: true
 	}
 }, {timestamps: true});
 

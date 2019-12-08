@@ -11,6 +11,7 @@ import Loader from "components/Shop/Load/Loader";
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import SectionBar from "components/Shop/Bar/SectionBar";
 import ReviewSection from "./ReviewSection";
+import BookContent from "./BookContent";
 
 import detailBg from "assets/imgs/detailBg.jpg";
 
@@ -103,8 +104,13 @@ function Detail({match, user, ...props}) {
             />
             <div className="container">
                 <div className="row" style={{"marginTop": "40px"}}>
-                    <div className="col-md-9">
-                        <Loader loading={loading}>
+                    <BookContent
+                        onChange={(e) => setQuantity(e.target.value)}
+                        edition={edition}
+                        quantity={quantity}
+                    />
+                    {/* <div className="col-md-9"> */}
+                        {/* <Loader loading={loading}>
                             <div className="store-detail">
                                 <div className="row">
                                     <div className="col-md-5">
@@ -150,16 +156,16 @@ function Detail({match, user, ...props}) {
                                     </div>
                                 </div>
                             </div>
-                        </Loader>
-                    </div>
-                    <div className="col-md-3">
+                        </Loader> */}
+                    {/* </div> */}
+                    {/* <div className="col-md-3">
                         <h3>This is designed later</h3>
                         {
                             qualities.map((q, i) => (
                                 <QualityBox {...q} book_id={edition.book_id._id} key={i}/>
                             ))
                         }
-                    </div>
+                    </div> */}
                     <div className="col-md-12">
                         <SectionBar name="Other books of this author" />
                         <div className="row">
