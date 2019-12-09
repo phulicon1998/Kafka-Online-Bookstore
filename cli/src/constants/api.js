@@ -33,7 +33,7 @@ const book = {
     get: () => ["get", "/api/books"],
     getOne: book_id => ["get", `/api/books/${book_id}`],
     create: () => ["post", "/api/books"],
-    remove: book_id => ["delete", `/api/books/${book_id}`],
+    review: book_id => ["put", `/api/books/${book_id}/review`],
     edit: book_id => ["put", `/api/books/${book_id}`],
     getForStore: () => ["get", `/api/books/store`]
 }

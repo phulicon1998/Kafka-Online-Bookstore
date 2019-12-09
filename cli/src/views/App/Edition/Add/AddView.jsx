@@ -9,7 +9,6 @@ import {quality} from "constants/qualityControl";
 import CKEditor from "react-ckeditor-component";
 
 const FormItem = Form.Item;
-const {TextArea} = Input;
 const {Option} = Select;
 const {BRAND_NEW, LIKE_NEW, GOOD, ACCEPTABLE} = quality;
 

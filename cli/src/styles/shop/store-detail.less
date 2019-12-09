@@ -173,17 +173,16 @@
 
             > img {
                 margin: 20px 80px;
-                padding: 20px;
                 width: 330px;
-                height: 470px;
+                height: 500px;
             }
         }
 
         &:nth-of-type(2) {
             display: flex;
             flex-direction: column;
-            border-left: 1px solid #80808040;
-            padding-left: 30px;
+            border-left: 1px solid #80808026;
+            padding-left: 40px;
 
             > hr {
                 margin-top: 10px;
@@ -197,15 +196,9 @@
                 &:nth-of-type(1) {
                     color: #9a9a9a;
                     font-weight: bold;
-                    // font-family: @f-la;
                     margin-bottom: 10px;
                     font-size: 15px;
                 }
-
-                // &:nth-of-type(2) {
-                //     // background: url(https://vcdn.tikicdn.com/desktop/img/beseller-product.png) center left no-repeat;
-                //     // padding-left: 20px;
-                // }
 
                 &:nth-of-type(3) {
                     > b {
@@ -229,6 +222,16 @@
                         font-size: 20px;
                     }
                 }
+
+                &.delivery-time {
+                    line-height: 1.2;
+                }
+
+                &.bookcare {
+                    margin-top: 10px;
+                    margin-bottom: 15px;
+                    line-height: 1.2;
+                }
             }
 
             > h2 {
@@ -239,6 +242,11 @@
 
             > div {
                 &:nth-of-type(1) {
+                    display: flex;
+                    align-items: center;
+                }
+
+                &:nth-of-type(2) {
                     display: flex;
                     justify-content: flex-start;
 
@@ -283,7 +291,7 @@
                     }
                 }
 
-                &:nth-of-type(2) {
+                &:nth-of-type(3) {
                     display: flex;
                     align-items: center;
                     margin-top: 14px;

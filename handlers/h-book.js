@@ -114,20 +114,10 @@ exports.getForStore = async(req, res, next) => {
 
         // Get only book that contain valid editions
         books = books.filter(b => b.edition_id.length > 0);
-        
+
         return res.status(200).json(books);
     } catch (e) {
         return next(e);
-    }
-}
-
-exports.remove = async(req, res, next) => {
-    try {
-        let foundBook = await db.Book.findById(req.params.book_id);
-        if(foundBook) foundBook.remove();
-        return res.status(200).json(foundBook);
-    } catch(err) {
-        return next(err);
     }
 }
 
@@ -173,6 +163,21 @@ exports.edit = async(req, res, next) => {
         return res.status(200).json(returnBook);
     } catch(err) {
         return next(err);
+    }
+}
+
+exports.review = async(req, res, next) => {
+    try {
+        const {book_id} = req.params;
+        let book;
+        let foundBook = await db.Book.findById(book_id);
+        if(foundBook) {
+            foundBook.reviewed = true;
+            book = await foundBook.save();
+        }
+        return res.status(200).json(book);
+    } catch (e) {
+        return next(e);
     }
 }
 

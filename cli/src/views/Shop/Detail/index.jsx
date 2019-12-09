@@ -9,6 +9,7 @@ import Book from "containers/Product/Book";
 // import Loader from "components/Shop/Load/Loader";
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import SectionBar from "components/Shop/Bar/SectionBar";
+// import TitleBar from "components/Shop/Bar/TitleBar";
 import ReviewSection from "./ReviewSection";
 import BookContent from "./BookContent";
 
@@ -96,16 +97,24 @@ function Detail({match, user, ...props}) {
                         onChange={(e) => setQuantity(e.target.value)}
                         edition={edition}
                         quantity={quantity}
+                        qualities={qualities}
                     />
-                    {/* <div className="col-md-3">
-                        <h3>This is designed later</h3>
-                        {
-                            qualities.map((q, i) => (
-                                <QualityBox {...q} book_id={edition.book_id._id} key={i}/>
-                            ))
-                        }
-                    </div> */}
                     <div className="col-md-12">
+                        {/* <TitleBar title="Book description" icon="fas fa-list-ul"/> */}
+                        {/* <SectionBar name="Book Description" />
+                        <div className="store-detail-description">
+                            <div className="row">
+                                <div className="col-md-9">{parse(`${edition.desc}`)}</div>
+                        		<div className="col-md-3">
+                        			<p><b>Publish Date:</b> {moment(edition.book_id.publish.at).format("DD/MM/YYYY")}</p>
+                        			<p><b>Publisher:</b> {edition.book_id.publish.by.name} </p>
+                        			<p><b>Page Number:</b>100</p>
+                        			<p><b>Language:</b> {edition.book_id.language} </p>
+                        			<p><b>ISBN:</b> {edition.book_id.isbn}</p>
+                        		</div>
+                            </div>
+                        </div> */}
+
                         <SectionBar name="Other books of this author" />
                         <div className="row">
                             {
@@ -123,6 +132,7 @@ function Detail({match, user, ...props}) {
                                 ))
                             }
                         </div>
+
                         <SectionBar name="Book Description" />
                         <div className="store-detail-description">
                             <div className="row">
@@ -136,13 +146,14 @@ function Detail({match, user, ...props}) {
                         		</div>
                             </div>
                         </div>
+
                         <ReviewSection
                             user={user}
                             edition={edition}
                             reviews={reviews}
                             setReviews={setReviews}
                         />
-                        <SectionBar name="Other books in this genre" />
+                        <SectionBar name="Other books in this genre"/>
                         <div className="row">
                             {
                                 sameGenreBooks.map((v, i) => (

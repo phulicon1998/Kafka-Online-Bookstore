@@ -743,6 +743,26 @@ body.kafka-layout {
   height: 100%;
   margin-right: 10px;
 }
+.quality-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  margin-right: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+.quality-box > h4 {
+  font-size: 14px;
+  color: #d6993f;
+  font-weight: bold;
+}
+.quality-box > p {
+  margin: 0;
+  color: gray;
+  font-size: 12px;
+}
 .k-message {
   padding: 10px 10px;
   font-family: "Lato", sans-serif;
@@ -1936,15 +1956,14 @@ body.kafka-layout {
 }
 .store-detail-v2 > div:nth-of-type(1) > img {
   margin: 20px 80px;
-  padding: 20px;
   width: 330px;
-  height: 470px;
+  height: 500px;
 }
 .store-detail-v2 > div:nth-of-type(2) {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid #80808040;
-  padding-left: 30px;
+  border-left: 1px solid #80808026;
+  padding-left: 40px;
 }
 .store-detail-v2 > div:nth-of-type(2) > hr {
   margin-top: 10px;
@@ -1975,6 +1994,14 @@ body.kafka-layout {
   padding-left: 3%;
   font-size: 20px;
 }
+.store-detail-v2 > div:nth-of-type(2) > p.delivery-time {
+  line-height: 1.2;
+}
+.store-detail-v2 > div:nth-of-type(2) > p.bookcare {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
 .store-detail-v2 > div:nth-of-type(2) > h2 {
   font-weight: 700;
   margin-top: 10px;
@@ -1982,14 +2009,18 @@ body.kafka-layout {
 }
 .store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) {
   display: flex;
+  align-items: center;
+}
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) {
+  display: flex;
   justify-content: flex-start;
 }
-.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div {
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) > div {
   display: flex;
   align-items: center;
   margin-right: 20px;
 }
-.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div > input {
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) > div > input {
   text-align: center;
   width: 40px;
   margin-left: 5px;
@@ -1999,17 +2030,17 @@ body.kafka-layout {
   outline: none;
   border: 1px solid #969696;
 }
-.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div > button {
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) > div > button {
   background-color: #4e4d4d;
   color: #fff;
   border: 1px solid #4e4d4d;
   padding: 5px 13px;
   border-radius: 3px;
 }
-.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > div > button:nth-of-type(2) {
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) > div > button:nth-of-type(2) {
   padding: 5px 16px;
 }
-.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(1) > button {
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) > button {
   text-transform: uppercase;
   background-color: #939454;
   color: white;
@@ -2019,14 +2050,14 @@ body.kafka-layout {
   padding-right: 60px;
   border-radius: 5px;
 }
-.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) {
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(3) {
   display: flex;
   align-items: center;
   margin-top: 14px;
   width: 280px;
   justify-content: space-between;
 }
-.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(2) > p > a {
+.store-detail-v2 > div:nth-of-type(2) > div:nth-of-type(3) > p > a {
   color: #8b98a2;
 }
 .store-detail-header {

@@ -171,9 +171,7 @@ function Cart({cart, sendEmptyCart, sendRemoveCart, sendChangeCart, user, messag
             <div className="container">
                 {
                     message.content.length > 0 && <div className="row">
-                        <div className="col-md-12">
-                            <Message {...message} />
-                        </div>
+                        <div className="col-md-12"><Message {...message}/></div>
                     </div>
                 }
                 <div className="row">
@@ -208,7 +206,7 @@ function Cart({cart, sendEmptyCart, sendRemoveCart, sendChangeCart, user, messag
                             {
                                 step === STEPS.SUBMIT && <div className="submit-cart-button">
                                     <button onClick={submitOrder.bind(this, false)}>
-                                        <i className="fas fa-file"/> Submit Order (COD)
+                                        <i className="fas fa-file"/> Submit Order(COD)
                                     </button>
                                     <StripeCheckout
                                         name="Kafka Checkout"

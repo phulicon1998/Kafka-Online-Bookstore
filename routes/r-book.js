@@ -13,7 +13,8 @@ router.route("/store")
 
 router.route("/:book_id")
 .get(hdl.Book.getOne)
-.delete(hdl.Book.remove)
 .put(upload.single("image"), mw.Image.getOne, hdl.Book.edit);
+
+router.route("/:book_id/review").put(hdl.Book.review);
 
 module.exports = router;

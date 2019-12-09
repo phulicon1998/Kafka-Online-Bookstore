@@ -6,15 +6,14 @@ import {qualityToString} from "constants/qualityControl";
 function QualityBox({amount, qualityNum, book_id}) {
     let qualityName = qualityToString(qualityNum);
     return (
-        <div className="quality-box">
+        <Link to={`/store/quality/${book_id}/${qualityNum}`} className="quality-box">
             <h4>{qualityName}</h4>
-            <p>{amount} item(s)</p>
-            <button><Link to={`/store/quality/${book_id}/${qualityNum}`}>View</Link></button>
-        </div>
+            <p>{amount} item(s) from $10</p>
+        </Link>
     )
 }
 
-function BookContent({edition, quantity, onChange}) {
+function BookContent({edition, quantity, onChange, qualities}) {
     return (
         <div className="store-detail-v2">
             <div>
@@ -30,28 +29,21 @@ function BookContent({edition, quantity, onChange}) {
             <div>
                 <p>{(edition.genres.map(v => v.name)).toString().split(",").join(", ")}</p>
                 <h2>{edition.book_id.name}</h2>
-                {/* <p>The <b>15th</b> place in top of <i>world's best seller book this month</i></p> */}
                 <p><b>Authors: </b>{edition.authors.map(v => v.name).toString()}</p>
-                {/* <hr/> */}
                 <p>
                     <b>Availibility:</b>
                     <b> {edition.amount > 5 ? "In stock" : `Only ${edition.amount} left`}</b>
                 </p>
                 <p>${(edition.price * (100 - edition.discount) / 100).toFixed(2)} <del>${edition.price.toFixed(2)}</del></p>
                 <hr/>
-                {
-                    edition.book_id.bookcare
-                    ? <p><i className="fab fa-bandcamp"/> This product can be used <b>Bookcare</b></p>
-                    : <p><i className="fab fa-bandcamp"/> There is no bookcare available for this product</p>
-                }
-                {
-                    edition.fastDelivery
-                    ? <p> Delivery time estimated may be at <b>Tommorrow</b>, on <b>{moment().add(1, "days").format("DD/MM/YYYY")}</b></p>
-                    : <p><i className="fas fa-truck"/> Estimated delivery time may be between <b>{moment().add(2, "days").format("dddd (Do)")}</b> and <b>{moment().add(5, "days").format("dddd (Do)")}</b></p>
-                }
-                <hr/>
-                <p><b>Description</b></p>
-
+                <p><b>Other Qualities</b></p>
+                <div>
+                    {
+                        qualities.map((q, i) => (
+                            <QualityBox {...q} book_id={edition.book_id._id} key={i}/>
+                        ))
+                    }
+                </div>
                 <hr/>
                 <p><b>Quantity & Order</b></p>
                 <div>
@@ -65,6 +57,17 @@ function BookContent({edition, quantity, onChange}) {
                 <div>
                     <p><a href="/"><i className="fas fa-heart"/> Add to Wishlist</a></p>
                 </div>
+                <hr/>
+                {
+                    edition.book_id.bookcare
+                    ? <p className="bookcare"><i className="fab fa-bandcamp"/> This product can be used <b>Bookcare</b></p>
+                    : <p className="bookcare"><i className="fab fa-bandcamp"/> There is no bookcare available for this product</p>
+                }
+                {
+                    edition.fastDelivery
+                    ? <p className="delivery-time"> Delivery time estimated may be at <b>Tommorrow</b>, on <b>{moment().add(1, "days").format("DD/MM/YYYY")}</b></p>
+                    : <p className="delivery-time"><i className="fas fa-truck"/> Estimated delivery time - <b>{moment().add(2, "days").format("ddd, Do")}</b> to <b>{moment().add(5, "days").format("ddd, Do")}</b></p>
+                }
             </div>
         </div>
     )
