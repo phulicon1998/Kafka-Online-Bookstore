@@ -13,6 +13,7 @@ import Provider from "./Provider";
 import Edition from "./Edition";
 import Order from "./ManageOrder";
 import CreateEdition from "./Edition/Add";
+import RequestEdition from "./Edition/Request";
 import Chat from "./Chat/index";
 import Profile from "./Profile";
 
@@ -77,6 +78,14 @@ function AppRoutes(props) {
                     path={`${url}/editions/add`}
                     redirectPath="/app/dashboard"
                     component={CreateEdition}
+                    access={[
+                        "PROVIDER_PERMISSION",
+                    ]}
+                />
+                <RouteControl
+                    path={`${url}/editions/request`}
+                    redirectPath="/app/dashboard"
+                    component={RequestEdition}
                     access={[
                         "PROVIDER_PERMISSION",
                     ]}

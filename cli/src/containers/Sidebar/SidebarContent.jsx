@@ -120,7 +120,10 @@ class SidebarContent extends Component {
                                     <Link to="/app/editions"><i className="icon icon-files"/> Manage Edition</Link>
                                 </Menu.Item>
                                 {role.isProvider && <Menu.Item key="/app/editions/add">
-                                    <Link to="/app/editions/add"><i className="icon icon-product-list"/> Add new edition</Link>
+                                    <Link to="/app/editions/add"><i className="icon icon-product-list"/> Add New Edition</Link>
+                                </Menu.Item>}
+                                {role.isProvider && <Menu.Item key="/app/editions/request">
+                                    <Link to="/app/editions/request"><i className="icon icon-add-circle"/> Book Request</Link>
                                 </Menu.Item>}
                             </MenuItemGroup>}
 

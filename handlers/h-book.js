@@ -34,14 +34,18 @@ async function updateDataList(book_id, newData_ids, dataModel, dataType, current
 exports.create = async(req, res, next) => {
     try {
         // get uploaded image content (url and public id)
-        const {uploadImg, genreIds, authorIds} = req.body;
+        const {uploadImg, genreIds, authorIds, reviewed} = req.body;
 
         // get list of selected id of author and genre
         let genre_ids = JSON.parse(genreIds);
         let author_ids = JSON.parse(authorIds);
 
         // create book subject, book-genre and book-author
-        let createdBook = await db.Book.create({...req.body, image: uploadImg});
+        let createdBook = await db.Book.create({
+            ...req.body,
+            image: uploadImg,
+            reviewed: reviewed === "1" // If reviewed = "1", the book is created by staff
+        });
         for(let genre_id of genre_ids) {
             await db.BookGenre.create({
                 book_id: createdBook._id,

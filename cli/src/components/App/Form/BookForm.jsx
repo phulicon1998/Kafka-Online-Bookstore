@@ -1,13 +1,11 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {
-    Card, Spin, Form,
-    Upload, Checkbox,
-    DatePicker, Icon,
-    Input, Button, Select
+    Card, Spin, Form, Upload, Checkbox,
+    DatePicker, Icon, Input, Button, Select
 } from "antd";
 import moment from "moment";
 import {getBase64} from "util/uploaderUtil";
-import {apiFdCall, apiCall} from "constants/apiCall";
+import {apiCall} from "constants/apiCall";
 import api from "constants/api";
 
 const FormItem = Form.Item;
@@ -30,8 +28,8 @@ const DEFAULT_BOOK = {
     author_ids: []
 }
 
-function BookForm({book, notify, setBooks, books, loading, setLoading, hdCancel}) {
-    const [bookData, setBookData] = useState(book ? book : DEFAULT_BOOK);
+function BookForm({book, notify, hdSubmit, loading, setLoading, isProvider, hdCancel}) {
+    const [bookData, setBookData] = useState(DEFAULT_BOOK);
     const [publishers, setPublisher] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [genres, setGenres] = useState([]);
@@ -43,8 +41,9 @@ function BookForm({book, notify, setBooks, books, loading, setLoading, hdCancel}
         setPublisher(publisherData);
         setGenres(genreData);
         setAuthors(authorData);
+        setBookData(book ? book : DEFAULT_BOOK);
         setLoading(false);
-    }, [setLoading])
+    }, [book, setLoading])
 
     useEffect(() => {
         load()
@@ -117,29 +116,13 @@ function BookForm({book, notify, setBooks, books, loading, setLoading, hdCancel}
             fd.append("bookcare", bookData.bookcare);
             fd.append("genreIds", JSON.stringify(bookData.genre_ids));
             fd.append("authorIds", JSON.stringify(bookData.author_ids));
+            fd.append("reviewed", isProvider ? "0" : "1");
 
-            if(!bookData._id) {
-                // if book id not exists then submit takes up creating data
-                let createdBook = await apiFdCall(...api.book.create(), fd);
-                setBooks(prev => [...prev, createdBook]);
-                notify("success", "Process is completed", "Adding new book successfully.");
-            } else {
-                // vice versa for editting data
-                let editedBook = await apiFdCall(...api.book.edit(bookData._id), fd);
-                let newBooks = books.map(v => {
-                    if(v._id === editedBook._id){
-                        return editedBook;
-                    }
-                    return v;
-                })
-                setBooks(newBooks);
-                notify("success", "Process is completed", "Book's information is updated successfully.");
-            }
+            await hdSubmit(fd);
         } catch(err) {
             notify("error", "Data is not submitted");
+            setLoading(false);
         }
-        setLoading(false);
-        hdCancel(DEFAULT_BOOK);
     }
 
     return (

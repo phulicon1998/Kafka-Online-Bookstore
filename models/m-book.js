@@ -42,6 +42,10 @@ var bookSchema = new mongoose.Schema({
 	reviewed: {
 		type: Boolean,
 		default: true
+	},
+	requester: { // id of customer (who has been provider)
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User"
 	}
 }, {timestamps: true});
 
