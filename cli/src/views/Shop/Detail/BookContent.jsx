@@ -8,7 +8,7 @@ function QualityBox({amount, qualityNum, book_id}) {
     return (
         <Link to={`/store/quality/${book_id}/${qualityNum}`} className="quality-box">
             <h4>{qualityName}</h4>
-            <p>{amount} item(s) from $10</p>
+            <p>{amount} item(s) from <b>$10</b></p>
         </Link>
     )
 }

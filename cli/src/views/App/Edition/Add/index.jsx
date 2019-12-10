@@ -15,7 +15,7 @@ function CreateEdition({notify, ...props}) {
     const load = useCallback(async() => {
         try {
             let bookData = await apiCall(...api.book.get());
-            setBooks(bookData);
+            setBooks(bookData.filter(b => b.reviewed));
             setLoading(false);
         } catch (e) {
             return notify("error", "Data is not loaded");

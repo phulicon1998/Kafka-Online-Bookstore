@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from "react";
-import {Card, Table, Spin, Button} from "antd";
+import {Card, Button} from "antd";
 import api from "constants/api";
 import {apiCall, apiFdCall} from "constants/apiCall";
 import withNoti from "hocs/App/withNoti";
@@ -7,6 +7,7 @@ import moment from "moment";
 import BookForm from "components/App/Form/BookForm";
 import {connect} from "react-redux";
 import * as permissions from "constants/credentialControl";
+import BookTable from "components/App/Table/BookTable";
 
 function Book({notify, role}) {
     const [books, setBooks] = useState([]);
@@ -65,10 +66,19 @@ function Book({notify, role}) {
         setLoading(false);
     }
 
+    async function hdApprove(id) {
+        setLoading(true);
+        let rsBook = await apiCall(...api.book.review(id));
+        setBooks(books.map(v => v._id === rsBook._id ? rsBook : v));
+        notify("success", "Process is completed", "A new book is approved and ready for work.");
+        setLoading(false);
+    }
+
     return (
         <div>
             {
                 add && <BookForm
+                    title="Add New Book"
                     notify={notify}
                     loading={loading}
                     setLoading={setLoading}
@@ -79,6 +89,7 @@ function Book({notify, role}) {
             }
             {
                 book._id && <BookForm
+                    title="Edit Book Information"
                     notify={notify}
                     loading={loading}
                     setLoading={setLoading}
@@ -104,6 +115,7 @@ function Book({notify, role}) {
                     data={books.filter(b => !b.reviewed)}
                     hdSelect={hdSelect}
                     loading={loading}
+                    hdApprove={hdApprove}
                 />
             }
             {
@@ -127,62 +139,6 @@ function mapState({user}) {
     }
 }
 
-function BookTable({title, loading, data, hdSelect}) {
-    return (
-        <Card title={title}>
-            <Spin spinning={loading}>
-                <Table
-                    className="gx-table-responsive"
-                    dataSource={data}
-                    rowKey="_id"
-                    columns={[
-                        {
-                            title: "Book",
-                            dataIndex: 'name',
-                            render: (text, record) => (
-                                <span className="book-tr-name">
-                                    <img src={record.image.url} alt="bookimage"/>
-                                    <span>
-                                        <h4>{text} {record.bookcare && <i className="fab fa-bandcamp"/>}</h4>
-                                        <p><i className="fas fa-user-friends"/> {record.authors.map(v => v.name).toString().split(",").join(", ")}</p>
-                                        <small>ISBN - {record.isbn}</small>
-                                    </span>
-                                </span>
-                            )
-                        },
-                        {
-                            title: "Genres",
-                            dataIndex: 'genres',
-                            render: text => <span>{text.map(v => v.name).toString().split(",").join(" / ")}</span>
-                        },
-                        {
-                            title: "Language",
-                            dataIndex: 'language',
-                        },
-                        {
-                            title: 'Publisher',
-                            dataIndex: 'publish.by.name',
-                        },
-                        {
-                            title: 'Publish At',
-                            dataIndex: 'publish.at',
-                            render: text => <span>{moment(text).format("DD-MM-YYYY")}</span>
-                        },
-                        {
-                            title: 'Action',
-                            key: 'action',
-                            width: 100,
-                            render: (text, record) => (
-                                <span className="gx-link" onClick={hdSelect.bind(this, record)}>
-                                    Edit
-                                </span>
-                            )
-                        }
-                    ]}
-                />
-            </Spin>
-        </Card>
-    )
-}
+
 
 export default connect(mapState, null)(withNoti(Book));

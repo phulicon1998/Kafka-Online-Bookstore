@@ -17,6 +17,7 @@ const user = {
     generate: () => ["post", `/api/user/generate`],
     getOne: user_id => ["get", `/api/user/${user_id}`],
     get: () => ["get", `/api/user`],
+    getRequest: user_id => ["get", `/api/user/${user_id}/requests`],
     social: () => ["post", `/api/user/social`],
     activate: user_id => ["put", `/api/user/${user_id}/activate`],
     changePassword: user_id => ["post", `/api/user/${user_id}/password`]

@@ -28,7 +28,7 @@ const DEFAULT_BOOK = {
     author_ids: []
 }
 
-function BookForm({book, notify, hdSubmit, loading, setLoading, isProvider, hdCancel}) {
+function BookForm({book, notify, hdSubmit, loading, setLoading, isProvider, hdCancel, title}) {
     const [bookData, setBookData] = useState(DEFAULT_BOOK);
     const [publishers, setPublisher] = useState([]);
     const [authors, setAuthors] = useState([]);
@@ -126,7 +126,7 @@ function BookForm({book, notify, hdSubmit, loading, setLoading, isProvider, hdCa
     }
 
     return (
-        <Card className="gx-card" title={!bookData._id ? "Add New Book" : "Edit Book"}>
+        <Card className="gx-card" title={title}>
             <Spin spinning={loading}>
                 <Form layout="horizontal">
                     <FormItem

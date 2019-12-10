@@ -11,6 +11,7 @@ router.route("/signup").post(hdl.User.signUp);
 router.route("/generate").post(mw.User.genPassword, hdl.User.generate);
 
 router.route("/:user_id").get(hdl.User.getOne);
+router.route("/:user_id/requests").get(hdl.Book.getRequest);
 router.route("/:user_id/activate").put(hdl.User.activate);
 router.route("/:user_id/password").post(hdl.User.changePassword);
 

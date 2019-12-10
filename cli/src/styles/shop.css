@@ -747,7 +747,7 @@ body.kafka-layout {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid #eaeaea;
+  border: 1px solid #b3cdec;
   border-radius: 5px;
   margin-right: 10px;
   padding: 10px;
@@ -755,7 +755,7 @@ body.kafka-layout {
 }
 .quality-box > h4 {
   font-size: 14px;
-  color: #d6993f;
+  color: #627b88;
   font-weight: bold;
 }
 .quality-box > p {
@@ -1996,11 +1996,13 @@ body.kafka-layout {
 }
 .store-detail-v2 > div:nth-of-type(2) > p.delivery-time {
   line-height: 1.2;
+  color: #797979;
 }
 .store-detail-v2 > div:nth-of-type(2) > p.bookcare {
   margin-top: 10px;
   margin-bottom: 15px;
   line-height: 1.2;
+  color: #797979;
 }
 .store-detail-v2 > div:nth-of-type(2) > h2 {
   font-weight: 700;

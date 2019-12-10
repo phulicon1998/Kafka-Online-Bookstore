@@ -41,6 +41,7 @@ exports.create = async(req, res, next) => {
         let author_ids = JSON.parse(authorIds);
 
         // create book subject, book-genre and book-author
+        console.log(reviewed);
         let createdBook = await db.Book.create({
             ...req.body,
             image: uploadImg,
@@ -177,8 +178,18 @@ exports.review = async(req, res, next) => {
         let foundBook = await db.Book.findById(book_id);
         if(foundBook) {
             foundBook.reviewed = true;
-            book = await foundBook.save();
+            await foundBook.save();
         }
+
+        // Retrieve all the genre and author
+        let genres = await db.BookGenre.find().populate("genre_id").exec();
+        let authors = await db.BookAuthor.find().populate("author_id").exec();
+
+        // get all the book and arrange genre and author following each book
+        book = await db.Book.findById(foundBook._id).populate("publish.by").lean().exec();
+        book.genres = gatherDataById(book._id, "genre_id", genres);
+        book.authors = gatherDataById(book._id, "author_id", authors);
+
         return res.status(200).json(book);
     } catch (e) {
         return next(e);
@@ -195,6 +206,27 @@ exports.getOne = async(req, res, next) => {
             }
         }).lean().exec();
         return res.status(200).json(foundBook);
+    } catch (e) {
+        return next(e);
+    }
+}
+
+exports.getRequest = async(req, res, next) => {
+    try {
+        const {user_id} = req.params;
+
+        // Retrieve all the genre and author
+        let genres = await db.BookGenre.find().populate("genre_id").exec();
+        let authors = await db.BookAuthor.find().populate("author_id").exec();
+
+        // Get all the books the provider has requested
+        let books = await db.Book.find({requester: user_id}).populate("publish.by").lean().exec();
+        books.forEach(b => {
+            b.genres = gatherDataById(b._id, "genre_id", genres);
+            b.authors = gatherDataById(b._id, "author_id", authors);
+        })
+
+        return res.status(200).json(books);
     } catch (e) {
         return next(e);
     }
