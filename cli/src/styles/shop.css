@@ -1334,13 +1334,65 @@ body.kafka-layout {
 .store-nav-list {
   padding-top: 15px;
   padding-bottom: 15px;
-  padding-left: 15px;
   list-style-type: none;
   margin-bottom: 0px;
+  padding-left: 0;
 }
-.store-nav-list a {
+.store-nav-list > li {
+  background-color: #f9f9f9;
+  padding-left: 15px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.store-nav-list > li > a {
   color: #828384;
   line-height: 2.5;
+  font-family: "Lato", sans-serif;
+}
+.store-nav-list > li > a:hover {
+  text-decoration: underline;
+}
+.store-nav-genres {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  list-style-type: none;
+  margin-bottom: 0px;
+  padding-left: 0;
+}
+.store-nav-genres > li {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 1px solid #e8e8e8a1;
+}
+.store-nav-genres > li:hover {
+  background-color: #f7f7f7a8;
+}
+.store-nav-genres > li:hover > a,
+.store-nav-genres > li:hover span {
+  color: #545454;
+}
+.store-nav-genres > li > a {
+  color: #828384;
+  line-height: 3;
+  font-family: "Lato", sans-serif;
+}
+.store-nav-genres > li > a:hover {
+  text-decoration: underline;
+}
+.store-nav-genres > li > span {
+  font-family: "Lato", sans-serif;
+  color: #adadad;
+  line-height: 3;
+  font-size: 12px;
+  padding-left: 15px;
 }
 .filter-bar {
   display: flex;
@@ -1398,13 +1450,15 @@ body.kafka-layout {
 .star-filter > div {
   margin: 10px 0px;
   cursor: pointer;
+  line-height: 2.2;
 }
 .star-filter > div > i {
   margin-right: 5px;
-  color: #c1c1c1;
+  color: #e6e6e6;
+  font-size: 16px;
 }
 .star-filter > div > i.colorized {
-  color: #e4ea7b;
+  color: #828072;
 }
 .star-filter > div > span {
   font-family: "Lato", sans-serif;

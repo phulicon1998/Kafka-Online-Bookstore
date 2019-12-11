@@ -72,7 +72,7 @@ class SidebarContent extends Component {
                                         <Link to="/app/dashboard"><i className="icon icon-crypto"/>Dashboard</Link>
                                     </Menu.Item>
                                 </SubMenu>
-                                {role.isProvider || <SubMenu
+                                {role.isManager && <SubMenu
                                     key="reports"
                                     className={this.getNavStyleSubMenuClass(navStyle)}
                                     title={

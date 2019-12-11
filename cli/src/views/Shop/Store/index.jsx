@@ -12,13 +12,16 @@ import Sidebar from "components/Shop/Bar/Sidebar";
 
 function Store() {
     const [books, setBooks] = useState([]);
+    const [genres, setGenres] = useState([]);
     const [filterFast, setFilterFast] = useState(false);
 
     const fastDeliBook = () => setFilterFast(prev => !prev);
 
     const load = useCallback(async() => {
         let bookData = await apiCall(...api.book.getForStore());
+        let genreData = await apiCall(...api.genre.get());
         setBooks(bookData);
+        setGenres(genreData);
     }, [])
 
     useEffect(() => {
@@ -55,7 +58,10 @@ function Store() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-3">
-                        <Sidebar/>
+                        <Sidebar
+                            genres={genres}
+                            books={books}
+                        />
                     </div>
                     <div className="col-md-9">
                         <TitleBar icon="fas fa-book-open" title="Book Showcase"/>

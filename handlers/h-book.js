@@ -96,6 +96,7 @@ exports.getForStore = async(req, res, next) => {
     try {
         // retrieves all the authors
         let authors = await db.BookAuthor.find().populate("author_id").exec();
+        let genres = await db.BookGenre.find().populate("genre_id").exec();
 
         // Only get book has edition
         let books = await db.Book.find().populate("edition_id").lean().exec();
@@ -114,6 +115,7 @@ exports.getForStore = async(req, res, next) => {
                 })
                 b.bestDeal = bestDeal;
                 b.authors = gatherDataById(b._id, "author_id", authors);
+                b.genres = gatherDataById(b._id, "genre_id", genres);
             }
         })
 
