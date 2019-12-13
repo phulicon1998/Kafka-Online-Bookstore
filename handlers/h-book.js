@@ -233,3 +233,37 @@ exports.getRequest = async(req, res, next) => {
         return next(e);
     }
 }
+
+exports.report = async(req, res, next) => {
+    try {
+        // Get all the authors
+        let authors = await db.BookAuthor.find().populate("author_id").lean().exec();
+
+        // Get all the complete orders
+        let orderEditions = await db.OrderEdition.find().populate("order_id").populate({
+            path: "edition_id",
+            populate: {
+                path: "book_id",
+            }
+        }).lean().exec();
+        let completedOrderEditions = orderEditions.filter(oe => oe.order_id.status === 2).map(oe => ({
+            quantity: oe.quantity,
+            realPrice: oe.price * ((100 - oe.discount) / 100) * oe.quantity,
+            order_id: {
+                _id: oe.order_id._id,
+                createdAt: oe.order_id.createdAt
+            },
+            edition_id: {
+                book_id: {
+                    _id: oe.edition_id.book_id._id,
+                    name: oe.edition_id.book_id.name,
+                    authors: gatherDataById(oe.edition_id.book_id._id, "author_id", authors).map(a => a.name)
+                }
+            }
+        }));
+
+        return res.status(200).json(completedOrderEditions);
+    } catch (e) {
+        return next(e);
+    }
+}

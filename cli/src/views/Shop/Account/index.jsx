@@ -16,7 +16,7 @@ function AccountLayout({match, location}) {
                 ]}
                 current="Orders"
             />
-            <div className="container">
+            <div className="container" style={{"marginBottom": "50px"}}>
                 <div className="row">
                     <div className="col-md-3">
                         <PersonalMenu />

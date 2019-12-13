@@ -66,10 +66,6 @@ body.kafka-layout {
   left: 0;
   width: 100%;
 }
-.shop-navbar.transparent > div#left > div {
-  border: 2px solid #bfbfbf;
-  background-color: transparent;
-}
 .shop-navbar > div {
   display: flex;
   align-items: center;
@@ -106,8 +102,8 @@ body.kafka-layout {
   height: 41px;
   border-radius: 20px;
   margin-left: 20px;
-  border: 2px solid transparent;
-  background-color: #dcdcdc14;
+  border: 2px solid #bfbfbf;
+  background-color: transparent;
 }
 .shop-navbar > div#left > div > i {
   font-size: 16px;
@@ -1179,6 +1175,21 @@ body.kafka-layout {
   background-color: #a4a4a4;
   margin-left: 5px;
 }
+.submit-cart-button > span {
+  display: block;
+}
+.submit-cart-button > span > button {
+  background-color: #66a5a5;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-top: 5px;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+}
 .submit-cart-button > button {
   padding: 9px 20px;
   width: 100%;
@@ -1722,10 +1733,19 @@ body.kafka-layout {
   text-transform: capitalize;
   color: white;
   padding: 3px 5px;
-  background-color: #8ac88a;
+  background-color: #bbbbbb;
   border-radius: 3px;
   font-size: 10px;
   margin-left: 3px;
+}
+.order-detail-section > p > b.Transporting {
+  background-color: #bd84bd;
+}
+.order-detail-section > p > b.Completed {
+  background-color: #8ac88a;
+}
+.order-detail-section > p > b.Cancelled {
+  background-color: #caa460;
 }
 .order-detail-header > .row {
   border-bottom: 1px solid #8080802e;

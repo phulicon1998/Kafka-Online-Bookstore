@@ -8,6 +8,9 @@ router.route("/")
 .get(hdl.Book.get)
 .post(upload.single("image"), mw.Image.getOne, hdl.Book.create);
 
+router.route("/report")
+.get(hdl.Book.report);
+
 router.route("/store")
 .get(hdl.Book.getForStore);
 

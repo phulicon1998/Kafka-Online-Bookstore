@@ -6,8 +6,18 @@ import {apiCall} from "constants/apiCall";
 import statusToString from "constants/statusTypes";
 import moment from "moment";
 import {state} from "constants/statusTypes";
+import {connect} from "react-redux";
+import * as permissions from "constants/credentialControl";
 
-function ManageOrder({notify, ...props}) {
+function Action({state, onClick, ableToReset, isUpperState, isCurrent}) {
+    return isUpperState ? null : (
+        <span className="gx-link" onClick={onClick}>
+            {state} <Divider type="vertical"/>
+        </span>
+    )
+}
+
+function ManageOrder({notify, role, ...props}) {
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
 
@@ -33,28 +43,48 @@ function ManageOrder({notify, ...props}) {
                 if(o._id === editedOrder._id) {
                     return {
                         ...o,
-                        status: editedOrder.status
+                        status: editedOrder.status,
+                        isCheckedOut: editedOrder.isCheckedOut
                     }
                 }
                 return {...o};
             })
             setOrders(newOrders);
         } catch (e) {
-            console.log(e);
             notify("error", "Data is not updated");
         }
         setLoading(false);
     }
 
-    const Action = ({state, id, code}) => (
-        <span
-            className="gx-link"
-            onClick={hdStatus.bind(this, id, code)}
-        >{state}</span>
-    )
+    function renderActions(text, rec) {
+        return rec.status <= state.TRANSPORTING ? (
+            <span>
+                <Action
+                    state="Working"
+                    onClick={hdStatus.bind(this, rec._id, state.WORKING)}
+                    isUpperState={rec.status >= state.WORKING}
+                />
+                <Action
+                    state="Transporting"
+                    onClick={hdStatus.bind(this, rec._id, state.TRANSPORTING)}
+                    isUpperState={rec.status >= state.TRANSPORTING}
+                />
+                <Action
+                    state="Completed"
+                    isUpperState={rec.status >= state.COMPLETED}
+                    onClick={hdStatus.bind(this, rec._id, state.COMPLETED)}
+                />
+                <Action
+                    state="Cancelled"
+                    isUpperState={rec.status >= state.CANCELLED}
+                    onClick={hdStatus.bind(this, rec._id, state.CANCELLED)}
+                />
+            </span>
+        ) : <span>None</span>;
+    }
 
     return (
-        <Card title="Selection Table">
+        <Card title="List of Orders">
             <Spin spinning={loading}>
                 <Table
                     className="gx-table-responsive"
@@ -69,65 +99,35 @@ function ManageOrder({notify, ...props}) {
                         {
                             title: "Order Total Money",
                             dataIndex: 'money',
-                            render: text => <span>$ {text.toFixed(2)}</span>
-                        },
-                        {
-                            title: "Delivery Method",
-                            dataIndex: "fastDelivery",
-                            render: text => <span>{text ? "Fast" : "Standard"}</span>
+                            render: (text, rec) => <span className="order-table-payment">
+                                {rec.cashOnDelivery || <i className="fas fa-credit-card"/>} $ {text.toFixed(2)} {rec.isCheckedOut && <i className="fas fa-check"/>}
+                            </span>
                         },
                         {
                             title: "Order Status",
                             dataIndex: "status",
-                            render: text => <span>{statusToString(text)}</span>
-                        },
-                        {
-                            title: "Order Receiver",
-                            dataIndex: "receiver"
+                            render: text => <span className={`order-table-${statusToString(text)}`}>{statusToString(text)}</span>
                         },
                         {
                             title: "Shipment Information",
-                            render: (text, rec) => <span>{`${rec.address}, ${rec.city}, ${rec.country}`}</span>
+                            render: (text, rec) => <span className="order-table-shipment">
+                                <span>{rec.receiver} {rec.fastDelivery && <i className="fas fa-rocket"/>}</span>
+                                <span>{`${rec.address}, ${rec.city}, ${rec.country}`}</span>
+                            </span>
                         },
                         {
                             title: "Created At",
                             dataIndex: "createdAt",
-                            render: text => <span>{moment(text).format("DD-MM-YYYY, h:mm:ss a")}</span>
+                            render: text => <span className="order-table-time">{moment(text).format("DD-MM-YYYY, h:mm:ss a")}</span>
                         },
                         {
                             title: "Updated At",
                             dataIndex: "updatedAt",
-                            render: text => <span>{moment(text).format("DD-MM-YYYY, h:mm:ss a")}</span>
+                            render: text => <span className="order-table-time">{moment(text).format("DD-MM-YYYY, h:mm:ss a")}</span>
                         },
                         {
                             title: "Actions",
-                            render: (text, rec) => (
-                                <span>
-                                    <Action
-                                        id={rec._id}
-                                        state="Working"
-                                        code={state.WORKING}
-                                    />
-                                    <Divider type="vertical"/>
-                                    <Action
-                                        id={rec._id}
-                                        state="Transporting"
-                                        code={state.TRANSPORTING}
-                                    />
-                                    <Divider type="vertical"/>
-                                    <Action
-                                        id={rec._id}
-                                        state="Completed"
-                                        code={state.COMPLETED}
-                                    />
-                                    <Divider type="vertical"/>
-                                    <Action
-                                        id={rec._id}
-                                        state="Cancelled"
-                                        code={state.CANCELLED}
-                                    />
-                                </span>
-                            )
+                            render: renderActions
                         }
                     ]}
                 />
@@ -136,4 +136,13 @@ function ManageOrder({notify, ...props}) {
     )
 }
 
-export default withNoti(ManageOrder);
+function mapState({user}) {
+    const {isPermit} = permissions;
+    return {
+        role: {
+            isManager: isPermit(user.data.role)(permissions.MANAGER_PERMISSION)
+        }
+    }
+}
+
+export default connect(mapState, null)(withNoti(ManageOrder));

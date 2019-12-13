@@ -63,30 +63,25 @@ class SidebarContent extends Component {
                                 className="gx-menu-group"
                                 title="Main"
                             >
-                                <SubMenu
-                                    key="dashboard"
-                                    className={this.getNavStyleSubMenuClass(navStyle)}
-                                    title={ <span><i className="icon icon-dasbhoard"/>Dashboard</span> }
-                                >
-                                    <Menu.Item key="/app/dashboard">
-                                        <Link to="/app/dashboard"><i className="icon icon-crypto"/>Dashboard</Link>
-                                    </Menu.Item>
-                                </SubMenu>
-                                {role.isManager && <SubMenu
+                                <Menu.Item key="/app/dashboard">
+                                    <Link to="/app/dashboard"><i className="icon icon-dasbhoard"/>Dashboard</Link>
+                                </Menu.Item>
+                            </MenuItemGroup>
+
+                            {
+                                (role.isManager || role.isAdmin) && <MenuItemGroup
                                     key="reports"
-                                    className={this.getNavStyleSubMenuClass(navStyle)}
-                                    title={
-                                        <span><i className="icon icon-data-display"/>Manage Reports</span>
-                                    }
+                                    className="gx-menu-group"
+                                    title="Reports"
                                 >
                                     <Menu.Item key="/app/reports/book">
-                                        <Link to="/app/reports/book"><i className="icon icon-crypto"/>For Books</Link>
+                                        <Link to="/app/reports/book"><i className="icon icon-data-display"/>For Books</Link>
                                     </Menu.Item>
                                     <Menu.Item key="/app/reports/category">
-                                        <Link to="/app/reports/category"><i className="icon icon-crypto"/>For Categories</Link>
+                                        <Link to="/app/reports/category"><i className="icon icon-data-display"/>For Categories</Link>
                                     </Menu.Item>
-                                </SubMenu>}
-                            </MenuItemGroup>
+                                </MenuItemGroup>
+                            }
 
                             {(role.isSalestaff || role.isAdmin) && <MenuItemGroup
                                 key="tools"

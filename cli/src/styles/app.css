@@ -28,3 +28,45 @@
 .book-tr-name > span > small {
   color: #656565;
 }
+.order-table-time {
+  display: block;
+  min-width: 100px;
+}
+.order-table-Working {
+  color: gray;
+}
+.order-table-Transporting {
+  color: purple;
+}
+.order-table-Completed {
+  color: green;
+}
+.order-table-Cancelled {
+  color: orange;
+}
+.order-table-payment > i {
+  margin-right: 3px;
+  color: gray;
+}
+.order-table-payment > i.fas.fa-check {
+  color: #77ca89;
+  margin-left: 3px;
+  margin-right: 0px;
+}
+.order-table-shipment {
+  display: flex;
+  flex-direction: column;
+}
+.order-table-shipment > span:nth-of-type(1) {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #5f5e5e;
+}
+.order-table-shipment > span:nth-of-type(1) > i {
+  margin-left: 3px;
+  color: #77ca89;
+}
+.order-table-shipment > span:nth-of-type(2) {
+  font-size: 12px;
+  line-height: 1.5;
+}

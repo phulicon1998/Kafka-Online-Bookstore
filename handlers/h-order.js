@@ -9,15 +9,15 @@ exports.create = async(req, res, next) => {
 
         // Create stripe charge if the order is online paid successfully
         let isCheckedOut = false;
-        // if(stripeToken) {
-        //     let charge = await stripe.charges.create({
-        //         amount: order.money * 100,
-        //         currency: 'usd',
-        //         source: stripeToken,
-        //         description: 'Charge for order book',
-        //     })
-        //     if(charge.paid) isCheckedOut = true;
-        // }
+        if(stripeToken) {
+            let charge = await stripe.charges.create({
+                amount: order.money * 100,
+                currency: 'usd',
+                source: stripeToken,
+                description: 'Charge for order book',
+            })
+            if(charge.paid) isCheckedOut = true;
+        }
 
         // Decrease the amount of each edition
         for(let e of orderEditions) {
@@ -88,6 +88,7 @@ exports.edit = async(req, res, next) => {
         let foundOrder = await db.Order.findById(order_id);
         if(foundOrder) {
             foundOrder.status = req.body.status;
+            if(req.body.status === 2) foundOrder.isCheckedOut = true;
             await foundOrder.save();
         }
         return res.status(200).json(foundOrder);

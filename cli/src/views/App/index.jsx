@@ -17,9 +17,9 @@ import RequestEdition from "./Edition/Request";
 import Chat from "./Chat/index";
 import Profile from "./Profile";
 
-import BookReport from "./Reports/Book";
+// import BookReport from "./Reports/Book";
+// import CategoryReport from "./Reports/Category";
 import BookReportDetail from "./Reports/Book/Detail";
-import CategoryReport from "./Reports/Category";
 import CategoryReportDetail from "./Reports/Category/Detail";
 
 function AppRoutes(props) {
@@ -127,43 +127,21 @@ function AppRoutes(props) {
                     ]}
                 />
                 <RouteControl
-                    path={`${url}/reports/category/detail`}
+                    path={`${url}/reports/category`}
                     redirectPath="/app/dashboard"
                     component={CategoryReportDetail}
                     access={[
                         "ADMIN_PERMISSION",
-                    ]}
-                />
-                <RouteControl
-                    path={`${url}/reports/category`}
-                    redirectPath="/app/dashboard"
-                    component={CategoryReport}
-                    access={[
-                        "ADMIN_PERMISSION",
-                    ]}
-                />
-                <RouteControl
-                    path={`${url}/reports/book/detail`}
-                    redirectPath="/app/dashboard"
-                    component={BookReportDetail}
-                    access={[
-                        "ADMIN_PERMISSION",
+                        "MANAGER_PERMISSION"
                     ]}
                 />
                 <RouteControl
                     path={`${url}/reports/book`}
                     redirectPath="/app/dashboard"
-                    component={BookReport}
+                    component={BookReportDetail}
                     access={[
                         "ADMIN_PERMISSION",
-                    ]}
-                />
-                <RouteControl
-                    path={`${url}/reports/category`}
-                    redirectPath="/app/dashboard"
-                    component={Chat}
-                    access={[
-                        "ADMIN_PERMISSION",
+                        "MANAGER_PERMISSION"
                     ]}
                 />
                 <Redirect from={props.location.pathname} to={`${url}/dashboard`}/>

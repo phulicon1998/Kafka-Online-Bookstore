@@ -12,7 +12,6 @@ function Search({match}) {
     const load = useCallback(async() => {
         try {
             let data = await apiCall(...api.book.getForStore());
-            console.log(data[0]);
             const fuse = new Fuse(data, {
                 keys: ["name", "authors.name"]
             })

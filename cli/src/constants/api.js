@@ -36,6 +36,7 @@ const book = {
     create: () => ["post", "/api/books"],
     review: book_id => ["put", `/api/books/${book_id}/review`],
     edit: book_id => ["put", `/api/books/${book_id}`],
+    report: () => ["get", `/api/books/report`],
     getForStore: () => ["get", `/api/books/store`]
 }
 
