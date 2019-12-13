@@ -34,7 +34,6 @@ const StarFilter = () => (
 )
 
 function Sidebar({genres, books}) {
-    console.log(books);
 
     function getGenreAmount(g) {
         let booksByGenre = books.map(b => ({
