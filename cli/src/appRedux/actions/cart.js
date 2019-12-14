@@ -12,6 +12,7 @@ export function sendAddCart(edition_id, quantity = 1) {
 }
 
 export function sendChangeCart(edition_id, quantity) {
+    console.log(edition_id, quantity);
     return {
         type: SEND_CHANGE_CART,
         value: {edition_id, quantity}

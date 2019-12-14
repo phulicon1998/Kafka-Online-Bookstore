@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from "react";
 import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
+import bg from "assets/imgs/recommend.jpg";
 
 import evA from "assets/imgs/gA.jpg"
 import evB from "assets/imgs/ev-a.jpg";
@@ -22,10 +23,18 @@ function Store() {
 
     return (
         <div>
+            <div className="store-detail-header" style={{"backgroundImage": `url(${bg})`}}>
+                <div className="container">
+                    <h1>Book Showncase</h1>
+                    <p>New, cheap books with quality service.</p>
+                    <p>Kafka proud to be one of the best service in bringing knowledge closer to people's life.</p>
+                </div>
+            </div>
             <Breadcrumb
                 paths={[
                     {path: "/", name: "Home"}
                 ]}
+                harder={true}
                 current="Store"
                 viewed
             />

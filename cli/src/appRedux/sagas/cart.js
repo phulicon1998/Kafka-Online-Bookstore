@@ -44,25 +44,30 @@ function* hdSendEmptyCart() {
 }
 
 function* hdSendChangeCart({value}) {
-    let cart = JSON.parse(localStorage.kCart);
-    for(var edi of cart) {
-        if(edi.edition_id === value.edition_id) {
-            let amount = edi.quantity + value.quantity;
-            if(amount > 0) {
-                let rs = yield call(apiCall, ...api.edition.compare(value.edition_id), {amount});
-                if(rs.available) {
-                    edi.quantity += value.quantity;
-                    yield put(addMessage());
-                } else {
-                    if(rs.storedAmount > 0) {
-                        yield put(addMessage("This is the amount we can provide you for this product at the moment."));
+    let cart = [];
+    if(!localStorage.kCart) {
+        cart.push(value);
+    } else {
+        cart = JSON.parse(localStorage.kCart);
+        for(var edi of cart) {
+            if(edi.edition_id === value.edition_id) {
+                let amount = edi.quantity + value.quantity;
+                if(amount > 0) {
+                    let rs = yield call(apiCall, ...api.edition.compare(value.edition_id), {amount});
+                    if(rs.available) {
+                        edi.quantity += value.quantity;
+                        yield put(addMessage());
                     } else {
-                        yield put(addMessage("This book edition is not available anymore."));
-                        yield put(sendRemoveCart(value.edition_id));
+                        if(rs.storedAmount > 0) {
+                            yield put(addMessage("This is the amount we can provide you for this product at the moment."));
+                        } else {
+                            yield put(addMessage("This book edition is not available anymore."));
+                            yield put(sendRemoveCart(value.edition_id));
+                        }
                     }
+                } else {
+                    yield put(addMessage("You have reached the minimum number of an item in cart."));
                 }
-            } else {
-                yield put(addMessage("You have reached the minimum number of an item in cart."));
             }
         }
     }
@@ -85,6 +90,6 @@ function* hdSendRemoveCart({value}) {
 export const cartSagas = [
     takeEvery(SEND_ADD_CART, hdSendAddCart),
     takeLatest(SEND_EMPTY_CART, hdSendEmptyCart),
-    takeEvery(SEND_CHANGE_CART, hdSendChangeCart),
+    takeLatest(SEND_CHANGE_CART, hdSendChangeCart),
     takeLatest(SEND_REMOVE_CART, hdSendRemoveCart)
 ]

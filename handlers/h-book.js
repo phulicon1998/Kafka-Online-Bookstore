@@ -41,7 +41,6 @@ exports.create = async(req, res, next) => {
         let author_ids = JSON.parse(authorIds);
 
         // create book subject, book-genre and book-author
-        console.log(reviewed);
         let createdBook = await db.Book.create({
             ...req.body,
             image: uploadImg,
@@ -104,7 +103,7 @@ exports.getForStore = async(req, res, next) => {
 
         books.forEach(b => {
             // Remove all the unverified editions
-            b.edition_id = b.edition_id.filter(e => e.verifiedStatus === 1);
+            b.edition_id = b.edition_id.filter(e => e.verifyStatus === 1);
 
             // Remove out of business or out of stock edition
             b.edition_id = b.edition_id.filter(e => !e.outOfBusiness).filter(e => e.amount > 0);

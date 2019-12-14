@@ -1,0 +1,33 @@
+.quality-info {
+    display: flex;
+    flex-direction: column;
+
+    > img {
+        margin-top: 20px;
+        width: 235px;
+    }
+
+    > h3 {
+        font-size: 20px;
+        font-family: @f-mont;
+        font-weight: bold;
+        color: #3e3e3e;
+        line-height: 1.5;
+        margin-top: 20px;
+    }
+
+    > p {
+        font-family: @f-la;
+        line-height: 1.5;
+
+        &:nth-of-type(1) {
+            font-size: 13px;
+            color: #56adad;
+
+            > i {
+                margin-right: 3px;
+                font-size: 12px;
+            }
+        }
+    }
+}

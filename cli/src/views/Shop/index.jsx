@@ -14,7 +14,14 @@ import Search from "./Search";
 function ShopRoutes({match, location}) {
     return (
         <Switch>
-            <Route path={`${match.url}cart`} component={Cart}/>
+            <RouteControl
+                path={`${match.url}cart`}
+                redirectPath="/"
+                component={Cart}
+                access={[
+                    "CUSTOMER_PERMISSION",
+                ]}
+            />
             <Route path={`${match.url}store/search/:search`} component={Search}/>
             <Route path={`${match.url}store/quality/:book_id/:quality`} component={Quality}/>
             <Route path={`${match.url}store/:edition_id`} component={Detail}/>

@@ -3,8 +3,9 @@ import Logo from "components/Shop/Bar/Logo";
 import {connect} from "react-redux";
 import {clearAuthData} from "appRedux/actions/user";
 import {withRouter} from "react-router";
+import * as permissions from "constants/credentialControl";
 
-function Navbar({transparent, hideNavs, user, clearAuthData, cart, history}){
+function Navbar({transparent, hideNavs, user, clearAuthData, cart, history, role}){
     const [search, setSearch] = useState("");
 
     function hdKeyDown(e){
@@ -71,13 +72,14 @@ function Navbar({transparent, hideNavs, user, clearAuthData, cart, history}){
                         </div>
                         <ul>
                             <a href="/account/orders"><li>Orders</li></a>
-                            <li>Notifications</li>
+                            {(role.isCustomer && !role.isProvider) && <a href="/become"><li>Become a seller</li></a>}
+                            {(role.isProvider || role.isAdmin || role.isManager || role.isSaleStaff) && <a href="/app/dashboard"><li>Application</li></a>}
                             <li onClick={clearAuthData}>Logout</li>
                         </ul>
                     </div>
                 }
                 {
-                    !hideNavs && <div className="cart">
+                    !hideNavs && role.isCustomer && <div className="cart">
             			<a href="/cart">
                             <i className="fas fa-shopping-basket"></i>
                             <span>Cart</span>
@@ -91,7 +93,17 @@ function Navbar({transparent, hideNavs, user, clearAuthData, cart, history}){
 }
 
 function mapState({user, cart}) {
-    return {user, cart}
+    const {isPermit} = permissions;
+    return {
+        user, cart,
+        role: {
+            isCustomer: isPermit(user.data.role)(permissions.CUSTOMER_PERMISSION),
+            isProvider: isPermit(user.data.role)(permissions.PROVIDER_PERMISSION),
+            isSaleStaff: isPermit(user.data.role)(permissions.SALESTAFF_PERMISSION),
+            isManager: isPermit(user.data.role)(permissions.MANAGER_PERMISSION),
+            isAdmin: isPermit(user.data.role)(permissions.ADMIN_PERMISSION)
+        }
+    }
 }
 
 export default connect(mapState, {clearAuthData})(withRouter(Navbar));

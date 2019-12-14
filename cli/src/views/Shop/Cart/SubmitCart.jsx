@@ -111,6 +111,11 @@ function SubmitCart({carts, user, order, setOrder, changeCover, changeDelivery})
         }
     }
 
+    function getDelivery() {
+        const fastDeli = carts.every(c => c.fastDelivery);
+        return fastDeli ? deliveryMethods : deliveryMethods.filter(d => !d.value)
+    }
+
     return (
         <div>
             <TitleBar title="Order information" icon="fas fa-list-ul"/>
@@ -211,7 +216,7 @@ function SubmitCart({carts, user, order, setOrder, changeCover, changeDelivery})
             <div className="delivery-methods">
                 <div className="row">
                     {
-                        deliveryMethods.map((v, i) => (
+                        getDelivery().map((v, i) => (
                             <div className="col-md-6" key={i}>
                                 <DeliveryMethod
                                     {...v}

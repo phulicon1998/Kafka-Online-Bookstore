@@ -1,19 +1,12 @@
 import React from "react";
 import moment from "moment";
-import {Link} from "react-router-dom";
-import {qualityToString} from "constants/qualityControl";
+import QualityBox from "components/Shop/Box/QualityBox";
+import {sendChangeCart} from "appRedux/actions/cart";
+import {connect} from "react-redux";
+import {Rate} from "antd";
+import * as permissions from "constants/credentialControl";
 
-function QualityBox({amount, qualityNum, book_id}) {
-    let qualityName = qualityToString(qualityNum);
-    return (
-        <Link to={`/store/quality/${book_id}/${qualityNum}`} className="quality-box">
-            <h4>{qualityName}</h4>
-            <p>{amount} item(s) from <b>$10</b></p>
-        </Link>
-    )
-}
-
-function BookContent({edition, quantity, onChange, qualities}) {
+function BookContent({edition, quantity, onChange, qualities, sendChangeCart, role}) {
     return (
         <div className="store-detail-v2">
             <div>
@@ -29,6 +22,10 @@ function BookContent({edition, quantity, onChange, qualities}) {
             <div>
                 <p>{(edition.genres.map(v => v.name)).toString().split(",").join(", ")}</p>
                 <h2>{edition.book_id.name}</h2>
+                <div>
+                    <Rate defaultValue={edition.review_id ? 5 : 0} disabled style={{fontSize: "20px", "marginTop": "0px"}}/>
+                    <p>{edition.review_id ? edition.review_id.length : "No review yet"}</p>
+                </div>
                 <p><b>Authors: </b>{edition.authors.map(v => v.name).toString()}</p>
                 <p>
                     <b>Availibility:</b>
@@ -45,18 +42,20 @@ function BookContent({edition, quantity, onChange, qualities}) {
                     }
                 </div>
                 <hr/>
-                <p><b>Quantity & Order</b></p>
-                <div>
+                {role.isCustomer && <p><b>Quantity & Order</b></p>}
+                {role.isCustomer && <div>
                     <div>
-                        <button>+</button>
-                        <input type="text" value={quantity} onChange={onChange}/>
-                        <button>-</button>
+                        <button onClick={onChange.bind(this, 1)}>+</button>
+                        <input type="text" value={quantity}/>
+                        <button onClick={onChange.bind(this, -1)}>-</button>
                     </div>
-                    <button>Add to cart</button>
-                </div>
-                <div>
+                    <button onClick={() => sendChangeCart(edition._id, quantity)}>
+                        Add to cart
+                    </button>
+                </div>}
+                {role.isCustomer && <div>
                     <p><a href="/"><i className="fas fa-heart"/> Add to Wishlist</a></p>
-                </div>
+                </div>}
                 <hr/>
                 {
                     edition.book_id.bookcare
@@ -65,12 +64,25 @@ function BookContent({edition, quantity, onChange, qualities}) {
                 }
                 {
                     edition.fastDelivery
-                    ? <p className="delivery-time"> Delivery time estimated may be at <b>Tommorrow</b>, on <b>{moment().add(1, "days").format("DD/MM/YYYY")}</b></p>
-                    : <p className="delivery-time"><i className="fas fa-truck"/> Estimated delivery time - <b>{moment().add(2, "days").format("ddd, Do")}</b> to <b>{moment().add(5, "days").format("ddd, Do")}</b></p>
+                    ? <p className="delivery-time">
+                        <i className="fas fa-truck"/> Delivery time estimated may be at <b>Tommorrow</b>, on <b>{moment().add(1, "days").format("DD/MM/YYYY")}</b>
+                    </p>
+                    : <p className="delivery-time">
+                        <i className="fas fa-truck"/> Estimated delivery time - <b>{moment().add(2, "days").format("ddd, Do")}</b> to <b>{moment().add(5, "days").format("ddd, Do")}</b>
+                    </p>
                 }
             </div>
         </div>
     )
 }
 
-export default BookContent;
+function mapState({user}) {
+    const {isPermit} = permissions;
+    return {
+        role: {
+            isCustomer: isPermit(user.data.role)(permissions.CUSTOMER_PERMISSION)
+        }
+    }
+}
+
+export default connect(mapState, {sendChangeCart})(BookContent);

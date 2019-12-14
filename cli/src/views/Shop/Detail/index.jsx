@@ -55,7 +55,8 @@ function Detail({match, user, ...props}) {
         let uniqueBookQualities = [...(new Set(allBookQualities))];
         let bookByQualities = uniqueBookQualities.map(q => ({
             qualityNum: q,
-            amount: retrievedBook.edition_id.filter(b => b.quality === q).length
+            amount: retrievedBook.edition_id.filter(b => b.quality === q).length,
+            min: Math.min(...retrievedBook.edition_id.filter(b => b.quality === q).map(e => e.price * (100 - e.discount) / 100))
         }))
         setQualities(bookByQualities);
 
@@ -72,6 +73,14 @@ function Detail({match, user, ...props}) {
     useEffect(() => {
         load();
     }, [load]);
+
+    function hdChange(q) {
+        if(quantity >= 1 && quantity + q >= 1) {
+            setQuantity(prev => prev + q);
+        } else {
+            window.alert("You have to select at least 1 item.");
+        }
+    }
 
     return (
         <div>
@@ -94,27 +103,12 @@ function Detail({match, user, ...props}) {
             <div className="container">
                 <div className="row" style={{"marginTop": "40px"}}>
                     <BookContent
-                        onChange={(e) => setQuantity(e.target.value)}
+                        onChange={hdChange}
                         edition={edition}
                         quantity={quantity}
                         qualities={qualities}
                     />
                     <div className="col-md-12">
-                        {/* <TitleBar title="Book description" icon="fas fa-list-ul"/> */}
-                        {/* <SectionBar name="Book Description" />
-                        <div className="store-detail-description">
-                            <div className="row">
-                                <div className="col-md-9">{parse(`${edition.desc}`)}</div>
-                        		<div className="col-md-3">
-                        			<p><b>Publish Date:</b> {moment(edition.book_id.publish.at).format("DD/MM/YYYY")}</p>
-                        			<p><b>Publisher:</b> {edition.book_id.publish.by.name} </p>
-                        			<p><b>Page Number:</b>100</p>
-                        			<p><b>Language:</b> {edition.book_id.language} </p>
-                        			<p><b>ISBN:</b> {edition.book_id.isbn}</p>
-                        		</div>
-                            </div>
-                        </div> */}
-
                         <SectionBar name="Other books of this author" />
                         <div className="row">
                             {
@@ -154,7 +148,7 @@ function Detail({match, user, ...props}) {
                             setReviews={setReviews}
                         />
                         <SectionBar name="Other books in this genre"/>
-                        <div className="row">
+                        <div className="row" style={{"marginBottom": "50px"}}>
                             {
                                 sameGenreBooks.map((v, i) => (
                                     <div className="col-md-3" key={i}>

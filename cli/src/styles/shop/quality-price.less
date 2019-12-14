@@ -1,0 +1,58 @@
+.quality-price {
+    background-color: #efefef9c;
+    padding: 20px;
+    font-family: @f-la;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #efefef;
+    }
+
+    > i {
+        font-size: 30px;
+        margin-left: 5px;
+        margin-right: 20px;
+    }
+
+    > div {
+        > h3 {
+            display: flex;
+            align-items: center;
+
+            > small {
+                color: #e25252;
+                margin-left: 5px;
+            }
+
+
+            > i {
+                padding-left: 8px;
+                border-left: 1px solid #d4d4d4;
+                color: gray;
+                font-size: 13px;
+                padding-bottom: 2px;
+                margin-left: 8px;
+            }
+
+            > span {
+                font-size: 13px;
+                margin-left: 5px;
+                font-family: @f-la;
+                color: gray;
+            }
+
+            &.review {
+                > i {
+                    color: #d6d673;
+                }
+            }
+        }
+
+        > p {
+            margin: 0;
+        }
+    }
+
+}

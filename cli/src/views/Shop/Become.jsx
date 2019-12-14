@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
 import {sendReloadUser} from "appRedux/actions/user";
+import bg from "assets/imgs/mainblog.jpg";
 
 const DEFAULT_PROVIDER = {
     name: "",
@@ -12,7 +13,6 @@ const DEFAULT_PROVIDER = {
 
 function Become({user, sendReloadUser, ...props}) {
     const [provider, setProvider] = useState(DEFAULT_PROVIDER);
-    const [useUserEmail, setUseUserEmail] = useState(false);
     const [error, setError] = useState("");
 
     function hdChange(e) {
@@ -20,17 +20,12 @@ function Become({user, sendReloadUser, ...props}) {
         setProvider(prev => ({...prev, [name]: value}));
     }
 
-    function getUserEmail() {
-        setUseUserEmail(prev => !prev);
-        setProvider(prev => ({...prev, email: useUserEmail ? "" : user.email}));
-    }
-
     async function submit() {
-        const {name, email, phone} = provider;
-        let isFilled = name.length > 0 && email.length > 0 && phone.length > 0;
+        const {name, phone} = provider;
+        let isFilled = name.length > 0 && phone.length > 0;
         if(isFilled) {
             try {
-                await apiCall(...api.provider.create(user._id), provider);
+                await apiCall(...api.provider.create(user._id), {...provider, email: user.email});
                 sendReloadUser(user._id);
             } catch(err) {
                 setError("Oops, there are some troubles with the server. Please try again.");
@@ -42,18 +37,22 @@ function Become({user, sendReloadUser, ...props}) {
     }
 
     return (
-        <div className="become-seller">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-6">
+        <div className="become" style={{backgroundImage: `url(${bg})`}}>
+            <div>
+                <div>
+                    <div>
                         <h1>Become a seller with Kafka</h1>
+                        <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nisi dolor, rhoncus vel dolor quis, congue ultricies tellus. Donec eget sagittis nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id eleifend leo, a gravida felis</p>
+                        <p>Vestibulum varius tortor viverra, sollicitudin leo nec, facilisis massa. Fusce egestas sed est vel viverra. Ut porta ut urna eu pulvinar. Praesent ultricies neque at dapibus posuere. Aliquam interdum purus magna, ut tincidunt dolor eleifend ut. Aenean vitae feugiat odio. Sed varius orci velit, id varius nisl ultrices eu.</p>
+                    </div>
+                    <div>
+                        <h1>Establish Provider's Profile</h1>
                         <p>Please fill in suitable information in the form below</p>
                         {
                             error.length > 0 && <div className="alert alert-danger" role="alert">{error}</div>
                         }
                         <div>
                             <div className="form-group">
-                                <label htmlFor="provider-name">Provider's name</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -65,34 +64,6 @@ function Become({user, sendReloadUser, ...props}) {
                                 />
                             </div>
                             <div className="form-group">
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        value={useUserEmail}
-                                        onChange={getUserEmail}
-                                        id="use-email"
-                                    />
-                                    <label className="form-check-label" htmlFor="use-email">
-                                        Use your current registered email
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="provider-email">Provider's email</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter the email here..."
-                                    id="provider-email"
-                                    name="email"
-                                    onChange={hdChange}
-                                    value={provider.email}
-                                    disabled={useUserEmail}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="provider-phone">Provider's phone</label>
                                 <input
                                     type="number"
                                     className="form-control"
@@ -103,7 +74,7 @@ function Become({user, sendReloadUser, ...props}) {
                                     value={provider.phone}
                                 />
                             </div>
-                            <button className="btn btn-primary" onClick={submit}>Submit</button>
+                            <button className="btn btn-primary" onClick={submit}>Submit Information</button>
                         </div>
                     </div>
                 </div>

@@ -83,7 +83,7 @@ class SidebarContent extends Component {
                                 </MenuItemGroup>
                             }
 
-                            {(role.isSalestaff || role.isAdmin) && <MenuItemGroup
+                            {(role.isSalestaff) && <MenuItemGroup
                                 key="tools"
                                 className="gx-menu-group"
                                 title="Tools"

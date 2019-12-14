@@ -1,19 +1,20 @@
 import React from "react";
 import {connect} from "react-redux";
 import {sendAddCart} from "appRedux/actions/cart";
+import * as permissions from "constants/credentialControl";
 
-const Book = ({editionId, img, name, author, price, discount, sendAddCart}) => (
+const Book = ({editionId, role, img, name, author, price, discount, sendAddCart}) => (
     <div className="book">
         <div>
             <img src={img} className="img-responsive" alt="img"/>
             <div>
                 <p><i className="fas fa-star"/> 4.5/5</p>
-                <button onClick={() => sendAddCart(editionId)}>
+                {role.isCustomer && <button onClick={() => sendAddCart(editionId)}>
                     <i className="fas fa-shopping-cart"/>
-                </button>
-                <button>
+                </button>}
+                {role.isCustomer && <button>
                     <i className="far fa-heart"/>
-                </button>
+                </button>}
             </div>
         </div>
         <a href={`/store/${editionId}`}>{name}</a>
@@ -22,4 +23,13 @@ const Book = ({editionId, img, name, author, price, discount, sendAddCart}) => (
     </div>
 );
 
-export default connect(null, {sendAddCart})(Book);
+function mapState({user}) {
+    const {isPermit} = permissions;
+    return {
+        role: {
+            isCustomer: isPermit(user.data.role)(permissions.CUSTOMER_PERMISSION)
+        }
+    }
+}
+
+export default connect(mapState, {sendAddCart})(Book);

@@ -155,7 +155,8 @@ function ReviewSection({user, edition, reviews, setReviews}) {
             </div>
             <div className="store-row-review">
                 {
-                    reviews.map((v, i) => (
+                    reviews.length > 0
+                    ? reviews.map((v, i) => (
                         <Review
                             {...v}
                             username={v.user_id.username}
@@ -164,6 +165,9 @@ function ReviewSection({user, edition, reviews, setReviews}) {
                             key={i}
                         />
                     ))
+                    : <div className="empty-wish">
+                        <p>There is no reviews yet.</p>
+                    </div>
                 }
             </div>
         </div>
