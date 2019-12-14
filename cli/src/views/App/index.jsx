@@ -19,8 +19,8 @@ import Profile from "./Profile";
 
 // import BookReport from "./Reports/Book";
 // import CategoryReport from "./Reports/Category";
-import BookReportDetail from "./Reports/Book/Detail";
-import CategoryReportDetail from "./Reports/Category/Detail";
+import BookReport from "./Reports/Book/Detail";
+import GenreReport from "./Reports/Category/Detail";
 
 function AppRoutes(props) {
     const url = props.match.url;
@@ -127,9 +127,9 @@ function AppRoutes(props) {
                     ]}
                 />
                 <RouteControl
-                    path={`${url}/reports/category`}
+                    path={`${url}/reports/genre`}
                     redirectPath="/app/dashboard"
-                    component={CategoryReportDetail}
+                    component={GenreReport}
                     access={[
                         "ADMIN_PERMISSION",
                         "MANAGER_PERMISSION"
@@ -138,7 +138,7 @@ function AppRoutes(props) {
                 <RouteControl
                     path={`${url}/reports/book`}
                     redirectPath="/app/dashboard"
-                    component={BookReportDetail}
+                    component={BookReport}
                     access={[
                         "ADMIN_PERMISSION",
                         "MANAGER_PERMISSION"

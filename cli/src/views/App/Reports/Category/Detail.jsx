@@ -1,61 +1,95 @@
-import React from "react";
-import {Row, Col, Card, Table} from "antd";
+import React, {useState, useCallback, useEffect} from "react";
+import {Row, Col, Card, Table, Spin} from "antd";
 import ContainerHeader from "components/ContainerHeader";
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import data from "./data";
 import CustomActiveShapePieChart from "./CustomActiveShapePieChart";
+import withNoti from "hocs/App/withNoti";
+import api from "constants/api";
+import {apiCall} from "constants/apiCall";
 
-const genDiscuss = () => Math.floor((Math.random() * 200) + 100)
+function GenreReport({notify}) {
+    const [genres, setGenres] = useState([]);
+    const [eight, setEight] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-let discusses = data.map(v => ({
-    discussAmount: genDiscuss(),
-    ...v
-})).sort((a, b) => b.discusses - a.discusses).map((v, i) => ({
-    no: `C${i+1}`,
-    ...v
-}));
-let buyRate = discusses.map(v => ({
-    name: v.name,
-    rate: v.soldAmount / v.discusses
-}))
+    const load = useCallback(async() => {
+        try {
+            let genreData = await apiCall(...api.genre.report());
 
-function CategoryReportDetail() {
+            let formGenreData = genreData.map((g, i) => {
+                g.bookOrders = g.book_id.map(b => b.order_id).flat();
+                return {
+                    _id: g._id,
+                    name: g.name,
+                    orderAmount: g.book_id.map(o => o.order_id.length).reduce((a, n) => a + n),
+                    revenue: g.bookOrders.map(o => o.price).reduce((a, n) => a + n),
+                    soldAmount: g.bookOrders.map(o => o.quantity).reduce((a, n) => a + n)
+                }
+            });
+            setGenres(formGenreData);
+
+            let eightData = formGenreData.sort((a, b) => {
+                if(b.soldAmount > a.soldAmount) return 1;
+                if(b.soldAmount === a.soldAmount && b.revenue > a.revenue) return 1;
+                if(b.soldAmount === a.soldAmount && b.orderAmount > a.orderAmount) return 1;
+                return -1;
+            }).slice(0, 8).map((r, i) => ({...r, no: i+1}))
+            setEight(eightData);
+
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+            notify("error", "Data is not loaded");
+        }
+    }, [notify])
+
+    useEffect(() => {
+        load();
+    }, [load])
+
     return <div>
-        <ContainerHeader title="Category Report on November 25th, 2019"/>
+        <ContainerHeader title="Genre Report on November 25th, 2019"/>
         <Row>
             <Col md={12}>
-                <Card title="Amount of Category Discussion At The Moment">
-                    <Table
-                        className="gx-table-responsive"
-                        dataSource={discusses}
-                        rowKey="_id"
-                        columns={[
-                            {
-                                title: "No",
-                                dataIndex: 'no'
-                            },
-                            {
-                                title: 'Category Name',
-                                dataIndex: 'name'
-                            },
-                            {
-                                title: "Amount of Review",
-                                dataIndex: "discusses",
-                                render: text => <span>{text} review(s)</span>
-                            },
-                            {
-                                title: "Amount of Sold",
-                                dataIndex: "soldAmount",
-                                render: text => <span>{text} item(s)</span>
-                            }
-                        ]}
-                    />
+                <Card title="Best-seller Genres At The Moment">
+                    <Spin spinning={loading}>
+                        <Table
+                            className="gx-table-responsive"
+                            dataSource={eight}
+                            rowKey="_id"
+                            columns={[
+                                {
+                                    title: "No",
+                                    dataIndex: 'no'
+                                },
+                                {
+                                    title: 'Genre Name',
+                                    dataIndex: 'name'
+                                },
+                                {
+                                    title: "Sold Amount",
+                                    dataIndex: "soldAmount",
+                                    render: text => <span>{text} item(s)</span>
+                                },
+                                {
+                                    title: "Revenue",
+                                    dataIndex: "revenue",
+                                    render: text => <span>${text.toFixed(2)} </span>
+                                },
+                                {
+                                    title: "Order Amount",
+                                    dataIndex: "orderAmount",
+                                    render: text => <span>{text} order(s)</span>
+                                }
+                            ]}
+                        />
+                    </Spin>
                 </Card>
             </Col>
             <Col md={12}>
-                <Card className="gx-card" title="The Contrast Between Discuss & Sold Amount In Category Received At The Moment">
+                <Card className="gx-card" title="Comparison Between Revenue & Sold Amount In Each Eight Genres">
                     <ResponsiveContainer width="100%" height={500}>
-                        <BarChart data={discusses} margin={{
+                        <BarChart data={eight} margin={{
                             top: 10,
                             right: 0,
                             left: -15,
@@ -67,20 +101,20 @@ function CategoryReportDetail() {
                             <CartesianGrid strokeDasharray="3 3"/>
                             <Tooltip/>
                             <Legend/>
-                            <Bar yAxisId="left" dataKey="discusses" fill="#003366"/>
-                            <Bar yAxisId="right" dataKey="soldAmount" fill="#FE9E15"/>
+                            <Bar yAxisId="left" dataKey="soldAmount" fill="#003366"/>
+                            <Bar yAxisId="right" dataKey="revenue" fill="#FE9E15"/>
                         </BarChart>
                     </ResponsiveContainer>
                 </Card>
             </Col>
             <Col md={12}>
-                <Card className="gx-card" title="The Current Rate Of Books Sold Amount Per Category">
-                    <CustomActiveShapePieChart data={data} dataKey="soldAmount"/>
+                <Card className="gx-card" title="The Current Rate Of Books Sold Per Genre">
+                    <CustomActiveShapePieChart data={genres} dataKey="soldAmount"/>
                 </Card>
             </Col>
             <Col md={12}>
-                <Card className="gx-card" title="The Current Rate Of Ordering Per Category (Based On Current Discussion Amount Made)">
-                    <CustomActiveShapePieChart data={buyRate} dataKey="rate"/>
+                <Card className="gx-card" title="The Current Rate Of Order Per Genre">
+                    <CustomActiveShapePieChart data={genres} dataKey="orderAmount"/>
                 </Card>
             </Col>
         </Row>
@@ -89,4 +123,4 @@ function CategoryReportDetail() {
     </div>
 }
 
-export default CategoryReportDetail;
+export default withNoti(GenreReport);

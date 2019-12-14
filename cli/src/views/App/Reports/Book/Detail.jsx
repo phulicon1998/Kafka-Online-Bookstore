@@ -2,21 +2,10 @@ import React, {useState, useEffect, useCallback} from "react";
 import {Row, Col, Card, Table, Spin} from "antd";
 import ContainerHeader from "components/ContainerHeader";
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import genData from "./data";
 import api from "constants/api";
 import {apiCall} from "constants/apiCall";
 import withNoti from "hocs/App/withNoti";
 import moment from "moment";
-
-const genDiscuss = () => Math.floor((Math.random() * 200) + 100)
-
-let discusses = genData().slice(0, 5).map(v => ({
-    discussAmount: genDiscuss(),
-    ...v
-})).sort((a, b) => b.discussAmount - a.discussAmount).map((v, i) => ({
-    no: `B${i+1}`,
-    ...v
-}));
 
 function Top8Table({title, dataSource, loading}) {
     return (
@@ -94,6 +83,7 @@ function BookReportDetail({notify}) {
             let name = a.map(b => b.name);
             if(name.indexOf(n.edition_id.book_id.name) === -1) {
                 a.push({
+                    _id: n.edition_id.book_id._id,
                     name: n.edition_id.book_id.name,
                     authors: n.edition_id.book_id.authors,
                     revenue: n.realPrice,
@@ -171,63 +161,6 @@ function BookReportDetail({notify}) {
                 />
             </Col>
         </Row>
-        <Row>
-            <Col md={12}>
-                <Card title="Top 5 Book Interested At The Moment">
-                    <Table
-                        className="gx-table-responsive"
-                        dataSource={discusses}
-                        rowKey="_id"
-                        columns={[
-                            {
-                                title: "No",
-                                dataIndex: 'no'
-                            },
-                            {
-                                title: 'Book Name',
-                                dataIndex: 'name'
-                            },
-                            {
-                                title: "Author",
-                                dataIndex: "author"
-                            },
-                            {
-                                title: "Reviews",
-                                dataIndex: "discussAmount",
-                                render: text => <span>{text.toFixed(2)} review(s)</span>
-                            },
-                            {
-                                title: "Sold Amount",
-                                dataIndex: "soldAmount",
-                                render: text => <span>{text} item(s)</span>
-                            }
-                        ]}
-                    />
-                </Card>
-            </Col>
-            <Col md={12}>
-                <Card className="gx-card" title="The Contrast Between Discuss & Sold Amount Received At The Moment">
-                    <ResponsiveContainer width="100%" height={500}>
-                        <BarChart data={discusses} margin={{
-                            top: 10,
-                            right: 0,
-                            left: -15,
-                            bottom: 0
-                        }}>
-                            <XAxis dataKey="no"/>
-                            <YAxis yAxisId="left" orientation="left" stroke="#03275b"/>
-                            <YAxis yAxisId="right" orientation="right" stroke="#FE9E15"/>
-                            <CartesianGrid strokeDasharray="3 3"/>
-                            <Tooltip/>
-                            <Legend/>
-                            <Bar yAxisId="left" dataKey="discussAmount" fill="#003366"/>
-                            <Bar yAxisId="right" dataKey="soldAmount" fill="#FE9E15"/>
-                        </BarChart>
-                    </ResponsiveContainer>
-                </Card>
-            </Col>
-        </Row>
-
     </div>
 }
 

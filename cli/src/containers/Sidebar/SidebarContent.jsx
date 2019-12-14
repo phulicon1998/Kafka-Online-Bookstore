@@ -77,8 +77,8 @@ class SidebarContent extends Component {
                                     <Menu.Item key="/app/reports/book">
                                         <Link to="/app/reports/book"><i className="icon icon-data-display"/>For Books</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="/app/reports/category">
-                                        <Link to="/app/reports/category"><i className="icon icon-data-display"/>For Categories</Link>
+                                    <Menu.Item key="/app/reports/genre">
+                                        <Link to="/app/reports/genre"><i className="icon icon-data-display"/>For Genres</Link>
                                     </Menu.Item>
                                 </MenuItemGroup>
                             }

@@ -2,7 +2,8 @@ const genre = {
     get: () => ["get", "/api/genres"],
     create: () => ["post", "/api/genres"],
     remove: genre_id => ["delete", `/api/genres/${genre_id}`],
-    edit: genre_id => ["put", `/api/genres/${genre_id}`]
+    edit: genre_id => ["put", `/api/genres/${genre_id}`],
+    report: () => ["get", `/api/genres/report`]
 }
 
 const author = {

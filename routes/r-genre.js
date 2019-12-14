@@ -6,6 +6,8 @@ router.route("/")
 .get(hdl.Genre.get)
 .post(hdl.Genre.create);
 
+router.route("/report").get(hdl.Genre.report);
+
 router.route("/:genre_id")
 .delete(hdl.Genre.remove)
 .put(hdl.Genre.edit);

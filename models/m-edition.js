@@ -53,7 +53,11 @@ const editionSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    desc: String
+    desc: String,
+    verifyStatus: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true
 })
