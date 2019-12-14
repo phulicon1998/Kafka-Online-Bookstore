@@ -54,7 +54,9 @@ const edition = {
     create: () => ["post", `/api/editions`],
     stop: edition_id => ["put", `/api/editions/${edition_id}/stop`],
     edit: edition_id => ["put", `/api/editions/${edition_id}`],
-    compare: edition_id => ["post", `/api/editions/${edition_id}/compare`]
+    verify: edition_id => ["put", `/api/editions/${edition_id}/verify`],
+    compare: edition_id => ["post", `/api/editions/${edition_id}/compare`],
+    remove: edition_id => ["delete", `/api/editions/${edition_id}`]
 }
 
 const shipment = {

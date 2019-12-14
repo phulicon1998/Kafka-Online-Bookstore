@@ -87,7 +87,9 @@ function Edition({notify, role, user, ...props}) {
             {
                 title: "Name",
                 dataIndex: 'book_id',
-                render: text => <span>{text.name}</span>
+                render: (text, rec) => <span className="edition-table-name">
+                    {text.name} {rec.fastDelivery && <i className="fas fa-rocket"/>}
+                </span>
             },
             {
                 title: "Quality",
@@ -117,55 +119,139 @@ function Edition({notify, role, user, ...props}) {
             {
                 title: "Images",
                 dataIndex: 'images',
-                render: text => <span>Contains {text.length} image(s)</span>
+                render: text => <span className="edition-table-image">
+                    { text.map((v, i) => <img src={v.url} alt="" key={i}/>) }
+                </span>
             }
         ]
         return role.isProvider ? defaultCols.filter(col => col.title !== "Provider") : defaultCols;
     }
 
+    async function hdRemove(edition_id) {
+        try {
+            await apiCall(...api.edition.remove(edition_id));
+            let newEditions = editions.filter(e => e._id !== edition_id);
+            setEditions(newEditions);
+            notify("success", "Process is completed", "Edition is removed successfully.");
+        } catch (e) {
+            return notify("error", "Process is not completed");
+        }
+    }
+
+    async function hdResubmit(edition_id) {
+        try {
+            let foundEdition = await apiCall(...api.edition.getOne(edition_id));
+            setEdition({...foundEdition, verifyStatus: 0});
+        } catch (e) {
+            return notify("error", "Process is not completed");
+        }
+    }
+
+    async function hdVerify(edition_id, verifyStatus) {
+        try {
+            let rs = await apiCall(...api.edition.verify(edition_id), {verifyStatus});
+            let newEditions = editions.map(v => {
+                if(v._id === edition_id) {
+                    return {
+                        ...v,
+                        verifyStatus: rs.verifyStatus
+                    }
+                }
+                return v;
+            });
+            setEditions(newEditions);
+            notify("success", "Process is completed", "Edition's verify status is updated successfully.");
+        } catch (e) {
+            return notify("error", "Process is not completed");
+        }
+    }
+
     return (
         <div>
-            {edition._id && <AddView
-                editEdition={{
-                    ...edition,
-                    images: edition.images.map(img => ({
-                        uid: img.cloud_id,
-                        url: img.url
-                    }))
-                }}
-                book={{
-                    ...edition.book_id,
-                    authors: edition.authors,
-                    genres: edition.genres
-                }}
-                setSelectedBook={() => setEdition(DEFAULT_EDITION)}
-                notify={notify}
-                hdSubmit={editEdition}
-                loading={loading}
-                setLoading={setLoading}
-            />}
-            <Card title="Your Uploaded Editions">
-                <Spin spinning={loading}>
-                    <Table
-                        className="gx-table-responsive"
-                        dataSource={editions}
-                        rowKey="_id"
-                        columns={[
-                            ...controlCols(),
-                            {
-                                title: 'Action',
-                                key: 'action',
-                                width: 100,
-                                render: (text, record) => (
-                                    <span>
-                                        <span
+            {
+                edition._id && <AddView
+                    editEdition={{
+                        ...edition,
+                        images: edition.images.map(img => ({
+                            uid: img.cloud_id,
+                            url: img.url
+                        }))
+                    }}
+                    book={{
+                        ...edition.book_id,
+                        authors: edition.authors,
+                        genres: edition.genres
+                    }}
+                    setSelectedBook={() => setEdition(DEFAULT_EDITION)}
+                    notify={notify}
+                    hdSubmit={editEdition}
+                    loading={loading}
+                    setLoading={setLoading}
+                />
+            }
+            {
+                edition._id || <EditionTable
+                    title="Unverified Editions"
+                    dataSource={
+                        role.isSaleStaff
+                        ? editions.filter(e => e.verifyStatus === 0)
+                        : editions.filter(e => e.verifyStatus !== 1)
+                    }
+                    loading={loading}
+                    hdEdit={hdEdit}
+                    hdStop={hdStop}
+                    hdRemove={hdRemove}
+                    controlCols={controlCols}
+                    hdResubmit={hdResubmit}
+                    hdVerify={hdVerify}
+                    {...role}
+                />
+            }
+            {
+                edition._id || <EditionTable
+                    title="Uploaded Editions"
+                    dataSource={editions.filter(e => e.verifyStatus === 1)}
+                    loading={loading}
+                    hdEdit={hdEdit}
+                    hdStop={hdStop}
+                    hdRemove={hdRemove}
+                    hdResubmit={hdResubmit}
+                    controlCols={controlCols}
+                    hdVerify={hdVerify}
+                    {...role}
+                />
+            }
+        </div>
+    )
+}
+
+function EditionTable({title, dataSource, loading, controlCols, hdEdit, hdStop, isSaleStaff, isProvider, hdRemove, hdResubmit, hdVerify}) {
+    return dataSource.length === 0 ? null : (
+        <Card title={title}>
+            <Spin spinning={loading}>
+                <Table
+                    className="gx-table-responsive"
+                    dataSource={dataSource}
+                    rowKey="_id"
+                    columns={[
+                        ...controlCols(),
+                        {
+                            title: 'Action',
+                            key: 'action',
+                            width: 100,
+                            render: (text, record) => (
+                                <span className="edition-table-action">
+                                    {
+                                        record.verifyStatus === 1 && <span
                                             className="gx-link"
                                             onClick={hdEdit.bind(this, record)}
                                         >
                                             Edit
+                                            <Divider type="vertical"/>
                                         </span>
-                                        <Divider type="vertical"/>
-                                        <PopConfirm
+                                    }
+                                    {
+                                        record.verifyStatus === 1 && <PopConfirm
                                             title="Are you sure to change this edition's state?"
                                             task={hdStop.bind(this, record._id)}
                                             okText="Sure, change it"
@@ -173,14 +259,56 @@ function Edition({notify, role, user, ...props}) {
                                         >
                                             <span className="gx-link">{record.outOfBusiness ? "Enable" : "Disable"}</span>
                                         </PopConfirm>
-                                    </span>
-                                )
-                            }
-                        ]}
-                    />
-                </Spin>
-            </Card>
-        </div>
+                                    }
+                                    {
+                                        record.verifyStatus === 0 && isProvider && <span>Waiting</span>
+                                    }
+                                    {
+                                        record.verifyStatus === 2 && isProvider && <span
+                                            className="gx-link"
+                                            onClick={hdResubmit.bind(this, record._id)}
+                                        >
+                                            Edit & Resubmit
+                                            <Divider type="vertical"/>
+                                        </span>
+                                    }
+                                    {
+                                        record.verifyStatus === 0 && isSaleStaff && <PopConfirm
+                                            title="Are you sure to accept this edition?"
+                                            task={hdVerify.bind(this, record._id, 1)}
+                                            okText="Sure, accept it"
+                                            cancelText="Not now"
+                                        >
+                                            <span className="gx-link">Accept<Divider type="vertical"/></span>
+                                        </PopConfirm>
+                                    }
+                                    {
+                                        record.verifyStatus === 0 && isSaleStaff && <PopConfirm
+                                            title="Are you sure to deny this edition?"
+                                            task={hdVerify.bind(this, record._id, 2)}
+                                            okText="Sure, deny it"
+                                            cancelText="Not now"
+                                        >
+                                            <span className="gx-link">Deny<Divider type="vertical"/></span>
+                                        </PopConfirm>
+                                    }
+                                    {
+                                        record.verifyStatus === 2 && isProvider && <PopConfirm
+                                            title="Are you sure to remove this edition?"
+                                            task={hdRemove.bind(this, record._id)}
+                                            okText="Sure, remove it"
+                                            cancelText="Not now"
+                                        >
+                                            <span className="gx-link">Remove</span>
+                                        </PopConfirm>
+                                    }
+                                </span>
+                            )
+                        }
+                    ]}
+                />
+            </Spin>
+        </Card>
     )
 }
 
@@ -189,7 +317,8 @@ function mapState({user}) {
     return {
         user: user.data,
         role: {
-            isProvider: isPermit(user.data.role)(permissions.PROVIDER_PERMISSION)
+            isProvider: isPermit(user.data.role)(permissions.PROVIDER_PERMISSION),
+            isSaleStaff: isPermit(user.data.role)(permissions.SALESTAFF_PERMISSION)
         }
     }
 }

@@ -70,3 +70,18 @@
   font-size: 12px;
   line-height: 1.5;
 }
+.edition-table-name > i {
+  color: #68aac3;
+  margin-left: 3px;
+}
+.edition-table-action {
+  display: flex;
+  min-width: 250px;
+}
+.edition-table-image {
+  display: flex;
+}
+.edition-table-image > img {
+  width: 50px;
+  margin-right: 10px;
+}

@@ -87,6 +87,17 @@ exports.stop = async(req, res, next) => {
     }
 }
 
+exports.remove = async(req, res, next) => {
+    try {
+        const {edition_id} = req.params;
+        let foundEdition = await db.Edition.findById(edition_id);
+        if(foundEdition) await foundEdition.remove();
+        return res.status(200).json(foundEdition);
+    } catch(err) {
+        return next(err);
+    }
+}
+
 exports.edit = async(req, res, next) => {
     try {
         // Get text data from the request
@@ -149,6 +160,22 @@ exports.compare = async(req, res, next) => {
             available: false,
             storedAmount: 0
         });
+    } catch (e) {
+        return next(e);
+    }
+}
+
+exports.verify = async(req, res, next) => {
+    try {
+        const {edition_id} = req.params;
+        let foundEdition = await db.Edition.findById(edition_id);
+        if(foundEdition) {
+            foundEdition.verifyStatus = req.body.verifyStatus;
+            await foundEdition.save();
+        }
+        // Retrieve updated data to render on client
+        let editedEdition = await db.Edition.findById(edition_id).populate("book_id").populate("provider_id").exec();
+        return res.status(200).json(editedEdition);
     } catch (e) {
         return next(e);
     }

@@ -103,6 +103,9 @@ exports.getForStore = async(req, res, next) => {
         books = books.filter(b => b.edition_id.length > 0);
 
         books.forEach(b => {
+            // Remove all the unverified editions
+            b.edition_id = b.edition_id.filter(e => e.verifiedStatus === 1);
+
             // Remove out of business or out of stock edition
             b.edition_id = b.edition_id.filter(e => !e.outOfBusiness).filter(e => e.amount > 0);
 

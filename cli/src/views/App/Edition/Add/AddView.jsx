@@ -3,7 +3,7 @@ import Widget from "components/Widget/index";
 import {
     Col, Row, Card, Form,
     Input, Upload, Modal, Icon,
-    Spin, Select, Button
+    Spin, Select, Button, Checkbox
 } from "antd";
 import {quality} from "constants/qualityControl";
 import CKEditor from "react-ckeditor-component";
@@ -19,7 +19,9 @@ const DEFAULT_EDITION = {
     quality: BRAND_NEW,
     price: 0,
     discount: 0,
-    amount: 1
+    amount: 1,
+    fastDelivery: false,
+    verifyStatus: 0
 }
 
 function AddView({notify, book, setSelectedBook, hdSubmit, editEdition, loading, setLoading}) {
@@ -35,11 +37,15 @@ function AddView({notify, book, setSelectedBook, hdSubmit, editEdition, loading,
 
     useEffect(() => {
         if(editEdition && editEdition._id !== edition._id) {
-            const {_id, images, desc, quality, price, discount, amount, book_id} = editEdition;
+            const {
+                _id, images, desc, quality,
+                price, discount, amount, book_id,
+                fastDelivery, verifyStatus
+            } = editEdition;
             setEdition(prev => ({
                 _id, images, desc, quality,
-                price, discount, amount,
-                book_id: book_id._id
+                price, discount, amount, fastDelivery,
+                verifyStatus, book_id: book_id._id
             }))
         }
     }, [editEdition, edition._id])
@@ -97,14 +103,17 @@ function AddView({notify, book, setSelectedBook, hdSubmit, editEdition, loading,
         fd.append("discount", edition.discount);
         fd.append("quality", edition.quality);
         fd.append("amount", edition.amount);
+        fd.append("fastDelivery", edition.fastDelivery);
+        fd.append("verifyStatus", edition.verifyStatus);
         await hdSubmit(fd);
     }
 
     function hdDescChange(e) {
         const desc = e.editor.getData();
-        console.log(typeof desc);
         setEdition(prev => ({...prev, desc}))
     }
+
+    const useFastDelivery = () => setEdition(prev => ({...prev, fastDelivery: !prev.fastDelivery}));
 
     return (
         <Row>
@@ -151,14 +160,15 @@ function AddView({notify, book, setSelectedBook, hdSubmit, editEdition, loading,
                                     <Option value={ACCEPTABLE}>Acceptable</Option>
                                 </Select>
                             </FormItem>
+                            <FormItem>
+                                <Checkbox
+                                    checked={edition.fastDelivery}
+                                    onChange={useFastDelivery}
+                                >
+                                    Fast Delivery
+                                </Checkbox>
+                            </FormItem>
                             <FormItem label="Edition's Description">
-                                {/* <TextArea
-                                    rows={4}
-                                    name="desc"
-                                    placeholder="Enter the edition's description here..."
-                                    value={edition.desc}
-                                    onChange={hdChange}
-                                /> */}
                                 <CKEditor
                                     activeClass="p10"
                                     content={edition.desc}
