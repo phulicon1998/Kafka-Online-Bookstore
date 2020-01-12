@@ -98,7 +98,6 @@ function Book({notify, role}) {
                     hdCancel={() => setBook({})}
                 />
             }
-
             {
                 !add && !book._id && <Card className="gx-card" title="Interactions">
                     <Button

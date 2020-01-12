@@ -12,7 +12,7 @@ import "styles/shop.css";
 import "styles/app.css";
 import "styles/auth.css";
 
-import configureStore from "appRedux";
+import configureStore from "appRedux";    
 
 const store = configureStore();
 extractStorage(store);

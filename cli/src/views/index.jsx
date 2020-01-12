@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Redirect, Switch, Route} from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import RouteControl from "containers/Route/RouteControl";
 import {connect} from "react-redux";
 import ioClient from "socket.io-client";
