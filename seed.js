@@ -1,3 +1,4 @@
+require('dotenv').config()
 const db = require("./models");
 
 const roles = [
@@ -60,7 +61,4 @@ async function createOwner() {
     }
 }
 
-module.exports = async() => {
-    await createRole();
-    await createOwner();
-};
+createRole().then(() => createOwner());

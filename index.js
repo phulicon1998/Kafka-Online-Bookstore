@@ -5,8 +5,8 @@ const cors = require("cors");
 const hdl = require("./handlers");
 
 const server = require("http").createServer(app);
-const io = require("socket.io")(server);
-require("./socket")(io);
+// const io = require("socket.io")(server);
+// require("./socket")(io);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

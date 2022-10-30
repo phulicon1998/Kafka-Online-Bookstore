@@ -7,40 +7,40 @@ import Breadcrumb from "components/Shop/Bar/Breadcrumb";
 import StoreContent from "../Store/StoreContent";
 
 function Search({match}) {
-    const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState([]);
 
-    const load = useCallback(async() => {
-        try {
-            let data = await apiCall(...api.book.getForStore());
-            const fuse = new Fuse(data, {
-                keys: ["name", "authors.name"]
-            })
-            let searchData = fuse.search(match.params.search);
-            setBooks(searchData);
-        } catch (e) {
-            console.log(e);
-        }
-    }, [match.params.search])
+  const load = useCallback(async () => {
+    try {
+      let data = await apiCall(...api.book.getForStore());
+      const fuse = new Fuse(data, {
+        keys: ["name", "authors.name"]
+      })
+      let searchData = fuse.search(match.params.search);
+      setBooks(searchData);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [match.params.search])
 
-    useEffect(() => {
-        load();
-    }, [load])
+  useEffect(() => {
+    load();
+  }, [load])
 
-    return (
-        <div>
-            <Breadcrumb
-                paths={[
-                    {path: "/", name: "Home"}
-                ]}
-                current="Search"
-                viewed
-            />
-            <StoreContent
-                books={books}
-                title={`Search results for "${match.params.search}"`}
-            />
-        </div>
-    )
+  return (
+    <div>
+      <Breadcrumb
+        paths={[
+          {path: "/", name: "Home"}
+        ]}
+        current="Search"
+        viewed
+      />
+      <StoreContent
+        books={books}
+        title={`Search results for "${match.params.search}"`}
+      />
+    </div>
+  )
 }
 
 export default Search;

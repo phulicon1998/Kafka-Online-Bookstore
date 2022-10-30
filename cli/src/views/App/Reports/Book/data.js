@@ -2,54 +2,54 @@ const genAmount = (forWeek) => Math.floor((Math.random() * (forWeek ? 50 : 200))
 const genMoney = (forWeek) => Math.floor((Math.random() * (forWeek ? 200 : 1000)) + 100)
 
 const genData = (weekly = true) => [
-    {
-        name: "To Kill A Mocking Bird",
-        author: "Harper Lee",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    },
-    {
-        name: "A Brave New World",
-        author: "George Orwell",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    },
-    {
-        name: "Things We Never Said",
-        author: "Marc Levy",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    },
-    {
-        name: "Rear Window",
-        author: "Cornell Woolrich",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    },
-    {
-        name: "The Subtle Art of Not Giving A Fuck",
-        author: "Mark Manson",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    },
-    {
-        name: "The Hollow Man",
-        author: "John Dickson Carr",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    },
-    {
-        name: "The Murder of Roger Ackroyd",
-        author: "Agatha Christie",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    },
-    {
-        name: "The Adventures of Sherlock Holmes",
-        author: "Conan Doyle",
-        soldAmount: genAmount(weekly),
-        moneyReceived: genMoney(weekly)
-    }
+  {
+    name: "To Kill A Mocking Bird",
+    author: "Harper Lee",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  },
+  {
+    name: "A Brave New World",
+    author: "George Orwell",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  },
+  {
+    name: "Things We Never Said",
+    author: "Marc Levy",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  },
+  {
+    name: "Rear Window",
+    author: "Cornell Woolrich",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  },
+  {
+    name: "The Subtle Art of Not Giving A Fuck",
+    author: "Mark Manson",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  },
+  {
+    name: "The Hollow Man",
+    author: "John Dickson Carr",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  },
+  {
+    name: "The Murder of Roger Ackroyd",
+    author: "Agatha Christie",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  },
+  {
+    name: "The Adventures of Sherlock Holmes",
+    author: "Conan Doyle",
+    soldAmount: genAmount(weekly),
+    moneyReceived: genMoney(weekly)
+  }
 ]
 
 // const data = [

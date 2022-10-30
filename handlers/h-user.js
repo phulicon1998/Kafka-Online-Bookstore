@@ -1,6 +1,6 @@
 const db = require("../models");
 const {genToken} = require("../utils/token");
-const mail = require("../utils/mail");
+// const mail = require("../utils/mail");
 
 exports.logIn = async(req, res, next) => {
     try {
@@ -49,7 +49,7 @@ exports.signUp = async(req, res, next) => {
         let token = genToken(_id);
 
         //send activate mail
-        mail.activate(email, username, _id, req.headers.host);
+        // mail.activate(email, username, _id, req.headers.host);
 
         return res.status(200).json({_id, username, avatar, email, active, token});
     } catch(err) {
@@ -114,7 +114,7 @@ exports.generate = async(req, res, next) => {
     try {
         // Create user
         // assume that sysUser must use real email for getting the account
-        const {email, role, password} = req.body;
+        const { role } = req.body;
         let defaultUsername = req.body.email.split("@")[0];
         let sysUser = await db.User.create({
             ...req.body,
@@ -127,7 +127,7 @@ exports.generate = async(req, res, next) => {
         await db.UserRole.create({role_id: foundRole._id, user_id: sysUser._id});
 
         // Send mail for user to receive their generated account
-        mail.receiveAcc(email, defaultUsername, password);
+        // mail.receiveAcc(email, defaultUsername, password);
 
         // Retrieve the data for rendering on client
         let createdAccount = await db.UserRole.findOne({user_id: sysUser._id}).populate("role_id").populate("user_id").lean().exec();
@@ -189,7 +189,7 @@ exports.changePassword = async(req, res, next) => {
         await foundAccount.save();
 
         // Send mail for informing about changing password
-        mail.changePassword(foundAccount.email, foundAccount.username);
+        // mail.changePassword(foundAccount.email, foundAccount.username);
 
         return res.status(200).json({success: true});
     } catch (e) {

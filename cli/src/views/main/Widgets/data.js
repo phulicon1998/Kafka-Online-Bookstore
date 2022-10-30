@@ -32,10 +32,10 @@ export const greenStepList = [
     image: 'https://via.placeholder.com/575x692',
     subTitle: 'Theory of origami',
     desc: 'Mother nature want you to become a\n' +
-    '              part of it and feel the love. There could\n' +
-    '              be more which you can take as an\n' +
-    '              initiative and collaborate in making this\n' +
-    '              world a better world.'
+      '              part of it and feel the love. There could\n' +
+      '              be more which you can take as an\n' +
+      '              initiative and collaborate in making this\n' +
+      '              world a better world.'
   },
   {
     id: 2,
