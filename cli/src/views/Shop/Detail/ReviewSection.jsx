@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import moment from "moment";
-import {Rate, Upload, Icon, Modal} from 'antd';
+import {Rate, Upload, Modal} from 'antd';
 import api from "constants/api";
 import {apiCall, apiFdCall} from "constants/apiCall";
 
@@ -117,7 +117,7 @@ function ReviewSection({user, edition, reviews, setReviews}) {
                   beforeUpload={() => false}
                 >
                   <div>
-                    <Icon type="plus"/>
+                    {/*<Icon type="plus"/>*/}
                     <div className="ant-upload-text">Upload</div>
                   </div>
                 </Upload>

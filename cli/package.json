@@ -5,7 +5,7 @@
     "dependencies": {
         "@amcharts/amcharts3-react": "^3.1.0",
         "amcharts3": "^3.21.13",
-        "antd": "^3.11.6",
+        "antd": "^4.24.1",
         "antd-theme-webpack-plugin": "^1.1.6",
         "axios": "^0.19.0",
         "draftjs-to-html": "^0.8.4",
@@ -21,7 +21,7 @@
         "moment": "^2.24.0",
         "nprogress": "^0.2.0",
         "prop-types": "^15.6.2",
-        "react": "^16.9.0",
+        "react": "16.14.0",
         "react-big-calendar": "^0.19.2",
         "react-bootstrap-sweetalert": "^4.4.1",
         "react-ckeditor-component": "^1.0.7",
@@ -59,7 +59,7 @@
         "url-search-params": "^1.1.0",
         "victory": "^0.27.2"
     },
-    "proxy": "http://localhost:8080",
+    "proxy": "http://localhost:8081",
     "scripts": {
         "watch-shop": "less-watch-compiler src/styles/shop src/styles shop.less",
         "watch-app": "less-watch-compiler src/styles/app src/styles app.less",
@@ -71,7 +71,30 @@
         "less": "lessc --js src/assets/wieldy/wieldy.less src/assets/wieldy.css"
     },
     "eslintConfig": {
-        "extends": "react-app"
+        "extends": [
+            "react-app",
+            "prettier"
+        ],
+        "rules": {
+            "key-spacing": "off",
+            "comma-dangle": "off",
+            "max-len": [
+                "error",
+                {
+                    "code": 80,
+                    "ignoreUrls": true
+                }
+            ],
+            "react/jsx-curly-brace-presence": [
+                2,
+                {
+                    "props": "never",
+                    "children": "never"
+                }
+            ],
+            "react/prop-types": 2,
+            "import/no-anonymous-default-export": "off"
+        }
     },
     "browserslist": {
         "production": [
@@ -90,7 +113,9 @@
         "babel-plugin-import": "^1.12.1",
         "concurrently": "^4.1.2",
         "customize-cra": "^0.2.10",
+        "eslint-config-prettier": "^8.5.0",
         "less-watch-compiler": "^1.14.1",
+        "prettier": "^2.7.1",
         "react-app-rewired": "^2.1.3",
         "wait-on": "^3.3.0",
         "yarn": "^1.17.3"

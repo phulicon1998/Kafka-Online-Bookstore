@@ -12,19 +12,19 @@ import "styles/shop.css";
 import "styles/app.css";
 import "styles/auth.css";
 
-import configureStore from "appRedux";    
+import configureStore from "appRedux";
 
 const store = configureStore();
 extractStorage(store);
 
 function App() {
-    return (
-        <Provider store={store}>
-            <Router>
-                <RootRoutes/>
-            </Router>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <Router>
+        <RootRoutes/>
+      </Router>
+    </Provider>
+  );
 }
 
 export default App;

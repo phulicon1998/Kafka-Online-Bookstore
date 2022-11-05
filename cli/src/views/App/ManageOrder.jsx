@@ -58,28 +58,28 @@ function ManageOrder({notify, role, ...props}) {
 
   function renderActions(text, rec) {
     return rec.status <= state.TRANSPORTING ? (
-      <span>
-                <Action
-                  state="Working"
-                  onClick={hdStatus.bind(this, rec._id, state.WORKING)}
-                  isUpperState={rec.status >= state.WORKING}
-                />
-                <Action
-                  state="Transporting"
-                  onClick={hdStatus.bind(this, rec._id, state.TRANSPORTING)}
-                  isUpperState={rec.status >= state.TRANSPORTING}
-                />
-                <Action
-                  state="Completed"
-                  isUpperState={rec.status >= state.COMPLETED}
-                  onClick={hdStatus.bind(this, rec._id, state.COMPLETED)}
-                />
-                <Action
-                  state="Cancelled"
-                  isUpperState={rec.status >= state.CANCELLED}
-                  onClick={hdStatus.bind(this, rec._id, state.CANCELLED)}
-                />
-            </span>
+      <>
+        <Action
+          state="Working"
+          onClick={hdStatus.bind(this, rec._id, state.WORKING)}
+          isUpperState={rec.status >= state.WORKING}
+        />
+        <Action
+          state="Transporting"
+          onClick={hdStatus.bind(this, rec._id, state.TRANSPORTING)}
+          isUpperState={rec.status >= state.TRANSPORTING}
+        />
+        <Action
+          state="Completed"
+          isUpperState={rec.status >= state.COMPLETED}
+          onClick={hdStatus.bind(this, rec._id, state.COMPLETED)}
+        />
+        <Action
+          state="Cancelled"
+          isUpperState={rec.status >= state.CANCELLED}
+          onClick={hdStatus.bind(this, rec._id, state.CANCELLED)}
+        />
+    </>
     ) : <span>None</span>;
   }
 

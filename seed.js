@@ -25,7 +25,7 @@ const roles = [
 ];
 
 const owner = {
-    email: "phulicon.815490@gmail.com",
+    email: "phulicon815490@gmail.com",
     password: "admin",
     username: "admin",
     active: true

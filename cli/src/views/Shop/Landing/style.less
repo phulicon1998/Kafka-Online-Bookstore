@@ -1,0 +1,110 @@
+.landingPage {
+  .trendingGenres {
+    background-color: #0f0f0f;
+    font-family: "Lato", sans-serif;
+    padding: 30px 0 60px 0;
+
+    .title {
+      width: 100%;
+      margin-bottom: 30px;
+
+      > h2 {
+        color: #838383;
+        font-weight: lighter;
+        font-size: 22px;
+        margin: 0;
+        border-right: 1px solid #545454bd;
+        padding-right: 8px;
+      }
+
+      i {
+        color: #575757;
+        font-size: 14px;
+        margin-right: 5px;
+        margin-left: 8px;
+      }
+
+      > span {
+        font-size: 16px;
+      }
+    }
+
+    .genre {
+      line-height: 300px;
+      border-radius: 5px;
+
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      div {
+        text-align: center;
+        color: whitesmoke;
+        font-size: 26px;
+
+      }
+
+
+      &.later {
+        line-height: 88px;
+
+        div {
+          font-size: 20px;
+          backdrop-filter: blur(2px);
+        }
+      }
+    }
+
+    .subGenre {
+      width: 100%;
+      line-height: 50px;
+      background-image: linear-gradient(to right, #1c1c1c, #252525, #1c1c1c, #1c1c1c, #1c1c1c);
+      background-color: #1c1c1c;
+      border-radius: 2px;
+      font-size: 16px;
+      font-family: 'Lato', sans-serif;
+      text-align: center;
+      color: #8d8d8d;
+    }
+  }
+
+
+  .benefitBar {
+    background-color: #1f1f1f;
+    padding: 25px 0;
+
+    .col-md-4 {
+      display: flex;
+      align-items: center;
+
+      > i {
+        padding: 15px;
+        font-size: 25px;
+        border: 2px solid #6f5757;
+        border-radius: 10px;
+        color: #e2e2e2;
+      }
+
+      > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        font-family: "Lato", sans-serif;
+        margin-left: 18px;
+
+        > h3 {
+          font-size: 18px;
+          color: #e2e2e2;
+          margin: 0 0 5px;
+        }
+
+        > p {
+          color: #8e8d8d;
+          margin: 0;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+}

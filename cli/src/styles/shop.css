@@ -1,5 +1,4 @@
 .imgAsBg,
-.trending-genres > .container > div:nth-of-type(2) > div,
 .recommend-book,
 .event-banner .col-md-5 > div,
 .event-banner .col-md-7 > div {
@@ -880,11 +879,13 @@ body.kafka-layout {
 }
 .trending-genres > .container > div:nth-of-type(2) > div {
   height: 220px;
-  max-heigh: 220px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .recommend-book {
   background-attachment: fixed;
